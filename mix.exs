@@ -5,9 +5,25 @@ defmodule Spotify.Mixfile do
     [app: :spotify_ex,
      version: "0.0.1",
      elixir: "~> 1.1",
+     description: description,
+     package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
+  end
+
+  defp package do
+    [
+      maintainers: ["Jason Cummings"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://www.github.com/jsncmgs1/spotify_ex",
+               "Example Phoenix App" => "https://www.github.com/jsncmgs1/spotify_ex_test"}
+    ]
+  end
+  defp description do
+    """
+    An Elixir wrapper for the Spotify API.  Currently the O-Authn portion is implemented. This software is subject to breaking changes
+    """
   end
 
   # Configuration for the OTP application

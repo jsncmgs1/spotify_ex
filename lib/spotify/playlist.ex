@@ -7,7 +7,7 @@ defmodule Spotify.Playlist do
         {:ok, %HTTPoison.Response{status_code: 404}} ->
           { 404, "Not found :(" }
         {:ok, %HTTPoison.Response{status_code: 401, body: _body}} ->
-          if Spotify.Authentication.get_refresh_token do
+          if Spotify.Authentication.get_refresh_cookie(conn) do
             { 200, conn, %{ "access_token" => access_token }} = Spotify.Authentication.refresh(conn)
             conn = Spotify.Authentication.set_access_cookie(conn, access_token)
             current_user_playlists(conn)
