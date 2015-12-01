@@ -1,5 +1,5 @@
 # Spotify
-**Elixir wrapper for the Spotify Web API**
+**Elixir wrapper for the Spotify Web API.  This should be considered an alpha version and is subject to breaking changes.**
 
 ## Installation
 
