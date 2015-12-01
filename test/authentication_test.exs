@@ -3,14 +3,14 @@ defmodule SpotifyAuthenticationTest do
   doctest Spotify.Authentication
 
   test "#authenticate_endpoint" do
-    assert Spotify.Authentication.authenticate_endpoint == "https://accounts.spotify.com/api/token"
+    assert(Spotify.Authentication.authenticate_endpoint == "https://accounts.spotify.com/api/token")
   end
 
   test "#refresh_body_params" do
-    refresh_token = "token123"
+    conn = %Plug.Conn{cookies: %{ "spotify_refresh_token" => "token123" }}
 
-    assert(Spotify.Authentication.refresh_body_params(refresh_token) ==
-    "grant_type=refresh_token&refresh_token=#{refresh_token}")
+    assert(Spotify.Authentication.refresh_body_params(conn) ==
+    "grant_type=refresh_token&refresh_token=token123")
   end
 
   test "#authenticate_body_params" do

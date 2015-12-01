@@ -1,5 +1,5 @@
 defmodule Spotify.Authorization do
-  def authorize_endpoint do
+  def call do
     if String.length(scopes) > 0 do
       auth_with_scopes
     else

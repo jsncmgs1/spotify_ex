@@ -8,4 +8,5 @@ defmodule Spotify do
   end
 
   def encoded_credentials, do: :base64.encode("#{client_id}:#{secret_key}")
+
 end

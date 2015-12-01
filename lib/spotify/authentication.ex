@@ -1,10 +1,41 @@
 defmodule Spotify.Authentication do
-  def refresh_body_params(refresh_token) do
-    "grant_type=refresh_token&refresh_token=#{refresh_token}"
+  def call(conn, params) do
+    if refresh_token(conn) do
+      refresh(conn)
+    else
+      case HTTPoison.request(:post, authenticate_endpoint, authenticate_body_params(params["code"]), headers) do
+        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+          { _, %{ "access_token" => access_token, "refresh_token" => refresh_token } } = Poison.decode(body)
+          conn = conn |> set_access_cookie(access_token) |> set_refresh_cookie(refresh_token)
+          {200 , conn , %{ "access_token" => access_token }}
+        {:ok, %HTTPoison.Response{status_code: 404}} ->
+          { 404, "Not found :(" }
+        {:error, %HTTPoison.Error{reason: reason}} ->
+          { 500, reason }
+      end
+    end
+  end
+
+  def refresh_token(conn) do
+    conn.cookies["spotify_refresh_token"]
+  end
+
+  def refresh(conn) do
+    case HTTPoison.request(:post, authenticate_endpoint, refresh_body_params(conn), headers) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        { _, %{ "access_token" => access_token }} = Poison.decode(body)
+        conn = set_access_cookie(conn, access_token)
+        { 200 , conn , %{ "access_token" => access_token }}
+      {:ok, %HTTPoison.Response{status_code: 404}} ->
+        {404, "Not found :(" }
+    end
+  end
+
+  def refresh_body_params(conn) do
+    "grant_type=refresh_token&refresh_token=#{refresh_token(conn)}"
   end
 
   def authenticate_body_params(code) do
-    callback_url = Spotify.callback_url
     "grant_type=authorization_code&code=#{code}&redirect_uri=#{Spotify.callback_url}"
   end
 
@@ -19,24 +50,11 @@ defmodule Spotify.Authentication do
     ]
   end
 
-  def authenticate(conn, params) do
-    case HTTPoison.request(:post, authenticate_endpoint, authenticate_body_params(params["code"]), headers) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        { _, %{ "access_token" => access_token } } = Poison.decode(body)
-        {200 , Plug.Conn.put_resp_cookie(conn, "_sat", access_token), %{ "access_token" => access_token }}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
-        { 404, "Not found :(" }
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        { 500, reason }
-    end
+  defp set_refresh_cookie(conn, refresh_token) do
+    Plug.Conn.put_resp_cookie(conn, "spotify_refresh_token", refresh_token)
   end
 
-  def request_access_token(conn, refresh_token) do
-    case HTTPoison.request(:post, authenticate_endpoint, refresh_body_params(refresh_token), headers) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        { 200, body }
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        { 500, reason }
-    end
+  defp set_access_cookie(conn, access_token) do
+    Plug.Conn.put_resp_cookie(conn, "spotify_access_token", access_token)
   end
 end
