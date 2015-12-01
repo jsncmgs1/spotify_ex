@@ -1,11 +1,7 @@
 # Spotify
-**Elixir wrapper for the Spotify Web API.  This should be considered an alpha version and is subject to breaking changes.**
+**Elixir O-Auth for the Spotify Web API**
 
 ## Installation
-
-Currently this package only implements the O-auth portion of the api, and a tiny part of Playlist, for testing purposes.
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
   1. Add spotify_ex to your list of dependencies in `mix.exs`:
 
@@ -123,7 +119,9 @@ defmodule SpotifyExTest.AuthenticationController do
 end
 ```
 
-The authentication module will set refresh and access tokens in a cookie. The access token expires every hour. Future portions of SpotifyEx will handle most of this for you, but for now you'll need to check for a 401 status in your responses and call Spotify.Authentication.refresh, if there is a refresh token present.  If not, you'll need to redirect back to Authorization:
+The authentication module will set refresh and access tokens in a cookie. The access token expires every hour, and you'll need to check your reponses for 401 errors. Call Spotify.Authentication.refresh, if there is a refresh token present.  If not, you'll need to redirect back to Authorization:
+
+** Phoenix example (Example app found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)) **
 
 ```elixir
 defmodule SpotifyExTest.PlaylistController do
@@ -175,3 +173,4 @@ defmodule Spotify.Playlist do
   end
 end
 ```
+**TODO:** Client credentials flow and Implicit grant flow examples. The good news is they are much simpler than the Authorization flows.

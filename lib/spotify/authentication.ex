@@ -1,6 +1,6 @@
 defmodule Spotify.Authentication do
   def call(conn, params) do
-    if refresh_token(conn) do
+    if get_refresh_cookie(conn) do
       refresh(conn)
     else
       case HTTPoison.request(:post, authenticate_endpoint, authenticate_body_params(params["code"]), Spotify.headers) do
@@ -14,10 +14,6 @@ defmodule Spotify.Authentication do
           { 500, reason }
       end
     end
-  end
-
-  def refresh_token(conn) do
-    conn.cookies["spotify_refresh_token"]
   end
 
   def refresh(conn) do
@@ -52,7 +48,7 @@ defmodule Spotify.Authentication do
   end
 
   defp refresh_body_params(conn) do
-    "grant_type=refresh_token&refresh_token=#{refresh_token(conn)}"
+    "grant_type=refresh_token&refresh_token=#{get_refresh_cookie(conn)}"
   end
 
   defp authenticate_body_params(code) do
