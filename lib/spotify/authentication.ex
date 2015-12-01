@@ -31,18 +31,6 @@ defmodule Spotify.Authentication do
     end
   end
 
-  def refresh_body_params(conn) do
-    "grant_type=refresh_token&refresh_token=#{refresh_token(conn)}"
-  end
-
-  def authenticate_body_params(code) do
-    "grant_type=authorization_code&code=#{code}&redirect_uri=#{Spotify.callback_url}"
-  end
-
-  def authenticate_endpoint do
-    "https://accounts.spotify.com/api/token"
-  end
-
   def set_refresh_cookie(conn, refresh_token) do
     Plug.Conn.put_resp_cookie(conn, "spotify_refresh_token", refresh_token)
   end
@@ -61,5 +49,17 @@ defmodule Spotify.Authentication do
 
   def tokens_present?(conn) do
     !!(get_refresh_cookie(conn) && get_access_cookie(conn))
+  end
+
+  defp refresh_body_params(conn) do
+    "grant_type=refresh_token&refresh_token=#{refresh_token(conn)}"
+  end
+
+  defp authenticate_body_params(code) do
+    "grant_type=authorization_code&code=#{code}&redirect_uri=#{Spotify.callback_url}"
+  end
+
+  defp authenticate_endpoint do
+    "https://accounts.spotify.com/api/token"
   end
 end
