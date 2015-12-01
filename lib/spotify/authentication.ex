@@ -3,7 +3,7 @@ defmodule Spotify.Authentication do
     if refresh_token(conn) do
       refresh(conn)
     else
-      case HTTPoison.request(:post, authenticate_endpoint, authenticate_body_params(params["code"]), headers) do
+      case HTTPoison.request(:post, authenticate_endpoint, authenticate_body_params(params["code"]), Spotify.headers) do
         {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
           { _, %{ "access_token" => access_token, "refresh_token" => refresh_token } } = Poison.decode(body)
           conn = conn |> set_access_cookie(access_token) |> set_refresh_cookie(refresh_token)
@@ -21,7 +21,7 @@ defmodule Spotify.Authentication do
   end
 
   def refresh(conn) do
-    case HTTPoison.request(:post, authenticate_endpoint, refresh_body_params(conn), headers) do
+    case HTTPoison.request(:post, authenticate_endpoint, refresh_body_params(conn), Spotify.headers) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         { _, %{ "access_token" => access_token }} = Poison.decode(body)
         conn = set_access_cookie(conn, access_token)
@@ -43,18 +43,23 @@ defmodule Spotify.Authentication do
     "https://accounts.spotify.com/api/token"
   end
 
-  def headers do
-    [
-      {"Authorization", "Basic #{Spotify.encoded_credentials}"},
-      {"Content-Type", "application/x-www-form-urlencoded"}
-    ]
-  end
-
-  defp set_refresh_cookie(conn, refresh_token) do
+  def set_refresh_cookie(conn, refresh_token) do
     Plug.Conn.put_resp_cookie(conn, "spotify_refresh_token", refresh_token)
   end
 
-  defp set_access_cookie(conn, access_token) do
+  def set_access_cookie(conn, access_token) do
     Plug.Conn.put_resp_cookie(conn, "spotify_access_token", access_token)
+  end
+
+  def get_access_cookie(conn) do
+    conn.cookies["spotify_access_token"]
+  end
+
+  def get_refresh_cookie(conn) do
+    conn.cookies["spotify_refresh_token"]
+  end
+
+  def tokens_present?(conn) do
+    !!(get_refresh_cookie(conn) && get_access_cookie(conn))
   end
 end

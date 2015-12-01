@@ -17,4 +17,13 @@ defmodule SpotifyTest do
   test "encoded_credentials" do
     assert Spotify.encoded_credentials == :base64.encode("#{Spotify.client_id}:#{Spotify.secret_key}")
   end
+
+  test "#headers" do
+    headers = [
+      {"Authorization", "Basic #{Spotify.encoded_credentials}"},
+      {"Content-Type", "application/x-www-form-urlencoded"}
+    ]
+
+    assert(Spotify.headers == headers)
+  end
 end
