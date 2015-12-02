@@ -8,7 +8,7 @@ defmodule Spotify.Authorization do
   end
 
   defp auth_with_scopes do
-    "https://accounts.spotify.com/authorize?client_id=#{Spotify.client_id}&response_type=code&redirect_uri=#{Spotify.callback_url}&scopes=#{scopes}"
+    "https://accounts.spotify.com/authorize?client_id=#{Spotify.client_id}&response_type=code&redirect_uri=#{Spotify.callback_url}&scope=#{scopes}"
   end
 
   defp scopeless_auth do
