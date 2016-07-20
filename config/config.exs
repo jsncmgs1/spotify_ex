@@ -21,7 +21,7 @@ use Mix.Config
 #     config :logger, level: :info
 #
 
-import_config "config.secret.exs"
+# import_config "config.secret.exs"
 import_config "spotify.exs"
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment
@@ -29,4 +29,4 @@ import_config "spotify.exs"
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
-#     import_config "#{Mix.env}.exs"
+import_config "#{Mix.env}.exs"

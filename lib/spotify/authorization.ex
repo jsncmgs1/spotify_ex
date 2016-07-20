@@ -1,6 +1,6 @@
 defmodule Spotify.Authorization do
-  def call do
-    if String.length(scopes) > 0 do
+  def url do
+    if scopes != "" do
       auth_with_scopes
     else
       scopeless_auth
@@ -21,3 +21,4 @@ defmodule Spotify.Authorization do
      |> URI.encode
   end
 end
+
