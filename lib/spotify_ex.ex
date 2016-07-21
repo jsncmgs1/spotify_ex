@@ -1,8 +1,6 @@
 defmodule Spotify do
   def client_id, do: Application.get_env :spotify_ex, :client_id
-
   def secret_key, do: Application.get_env :spotify_ex, :secret_key
-
   def current_user, do: Application.get_env :spotify_ex, :user_id
 
   def callback_url do

@@ -1,37 +1,35 @@
 defmodule AuthenticationClient do
   alias Spotify.Authentication
+
   import Spotify.Cookies
 
   @url "https://accounts.spotify.com/api/token"
 
-  def authenticate(conn, params) do
-    if get_refresh_cookie(conn) do
-      refresh(conn)
-    else
-      case HTTPoison.request(:post, @url, body_params(params["code"]), Spotify.headers) do
-        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-          { _, %{ "access_token" => access_token, "refresh_token" => refresh_token } } = Poison.decode(body)
-          conn = conn |> set_cookies(access_token: access_token, refresh_token: refresh_token)
-          { conn, %Authentication{access_token: access_token, status: 200} }
-
-        {:ok, %HTTPoison.Response{status_code: status}} ->
-          { conn, %Authentication{status: status }}
-
-        {:error, %HTTPoison.Error{reason: reason}} ->
-          { conn, %Authentication{error: reason}}
-      end
+  def authenticate(conn, code) do
+    case HTTPoison.request(:post, @url, body_params(code), Spotify.headers) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        { _, %{ "access_token" => access_token, "refresh_token" => refresh_token } } = Poison.decode(body)
+        conn = conn
+          |> Plug.Conn.put_status(200)
+          |> set_cookies(%{refresh_token: refresh_token, access_token: access_token})
+        { :ok, access_token, conn }
+      {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
+        { :error, body, conn }
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        { :error, reason, conn }
     end
-
   end
 
   def refresh(conn) do
     case HTTPoison.request(:post, @url, refresh_body_params(conn), Spotify.headers) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         { _, %{ "access_token" => access_token }} = Poison.decode(body)
-        conn = set_access_cookie(conn, access_token)
-        { conn, %Authentication{access_token: access_token, status: 200} }
-      {:ok, %HTTPoison.Response{status_code: status}} ->
-          { conn, %Authentication{status: status }}
+        conn = conn
+          |> Plug.Conn.put_status(200)
+          |> set_access_cookie(access_token)
+        { :ok, access_token, conn }
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        { :error, reason, conn }
     end
   end
 

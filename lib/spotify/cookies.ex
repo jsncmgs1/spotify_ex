@@ -1,5 +1,5 @@
 defmodule Spotify.Cookies do
-  def set_cookies(conn, refresh_token: refresh_token, access_token: access_token) do
+  def set_cookies(conn, %{refresh_token: refresh_token, access_token: access_token}) do
     conn |> set_refresh_cookie(refresh_token) |> set_access_cookie(access_token)
   end
 
