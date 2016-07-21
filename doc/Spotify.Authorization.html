@@ -70,6 +70,14 @@
       </h1>
 
       
+        <section id="moduledoc" class="docstring">
+          <p>Authorizes your app with Spotify</p>
+<p>Spotify needs to verify your client id, and that your redirect uri
+matches what you set in your app settings (in the Spotify App dashboard).
+This is an external call, url provided by the <code class="inline">url</code> function.</p>
+
+        </section>
+      
 
       
         <section id="summary" class="details-list">
@@ -88,14 +96,13 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#scopes/0">scopes()</a>
-  </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="#url/0">url()</a>
   </div>
+  
+    <div class="summary-synopsis"><p>If you specified scopes in your config, uses scoped auth.
+ Otherwise, unscoped. Use this function to make the redirect to
+ Spotify for authorization</p>
+</div>
   
 </div>
 
@@ -119,21 +126,7 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="scopes/0">
-  <div class="detail-header">
-    <a href="#scopes/0" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">scopes()</span>
-    
-    
-  </div>
-  
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="url/0">
+          <div class="detail" id="url/0">
   <div class="detail-header">
     <a href="#url/0" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
@@ -144,7 +137,18 @@
   </div>
   
   <section class="docstring">
-    
+    <p> If you specified scopes in your config, uses scoped auth.
+ Otherwise, unscoped. Use this function to make the redirect to
+ Spotify for authorization.</p>
+<p> ## Example:</p>
+<pre><code class="elixir"> defmodule OAuthController do
+   # ...
+
+   def authorize do
+     redirect conn, external: Spotify.Authorization.url
+   end
+ end</code></pre>
+
   </section>
 </div>
 
