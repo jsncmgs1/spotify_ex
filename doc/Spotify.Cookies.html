@@ -70,6 +70,11 @@
       </h1>
 
       
+        <section id="moduledoc" class="docstring">
+          <p>  Convinience setters and getters for auth cookies</p>
+
+        </section>
+      
 
       
         <section id="summary" class="details-list">
@@ -91,17 +96,26 @@
     <a href="#get_access_cookie/1">get_access_cookie(conn)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Gets the access token</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#get_refresh_cookie/1">get_refresh_cookie(conn)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Gets the access token</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#set_access_cookie/2">set_access_cookie(conn, access_token)</a>
+    <a href="#set_access_cookie/2">set_access_cookie(conn, string)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Sets the access token</p>
+</div>
   
 </div>
 <div class="summary-row">
@@ -109,11 +123,17 @@
     <a href="#set_cookies/2">set_cookies(conn, map)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Sets the refresh token and access token</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#set_refresh_cookie/2">set_refresh_cookie(conn, refresh_token)</a>
+    <a href="#set_refresh_cookie/2">set_refresh_cookie(conn, string)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Sets the refresh token</p>
+</div>
   
 </div>
 
@@ -148,7 +168,8 @@
   </div>
   
   <section class="docstring">
-    
+    <p>Gets the access token</p>
+
   </section>
 </div>
 <div class="detail" id="get_refresh_cookie/1">
@@ -162,7 +183,8 @@
   </div>
   
   <section class="docstring">
-    
+    <p>Gets the access token</p>
+
   </section>
 </div>
 <div class="detail" id="set_access_cookie/2">
@@ -170,13 +192,14 @@
     <a href="#set_access_cookie/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">set_access_cookie(conn, access_token)</span>
+    <span class="signature">set_access_cookie(conn, string)</span>
     
     
   </div>
   
   <section class="docstring">
-    
+    <p>Sets the access token</p>
+
   </section>
 </div>
 <div class="detail" id="set_cookies/2">
@@ -190,7 +213,10 @@
   </div>
   
   <section class="docstring">
-    
+    <p>Sets the refresh token and access token</p>
+<p>  ##Example:</p>
+<pre><code class="iex elixir">iex&gt; Spotify.Cookies.set_cookies(conn, %{refresh_token: rt, access_token: at})</code></pre>
+
   </section>
 </div>
 <div class="detail" id="set_refresh_cookie/2">
@@ -198,13 +224,14 @@
     <a href="#set_refresh_cookie/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">set_refresh_cookie(conn, refresh_token)</span>
+    <span class="signature">set_refresh_cookie(conn, string)</span>
     
     
   </div>
   
   <section class="docstring">
-    
+    <p>Sets the refresh token</p>
+
   </section>
 </div>
 
