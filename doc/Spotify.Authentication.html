@@ -8,8 +8,6 @@
     <title>Spotify.Authentication – spotify_ex v0.0.3</title>
     <link rel="stylesheet" href="dist/app-9c1e3d5aa2.css" />
     
-      <link rel="canonical" href="https://hexdocs.pm/spotify_ex/Spotify.Authentication.html" />
-    
     <script src="dist/sidebar_items.js"></script>
   </head>
   <body data-type="modules">
@@ -102,9 +100,16 @@
     <a href="#authenticate/2">authenticate(conn, map)</a>
   </div>
   
-    <div class="summary-synopsis"><p>The authorization code must be present from spotify or an exception
-  will be raised.  The token will be refreshed if possible, otherwise
-  the app will request new access and request tokens</p>
+    <div class="summary-synopsis"><p>Authenticates the user</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#refresh/1">refresh(conn)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Attempts to refresh your access token if the connection cookie exits</p>
 </div>
   
 </div>
@@ -149,15 +154,31 @@
   </div>
   
   <section class="docstring">
-    <p>  The authorization code must be present from spotify or an exception
+    <p>  Authenticates the user</p>
+<p>  The authorization code must be present from spotify or an exception
   will be raised.  The token will be refreshed if possible, otherwise
   the app will request new access and request tokens.</p>
 <p>  ## Example: ##</p>
-<pre><code class="iex elixir">iex&gt; Spotify.authenticate(conn, %{&quot;code&quot; =&gt; code})
-iex&gt; # {:ok, &quot;your access token&quot;, conn}
+<pre><code class="elixir">Spotify.authenticate(conn, %{&quot;code&quot; =&gt; code})
+# {:ok, &quot;your access token&quot;, conn}
 
-iex&gt; Spotify.authenticate(conn, %{&quot;not_a_code&quot; =&gt; invalid})
-iex&gt; AuthenticationError, &quot;No code provided by Spotify. Authorize your app again&quot;</code></pre>
+Spotify.authenticate(conn, %{&quot;not_a_code&quot; =&gt; invalid})
+# AuthenticationError, &quot;No code provided by Spotify. Authorize your app again&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="refresh/1">
+  <div class="detail-header">
+    <a href="#refresh/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">refresh(conn)</span>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>  Attempts to refresh your access token if the connection cookie exits.</p>
 
   </section>
 </div>

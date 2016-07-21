@@ -1,6 +1,5 @@
 defmodule AuthenticationClient do
   @moduledoc false
-  import HTTPoison.Base
   import Spotify.Cookies
 
   def post(conn, params) do

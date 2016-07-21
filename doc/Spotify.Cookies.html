@@ -8,8 +8,6 @@
     <title>Spotify.Cookies – spotify_ex v0.0.3</title>
     <link rel="stylesheet" href="dist/app-9c1e3d5aa2.css" />
     
-      <link rel="canonical" href="https://hexdocs.pm/spotify_ex/Spotify.Cookies.html" />
-    
     <script src="dist/sidebar_items.js"></script>
   </head>
   <body data-type="modules">
@@ -102,6 +100,15 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#get_cookies_from_response/1">get_cookies_from_response(map)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns a map of token cookies from a parsed response body</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#get_refresh_cookie/1">get_refresh_cookie(conn)</a>
   </div>
   
@@ -123,7 +130,7 @@
     <a href="#set_cookies/2">set_cookies(conn, map)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Sets the refresh token and access token</p>
+    <div class="summary-synopsis"><p>Sets the refresh token and access token and returns the conn</p>
 </div>
   
 </div>
@@ -172,6 +179,21 @@
 
   </section>
 </div>
+<div class="detail" id="get_cookies_from_response/1">
+  <div class="detail-header">
+    <a href="#get_cookies_from_response/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_cookies_from_response(map)</span>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>  Returns a map of token cookies from a parsed response body</p>
+
+  </section>
+</div>
 <div class="detail" id="get_refresh_cookie/1">
   <div class="detail-header">
     <a href="#get_refresh_cookie/1" class="detail-link" title="Link to this function">
@@ -213,9 +235,9 @@
   </div>
   
   <section class="docstring">
-    <p>Sets the refresh token and access token</p>
+    <p>Sets the refresh token and access token and returns the conn.</p>
 <p>  ##Example:</p>
-<pre><code class="iex elixir">iex&gt; Spotify.Cookies.set_cookies(conn, %{refresh_token: rt, access_token: at})</code></pre>
+<pre><code class="elixir">Spotify.Cookies.set_cookies(conn, %{refresh_token: rt, access_token: at})</code></pre>
 
   </section>
 </div>

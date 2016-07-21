@@ -22,6 +22,8 @@ defmodule Spotify.Authentication do
   """
 
   @doc """
+    Authenticates the user
+
     The authorization code must be present from spotify or an exception
     will be raised.  The token will be refreshed if possible, otherwise
     the app will request new access and request tokens.
@@ -48,6 +50,9 @@ defmodule Spotify.Authentication do
   end
 
 
+  @doc """
+    Attempts to refresh your access token if the connection cookie exits.
+  """
   def refresh(conn) do
     if get_refresh_cookie(conn) do
       AuthenticationClient.post(conn, refresh_body_params(conn))
@@ -75,11 +80,13 @@ defmodule Spotify.Authentication do
     !!(get_refresh_cookie(conn) && get_access_cookie(conn))
   end
 
-  defp refresh_body_params(conn) do
+  @doc false
+  def refresh_body_params(conn) do
     "grant_type=refresh_token&refresh_token=#{get_refresh_cookie(conn)}"
   end
 
-  defp body_params(code) do
+  @doc false
+  def body_params(code) do
     "grant_type=authorization_code&code=#{code}&redirect_uri=#{Spotify.callback_url}"
   end
 

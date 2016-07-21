@@ -3,6 +3,10 @@ defmodule Spotify.Cookies do
     Convinience setters and getters for auth cookies
   """
 
+  @doc """
+    Returns a map of token cookies from a parsed response body
+  """
+  def get_cookies_from_response(map)
   def get_cookies_from_response(response) do
     %{ refresh_token: response["refresh_token"], access_token: response["access_token"]}
   end
