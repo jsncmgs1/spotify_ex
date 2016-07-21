@@ -27,23 +27,33 @@ defmodule Spotify.Authentication do
     the app will request new access and request tokens.
 
     ## Example: ##
-      iex> Spotify.authenticate(conn, %{"code" => code})
-      iex> # {:ok, "your access token", conn}
+      Spotify.authenticate(conn, %{"code" => code})
+      # {:ok, "your access token", conn}
 
-      iex> Spotify.authenticate(conn, %{"not_a_code" => invalid})
-      iex> AuthenticationError, "No code provided by Spotify. Authorize your app again"
+      Spotify.authenticate(conn, %{"not_a_code" => invalid})
+      # AuthenticationError, "No code provided by Spotify. Authorize your app again"
   """
   def authenticate(conn, map)
+
   def authenticate(conn, %{"code" => code}) do
     if get_refresh_cookie(conn) do
-      client.refresh(conn)
+      AuthenticationClient.post(conn, refresh_body_params(conn))
     else
-      client.authenticate(conn, code)
+      AuthenticationClient.post(conn, body_params(code))
     end
   end
 
   def authenticate(_conn, _) do
     raise AuthenticationError, "No code provided by Spotify. Authorize your app again"
+  end
+
+
+  def refresh(conn) do
+    if get_refresh_cookie(conn) do
+      AuthenticationClient.post(conn, refresh_body_params(conn))
+    else
+      :unauthorized
+    end
   end
 
   @doc """
@@ -65,12 +75,12 @@ defmodule Spotify.Authentication do
     !!(get_refresh_cookie(conn) && get_access_cookie(conn))
   end
 
-  defp client do
-    # TODO: Temp fix, setting this in dev/test config results in nil?
-    case Mix.env do
-      :dev  -> Spotify.AuthenticationClient
-      :test -> Spotify.AuthenticationClientMock
-    end
+  defp refresh_body_params(conn) do
+    "grant_type=refresh_token&refresh_token=#{get_refresh_cookie(conn)}"
+  end
+
+  defp body_params(code) do
+    "grant_type=authorization_code&code=#{code}&redirect_uri=#{Spotify.callback_url}"
   end
 
 end
