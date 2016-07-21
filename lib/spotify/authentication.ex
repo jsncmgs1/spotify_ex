@@ -28,7 +28,7 @@ defmodule Spotify.Authentication do
 
     ## Example: ##
       iex> Spotify.authenticate(conn, %{"code" => code})
-      iex> # {:ok, "access_token", conn}
+      iex> # {:ok, "your access token", conn}
 
       iex> Spotify.authenticate(conn, %{"not_a_code" => invalid})
       iex> AuthenticationError, "No code provided by Spotify. Authorize your app again"

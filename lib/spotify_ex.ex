@@ -1,4 +1,6 @@
 defmodule Spotify do
+  @moduledoc false
+
   def client_id, do: Application.get_env :spotify_ex, :client_id
   def secret_key, do: Application.get_env :spotify_ex, :secret_key
   def current_user, do: Application.get_env :spotify_ex, :user_id
@@ -15,5 +17,4 @@ defmodule Spotify do
       {"Content-Type", "application/x-www-form-urlencoded"}
     ]
   end
-
 end

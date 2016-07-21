@@ -1,6 +1,7 @@
 defmodule AuthenticationClient do
-  alias Spotify.Authentication
+  @moduledoc false
 
+  alias Spotify.Authentication
   import Spotify.Cookies
 
   @url "https://accounts.spotify.com/api/token"
