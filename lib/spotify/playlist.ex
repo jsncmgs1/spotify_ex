@@ -2,7 +2,7 @@ defmodule Spotify.Playlist do
   import Helpers, only: [query_string: 1]
 
   @moduledoc """
-    Playlist API endpoints
+    Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
 
     API calls in this module require valid Authorization headers. See the OAuth
     section for more details.
