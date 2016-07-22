@@ -3,14 +3,14 @@ defmodule Spotify.Mixfile do
 
   def project do
     [app: :spotify_ex,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.3",
      description: description,
      package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      source_url: "https://github.com/jsncmgs1/spotify_ex",
-     homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
+     homepage_url: "https://github.com/jsncmgs1/spotify_ex",
      deps: deps,
      docs: [extras: ["README.md"]]
    ]

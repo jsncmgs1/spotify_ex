@@ -15,6 +15,11 @@
           [applications: [:spotify_ex]]
         end
 
+## Coverage:
+* OAuth
+* Playlists
+
+More coming soon.
 ## Usage
 
 [OAuth](#oauth)
