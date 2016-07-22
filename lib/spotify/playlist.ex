@@ -107,9 +107,9 @@ defmodule Spotify.Playlist do
 
   **Method**: `GET`
 
-  ** Required Params: `q`
+  **Required Params:** `q`
 
-  ** Optional Params: `limit`, `offset`, `market`
+  **Optional Params:** `limit`, `offset`, `market`
 
       iex> Spotify.Playlist.search(q: "foo", limit: 5)
       "https://api.spotify.com/v1/search?type=playlist&q=foo&limit=5"
@@ -138,6 +138,7 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/get-list-users-playlists/)
 
   **Method**: `GET`
+
   ** Optional Params: `limit`, `offset`
 
       iex> Spotify.Playlist.get_users_playlists("123", limit: 5)
@@ -171,6 +172,7 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/get-playlist/)
 
   **Method**: `GET`
+
   **Optional Params `fields, market`
 
       iex> Spotify.Playlist.get_playlist("123", "456", market: "foo")
@@ -202,6 +204,7 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/get-playlists-tracks/)
 
   **Method**: `GET`
+
   **Optional Params `fields`, `market`, `limit`, `offset`
 
       iex> Spotify.Playlist.get_playlist_tracks("123", "456", limit: 5, offset: 5)
@@ -220,6 +223,7 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/create-playlist/)
 
   **Method**: `POST`
+
   **Body Params**: `name`, `public`
 
       iex> Spotify.Playlist.create_playlist("123")
@@ -234,8 +238,8 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/change-playlist-details/)
 
   **Method**: `PUT`
-  **Request Data)**: `name`, `public`
 
+  **Request Data)**: `name`, `public`
       iex> Spotify.Playlist.change_playlist("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456"
 
@@ -249,6 +253,7 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/add-tracks-to-playlist/)
 
   **Method**: `POST`
+
   **Optional Params**: `uris`, `position`
 
   You can also pass the URI param in the request body. Use `add_tracks/2`. See Spotify docs.
@@ -273,6 +278,7 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/remove-tracks-playlist/)
 
   **Method**: `DELETE`
+
   **Request Data**: `tracks`
 
       iex> Spotify.Playlist.remove_tracks("123", "456")
@@ -287,7 +293,9 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/reorder-playlists-tracks/)
 
   **Method**: `PUT`
+
   **Required Request Body Data**: `range_start`, `insert_before`
+
   **Optional Request Body Data**: `range_length`, `snapshot_id`
 
       iex> Spotify.Playlist.reorder_tracks("123", "456")
@@ -305,6 +313,7 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/replace-playlists-tracks/)
 
   **Method**: `PUT`
+
   **Optional Query Params**: `uris`
 
   You can also pass the URI param in the request body. Use `replace_tracks/2`. See Spotify docs.
@@ -331,6 +340,7 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/check-user-following-playlist/)
 
   **Method**: `GET`
+
   **Query Params: `ids`
 
       iex> Spotify.Playlist.check_followers("123", "456", ids: "foo,bar")
