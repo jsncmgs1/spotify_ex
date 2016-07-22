@@ -10,19 +10,6 @@ defmodule Spotify.Playlist do
     https://developer.spotify.com/web-api/playlist-endpoints/
   """
 
-  @featured_url "https://api.spotify.com/v1/browse/featured-playlists"
-
-  @doc"""
-  Get a list of featured playlists.
-  [Spotify Documenation](https://developer.spotify.com/web-api/get-list-featured-playlists/)
-
-  **Method**: `GET`
-
-      iex> Spotify.Playlist.featured
-      "https://api.spotify.com/v1/browse/featured-playlists"
-  """
-  def featured, do: @featured_url
-
   @doc"""
   Get a list of featured playlists.
   [Spotify Documenation](https://developer.spotify.com/web-api/get-list-featured-playlists/)
@@ -31,21 +18,15 @@ defmodule Spotify.Playlist do
 
   **Method**: `GET`
 
+      iex> Spotify.Playlist.featured
+      "https://api.spotify.com/v1/browse/featured-playlists"
+
       iex> Spotify.Playlist.featured(country: "US")
       "https://api.spotify.com/v1/browse/featured-playlists?country=US"
   """
-  def featured(params) when is_list(params) or is_map(params) do
-    @featured_url <> query_string(params)
+  def featured(params \\ [])  do
+    "https://api.spotify.com/v1/browse/featured-playlists" <> query_string(params)
   end
-
-  @doc"""
-  Get a category's playlists.
-  [Spotify Documentation](https://developer.spotify.com/web-api/get-categorys-playlists/)
-
-      iex> Spotify.Playlist.by_category("123")
-      "https://api.spotify.com/v1/browse/categories/123/playlists"
-  """
-  def by_category(id), do: category_url(id)
 
   @doc"""
   Get a category's playlists.
@@ -56,16 +37,14 @@ defmodule Spotify.Playlist do
   **Method**: `GET`
 
   ## Example:
+      iex> Spotify.Playlist.by_category("123")
+      "https://api.spotify.com/v1/browse/categories/123/playlists"
+
       iex> Spotify.Playlist.by_category("123", [country: "US", limit: 5])
       "https://api.spotify.com/v1/browse/categories/123/playlists?country=US&limit=5"
   """
-  def by_category(id, params) when is_list(params) or is_map(params) do
-    by_category(id) <> query_string(params)
-  end
-
-  @doc false
-  def category_url(id) do
-    "https://api.spotify.com/v1/browse/categories/#{id}/playlists"
+  def by_category(id, params \\ []) do
+    "https://api.spotify.com/v1/browse/categories/#{id}/playlists" <> query_string(params)
   end
 
   @doc """
@@ -126,26 +105,16 @@ defmodule Spotify.Playlist do
 
   **Method**: `GET`
 
+  ** Optional Params: `limit`, `offset`
+
       iex> Spotify.Playlist.get_users_playlists("123")
       "https://api.spotify.com/v1/users/123/playlists"
-  """
-  def get_users_playlists(user_id) do
-    get_users_playlist_url(user_id)
-  end
-
-  @doc """
-  Get a list of the playlists owned or followed by a Spotify user.
-  [Spotify Documentation](https://developer.spotify.com/web-api/get-list-users-playlists/)
-
-  **Method**: `GET`
-
-  ** Optional Params: `limit`, `offset`
 
       iex> Spotify.Playlist.get_users_playlists("123", limit: 5)
       "https://api.spotify.com/v1/users/123/playlists?limit=5"
   """
 
-  def get_users_playlists(user_id, params) do
+  def get_users_playlists(user_id, params \\ []) do
     get_users_playlist_url(user_id) <> query_string(params)
   end
 
@@ -159,26 +128,15 @@ defmodule Spotify.Playlist do
 
   **Method**: `GET`
 
+  **Optional Params `fields, market`
+
       iex> Spotify.Playlist.get_playlist("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456"
-
-  """
-  def get_playlist(user_id, playlist_id) do
-    get_playlist_url(user_id, playlist_id)
-  end
-
-  @doc """
-  Get a playlist owned by a Spotify user.
-  [Spotify Documentation](https://developer.spotify.com/web-api/get-playlist/)
-
-  **Method**: `GET`
-
-  **Optional Params `fields, market`
 
       iex> Spotify.Playlist.get_playlist("123", "456", market: "foo")
       "https://api.spotify.com/v1/users/123/playlists/456?market=foo"
   """
-  def get_playlist(user_id, playlist_id, params) do
+  def get_playlist(user_id, playlist_id, params \\ []) do
     get_playlist_url(user_id, playlist_id) <> query_string(params)
   end
 
@@ -192,25 +150,15 @@ defmodule Spotify.Playlist do
 
   **Method**: `GET`
 
+  **Optional Params `fields`, `market`, `limit`, `offset`
+
       iex> Spotify.Playlist.get_playlist_tracks("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks"
-  """
-  def get_playlist_tracks(user_id, playlist_id) do
-    playlist_tracks_url(user_id, playlist_id)
-  end
-
-  @doc """
-  Get full details of the tracks of a playlist owned by a Spotify user.
-  [Spotify Documentation](https://developer.spotify.com/web-api/get-playlists-tracks/)
-
-  **Method**: `GET`
-
-  **Optional Params `fields`, `market`, `limit`, `offset`
 
       iex> Spotify.Playlist.get_playlist_tracks("123", "456", limit: 5, offset: 5)
       "https://api.spotify.com/v1/users/123/playlists/456/tracks?limit=5&offset=5"
   """
-  def get_playlist_tracks(user_id, playlist_id, params) do
+  def get_playlist_tracks(user_id, playlist_id, params \\ []) do
     playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
 
@@ -260,17 +208,13 @@ defmodule Spotify.Playlist do
 
       iex> Spotify.Playlist.add_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh"
-  """
-  def add_tracks(user_id, playlist_id, params) do
-    playlist_tracks_url(user_id, playlist_id) <> query_string(params)
-  end
 
-  @doc """
-  Add one or more tracks to a user’s playlist.
-  [Spotify Documentation](https://developer.spotify.com/web-api/add-tracks-to-playlist/)
+      iex> Spotify.Playlist.add_tracks("123", "456") # Must send request data using this function
+      "https://api.spotify.com/v1/users/123/playlists/456/tracks"
+
   """
-  def add_tracks(user_id, playlist_id) do
-    playlist_tracks_url(user_id, playlist_id)
+  def add_tracks(user_id, playlist_id, params \\ []) do
+    playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
 
   @doc """
@@ -317,22 +261,14 @@ defmodule Spotify.Playlist do
   **Optional Query Params**: `uris`
 
   You can also pass the URI param in the request body. Use `replace_tracks/2`. See Spotify docs.
+      iex> Spotify.Playlist.replace_tracks("123", "456")
+      "https://api.spotify.com/v1/users/123/playlists/456/tracks" # Must send request data
 
       iex> Spotify.Playlist.replace_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:adkjaklsd94h")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh%2Cspotify%3Atrack%3Aadkjaklsd94h"
   """
-  def replace_tracks(user_id, playlist_id, params) do
+  def replace_tracks(user_id, playlist_id, params \\ []) do
     playlist_tracks_url(user_id, playlist_id) <> query_string(params)
-  end
-
-  @doc """
-  Replace all the tracks in a playlist, overwriting its existing tracks. This
-  powerful request can be useful for replacing tracks, re-ordering existing
-  tracks, or clearing the playlist.
-  [Spotify Documentation](https://developer.spotify.com/web-api/replace-playlists-tracks/)
-  """
-  def replace_tracks(user_id, playlist_id) do
-    playlist_tracks_url(user_id, playlist_id)
   end
 
   @doc """
