@@ -106,6 +106,35 @@ defmodule Spotify.Playlist do
     "https://api.spotify.com/v1/search?type=playlist&" <> URI.encode_query(params)
   end
 
+  @doc """
+  [Spotify Documentation](https://developer.spotify.com/web-api/get-list-users-playlists/)
+
+  **Method**: `GET`
+
+      iex> Spotify.Playlist.get_users_playlists("123")
+      "https://api.spotify.com/v1/users/123/playlists"
+  """
+  def get_users_playlists(user_id) do
+    get_users_playlist_url(user_id)
+  end
+
+  @doc """
+  [Spotify Documentation](https://developer.spotify.com/web-api/get-list-users-playlists/)
+
+  **Method**: `GET`
+  ** Optional Params: `limit`, `offset`
+
+      iex> Spotify.Playlist.get_users_playlists("123", limit: 5)
+      "https://api.spotify.com/v1/users/123/playlists?limit=5"
+  """
+  def get_users_playlists(user_id, params) do
+    get_users_playlist_url(user_id) <> query_string(params)
+  end
+
+  defp get_users_playlist_url(user_id) do
+    "https://api.spotify.com/v1/users/#{user_id}/playlists"
+  end
+
   defp query_string(params) do
     "?" <> URI.encode_query(params)
   end
