@@ -1,5 +1,5 @@
 # Spotify
-**Elixir O-Auth for the Spotify Web API**
+**Elixir Wrapper for the Spotify Web API**
 
 ## Installation
 
@@ -17,6 +17,10 @@
 
 ## Usage
 
+[OAuth](#oauth)
+
+<a name='oauth'><a>
+### OAuth
 The Spotify API follows the O Auth 2 spec, providing 3 potential authentication flows:
 
 - [Authorization Code flow](https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow)
@@ -173,4 +177,6 @@ defmodule Spotify.Playlist do
   end
 end
 ```
-**TODO:** Client credentials flow and Implicit grant flow examples. The good news is they are much simpler than the Authorization flows.
+**TODO:** Client credentials flow and Implicit grant flow examples. The good
+news is they are much simpler than the Authorization flows. The better news is
+they're already possible with provided given above.
