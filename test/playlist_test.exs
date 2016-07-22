@@ -1,7 +1,6 @@
 defmodule PlaylistTest do
   use ExUnit.Case
   alias Spotify.Playlist, as: Playlist
-  doctest Playlist
 
   describe "featured" do
     test "featured/0 returns the playlist url" do
