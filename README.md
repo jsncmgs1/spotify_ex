@@ -22,6 +22,9 @@
 More coming soon.
 ## Usage
 
+This README will go into some detail about the OAuth process. Consult the
+[docs](https://hexdocs.pm/spotify_ex/0.1.1/api-reference.html) for other parts of the API.
+
 [OAuth](#oauth)
 
 <a name='oauth'><a>
