@@ -3,7 +3,7 @@ defmodule Spotify.Mixfile do
 
   def project do
     [app: :spotify_ex,
-     version: "0.0.3",
+     version: "0.1.0",
      elixir: "~> 1.3",
      description: description,
      package: package,
@@ -22,7 +22,7 @@ defmodule Spotify.Mixfile do
   end
   defp description do
     """
-    An Elixir wrapper for Spotify API O-Auth.
+    An Elixir wrapper for Spotify API.
     """
   end
 
