@@ -294,4 +294,40 @@ defmodule Spotify.Playlist do
     playlist_tracks_url(user_id, playlist_id)
   end
 
+  @doc """
+  Replace all the tracks in a playlist, overwriting its existing tracks. This
+  powerful request can be useful for replacing tracks, re-ordering existing
+  tracks, or clearing the playlist.
+  [Spotify Documentation](https://developer.spotify.com/web-api/replace-playlists-tracks/)
+
+  **Method**: `PUT`
+  **Optional Query Params**: `uris`
+
+  You can also pass the URI param in the request body. Use `replace_tracks/2`. See Spotify docs.
+
+      iex> Spotify.Playlist.replace_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:adkjaklsd94h")
+      "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh%2Cspotify%3Atrack%3Aadkjaklsd94h"
+  """
+  def replace_tracks(user_id, playlist_id, params) do
+    playlist_tracks_url(user_id, playlist_id) <> query_string(params)
+  end
+
+  def replace_tracks(user_id, playlist_id) do
+    playlist_tracks_url(user_id, playlist_id)
+  end
+
+  @doc """
+  [Spotify Documentation](https://developer.spotify.com/web-api/check-user-following-playlist/)
+
+  **Method**: `GET`
+  **Query Params: `ids`
+
+      iex> Spotify.Playlist.check_followers("123", "456", ids: "foo,bar")
+      "https://api.spotify.com/v1/users/123/playlists/456/followers/contains?ids=foo%2Cbar"
+  """
+  def check_followers(owner_id, playlist_id, params) do
+    "https://api.spotify.com/v1/users/#{owner_id}/playlists/#{playlist_id}/followers/contains"
+    <> query_string(params)
+  end
+
 end

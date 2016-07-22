@@ -110,18 +110,30 @@ defmodule PlaylistTest do
   end
 
   test "add_tracks/3" do
-    actual = Spotify.Playlist.add_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
+    actual = Playlist.add_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
     expected = "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh"
     assert actual == expected
   end
 
   test "remove_tracks/2" do
     expected = "https://api.spotify.com/v1/users/123/playlists/456/tracks"
-    assert Spotify.Playlist.remove_tracks("123", "456") == expected
+    assert Playlist.remove_tracks("123", "456") == expected
   end
 
   test "reorder_tracks/2" do
     expected = "https://api.spotify.com/v1/users/123/playlists/456/tracks"
-    assert Spotify.Playlist.remove_tracks("123", "456") == expected
+    assert Playlist.remove_tracks("123", "456") == expected
+  end
+
+  test "replace_tracks/3" do
+    actual = "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh%2Cspotify%3Atrack%3Aadkjaklsd94h"
+    expected = Spotify.Playlist.replace_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:adkjaklsd94h")
+    assert actual == expected
+  end
+
+  test "check_followers/3" do
+    actual = "https://api.spotify.com/v1/users/123/playlists/456/followers/contains?ids=foo%2Cbar"
+    expected = Playlist.check_followers("123", "456", ids: "foo,bar")
+    assert actual = expected
   end
 end
