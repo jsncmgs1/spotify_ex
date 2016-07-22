@@ -98,7 +98,7 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#by_category/1">by_category(string)</a>
+    <a href="#by_category/1">by_category(id)</a>
   </div>
   
     <div class="summary-synopsis"><p>Get a category’s playlists.
@@ -108,7 +108,7 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#by_category/2">by_category(string, enum)</a>
+    <a href="#by_category/2">by_category(id, params)</a>
   </div>
   
     <div class="summary-synopsis"><p>Get a category’s playlists with additional parameters.
@@ -121,14 +121,87 @@
     <a href="#featured/0">featured()</a>
   </div>
   
+    <div class="summary-synopsis"><p>Get a list of featured playlists.
+<a href="https://developer.spotify.com/web-api/get-list-featured-playlists/">Spotify Documenation</a></p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#featured/1">featured(enum)</a>
+    <a href="#featured/1">featured(params)</a>
   </div>
   
     <div class="summary-synopsis"><p>Get a list of featured playlists.
 <a href="https://developer.spotify.com/web-api/get-list-featured-playlists/">Spotify Documenation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#follow_playlist/2">follow_playlist(owner_id, playlist_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Add the current user as a follower of a playlist.
+<a href="https://developer.spotify.com/web-api/follow-playlist/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_playlist/2">get_playlist(user_id, playlist_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Get a playlist owned by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-playlist/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_playlist/3">get_playlist(user_id, playlist_id, params)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Get a playlist owned by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-playlist/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_users_playlists/1">get_users_playlists(user_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Get a list of the playlists owned or followed by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-list-users-playlists/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_users_playlists/2">get_users_playlists(user_id, params)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Get a list of the playlists owned or followed by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-list-users-playlists/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#search/1">search(params)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p><a href="https://developer.spotify.com/web-api/search-item/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#unfollow_playlist/2">unfollow_playlist(owner_id, playlist_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Remove the current user as a follower of a playlist.
+<a href="https://developer.spotify.com/web-api/unfollow-playlist/">Spotify Documentation</a></p>
 </div>
   
 </div>
@@ -158,9 +231,9 @@
     <a href="#by_category/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">by_category(string)</span>
+    <span class="signature">by_category(id)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L32" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L46" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -170,8 +243,7 @@
   <section class="docstring">
     <p>Get a category’s playlists.
 <a href="https://developer.spotify.com/web-api/get-categorys-playlists/">Spotify Documentation</a></p>
-<h2>Example:</h2>
-<pre><code class="iex elixir">iex&gt; Spotify.Playlist.by_category(123)
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.by_category(&quot;123&quot;)
 &quot;https://api.spotify.com/v1/browse/categories/123/playlists&quot;</code></pre>
 
   </section>
@@ -181,9 +253,9 @@
     <a href="#by_category/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">by_category(string, enum)</span>
+    <span class="signature">by_category(id, params)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L54" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L60" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -194,8 +266,9 @@
     <p>Get a category’s playlists with additional parameters.
 <a href="https://developer.spotify.com/web-api/get-categorys-playlists/">Spotify Documentation</a></p>
 <p><strong>Valid params</strong>: <code class="inline">country</code>, <code class="inline">limit</code>, <code class="inline">offset</code></p>
+<p><strong>Method</strong>: <code class="inline">GET</code></p>
 <h2>Example:</h2>
-<pre><code class="iex elixir">iex&gt; Spotify.Playlist.by_category(123, [country: &quot;US&quot;, limit: 5])
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.by_category(&quot;123&quot;, [country: &quot;US&quot;, limit: 5])
 &quot;https://api.spotify.com/v1/browse/categories/123/playlists?country=US&amp;limit=5&quot;</code></pre>
 
   </section>
@@ -207,7 +280,7 @@
     </a>
     <span class="signature">featured()</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L27" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L22" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -215,7 +288,12 @@
   </div>
   
   <section class="docstring">
-    
+    <p>Get a list of featured playlists.
+<a href="https://developer.spotify.com/web-api/get-list-featured-playlists/">Spotify Documenation</a></p>
+<p><strong>Method</strong>: <code class="inline">GET</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.featured
+&quot;https://api.spotify.com/v1/browse/featured-playlists&quot;</code></pre>
+
   </section>
 </div>
 <div class="detail" id="featured/1">
@@ -223,9 +301,9 @@
     <a href="#featured/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">featured(enum)</span>
+    <span class="signature">featured(params)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L26" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L35" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -236,12 +314,174 @@
     <p>Get a list of featured playlists.
 <a href="https://developer.spotify.com/web-api/get-list-featured-playlists/">Spotify Documenation</a></p>
 <p><strong>Valid params</strong>: <code class="inline">locale</code>, <code class="inline">country</code>, <code class="inline">timestamp</code>, <code class="inline">limit</code>, <code class="inline">offset</code></p>
-<h2>Example:</h2>
-<pre><code class="iex elixir">iex&gt; Spotify.Playlist.featured([limit: 5, country: &quot;US&quot;])
-&quot;https://api.spotify.com/v1/browse/featured-playlists?limit=5&amp;country=US&quot;
+<p><strong>Method</strong>: <code class="inline">GET</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.featured(country: &quot;US&quot;)
+&quot;https://api.spotify.com/v1/browse/featured-playlists?country=US&quot;</code></pre>
 
-iex&gt; Spotify.Playlist.featured
-&quot;https://api.spotify.com/v1/browse/featured-playlists&quot;</code></pre>
+  </section>
+</div>
+<div class="detail" id="follow_playlist/2">
+  <div class="detail-header">
+    <a href="#follow_playlist/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">follow_playlist(owner_id, playlist_id)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L80" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Add the current user as a follower of a playlist.
+<a href="https://developer.spotify.com/web-api/follow-playlist/">Spotify Documentation</a></p>
+<p><strong>Optional Body Params</strong>: <code class="inline">public</code></p>
+<p><strong>Method</strong>: <code class="inline">PUT</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.follow_playlist(&quot;123&quot;, &quot;456&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456/followers&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="get_playlist/2">
+  <div class="detail-header">
+    <a href="#get_playlist/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_playlist(user_id, playlist_id)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L162" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Get a playlist owned by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-playlist/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">GET</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.get_playlist(&quot;123&quot;, &quot;456&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="get_playlist/3">
+  <div class="detail-header">
+    <a href="#get_playlist/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_playlist(user_id, playlist_id, params)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L176" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Get a playlist owned by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-playlist/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">GET</code>
+** Optional Params <code class="inline">fields, market</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.get_playlist(&quot;123&quot;, &quot;456&quot;, market: &quot;foo&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456?market=foo&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="get_users_playlists/1">
+  <div class="detail-header">
+    <a href="#get_users_playlists/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_users_playlists(user_id)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L129" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Get a list of the playlists owned or followed by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-list-users-playlists/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">GET</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.get_users_playlists(&quot;123&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="get_users_playlists/2">
+  <div class="detail-header">
+    <a href="#get_users_playlists/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_users_playlists(user_id, params)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L144" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Get a list of the playlists owned or followed by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-list-users-playlists/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">GET</code>
+** Optional Params: <code class="inline">limit</code>, <code class="inline">offset</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.get_users_playlists(&quot;123&quot;, limit: 5)
+&quot;https://api.spotify.com/v1/users/123/playlists?limit=5&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="search/1">
+  <div class="detail-header">
+    <a href="#search/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">search(params)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L116" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p><a href="https://developer.spotify.com/web-api/search-item/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">GET</code></p>
+<p>** Required Params: <code class="inline">q</code></p>
+<p>** Optional Params: <code class="inline">limit</code>, <code class="inline">offset</code>, <code class="inline">market</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.search(q: &quot;foo&quot;, limit: 5)
+&quot;https://api.spotify.com/v1/search?type=playlist&amp;q=foo&amp;limit=5&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="unfollow_playlist/2">
+  <div class="detail-header">
+    <a href="#unfollow_playlist/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">unfollow_playlist(owner_id, playlist_id)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L93" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Remove the current user as a follower of a playlist.
+<a href="https://developer.spotify.com/web-api/unfollow-playlist/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">DELETE</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.follow_playlist(&quot;123&quot;, &quot;456&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456/followers&quot;</code></pre>
 
   </section>
 </div>

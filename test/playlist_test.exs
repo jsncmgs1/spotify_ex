@@ -67,12 +67,24 @@ defmodule PlaylistTest do
   describe "get_users_playlist" do
     test "get_users_playlists/1" do
       expected = "https://api.spotify.com/v1/users/123/playlists"
-      assert Spotify.Playlist.get_users_playlists("123") == expected
+      assert Playlist.get_users_playlists("123") == expected
     end
 
     test "get_users_playlist/2" do
       expected = "https://api.spotify.com/v1/users/123/playlists?limit=5"
-      assert Spotify.Playlist.get_users_playlists("123", limit: 5) == expected
+      assert Playlist.get_users_playlists("123", limit: 5) == expected
+    end
+  end
+
+  describe "get_playlist" do
+    test "get_playlist/2" do
+      expected = "https://api.spotify.com/v1/users/123/playlists/456"
+      assert Playlist.get_playlist("123", "456") == expected
+    end
+
+    test "get_playlist/3" do
+      expected = "https://api.spotify.com/v1/users/123/playlists/456?market=foo"
+      assert Playlist.get_playlist("123", "456", market: "foo") == expected
     end
   end
 end
