@@ -11,7 +11,7 @@ defmodule Spotify do
 
   def encoded_credentials, do: :base64.encode("#{client_id}:#{secret_key}")
 
-  def headers do
+  def auth_headers do
     [
       {"Authorization", "Basic #{encoded_credentials}"},
       {"Content-Type", "application/x-www-form-urlencoded"}

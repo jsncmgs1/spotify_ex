@@ -49,4 +49,14 @@ defmodule PlaylistTest do
     end
   end
 
+  test "follow_playlist/2" do
+    expected = "https://api.spotify.com/v1/users/123/playlists/456/followers"
+    assert Playlist.follow_playlist("123", "456")
+  end
+
+  test "unfollow_playlist/2" do
+    expected = "https://api.spotify.com/v1/users/123/playlists/456/followers"
+    assert Playlist.follow_playlist("123", "456")
+  end
+
 end

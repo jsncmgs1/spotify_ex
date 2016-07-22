@@ -15,10 +15,7 @@ defmodule Spotify.Playlist do
   [Spotify Documenation](https://developer.spotify.com/web-api/get-list-featured-playlists/)
 
   **Valid params**: `locale`, `country`, `timestamp`, `limit`, `offset`
-
-  ## Example:
-      iex> Spotify.Playlist.featured([limit: 5, country: "US"])
-      "https://api.spotify.com/v1/browse/featured-playlists?limit=5&country=US"
+  **Method**: `GET`
 
       iex> Spotify.Playlist.featured
       "https://api.spotify.com/v1/browse/featured-playlists"
@@ -35,8 +32,7 @@ defmodule Spotify.Playlist do
   Get a category's playlists.
   [Spotify Documentation](https://developer.spotify.com/web-api/get-categorys-playlists/)
 
-  ## Example:
-      iex> Spotify.Playlist.by_category(123)
+      iex> Spotify.Playlist.by_category("123")
       "https://api.spotify.com/v1/browse/categories/123/playlists"
   """
   def by_category(id), do: category_url(id)
@@ -46,9 +42,10 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/get-categorys-playlists/)
 
   **Valid params**: `country`, `limit`, `offset`
+  **Method**: `GET`
 
   ## Example:
-      iex> Spotify.Playlist.by_category(123, [country: "US", limit: 5])
+      iex> Spotify.Playlist.by_category("123", [country: "US", limit: 5])
       "https://api.spotify.com/v1/browse/categories/123/playlists?country=US&limit=5"
   """
   def by_category(string, enum)
@@ -56,8 +53,41 @@ defmodule Spotify.Playlist do
     by_category(id) <> query_string(params)
   end
 
-  defp category_url(id) do
+  @doc false
+  def category_url(id) do
     "https://api.spotify.com/v1/browse/categories/#{to_string(id)}/playlists"
+  end
+
+  @doc """
+  Add the current user as a follower of a playlist.
+  [Spotify Documentation](https://developer.spotify.com/web-api/follow-playlist/)
+
+  **Optional Body Params**: `public`
+  **Method**: `PUT`
+
+      iex> Spotify.Playlist.follow_playlist("123", "456")
+      "https://api.spotify.com/v1/users/123/playlists/456/followers"
+  """
+  def follow_playlist(owner_id, playlist_id) do
+    follow_playlist_url(owner_id, playlist_id)
+  end
+
+  @doc """
+  Remove the current user as a follower of a playlist.
+  [Spotify Documentation](https://developer.spotify.com/web-api/follow-playlist/)
+
+  **Method**: `DELETE`
+
+      iex> Spotify.Playlist.follow_playlist("123", "456")
+      "https://api.spotify.com/v1/users/123/playlists/456/followers"
+  """
+  def unfollow_playlist(owner_id, playlist_id) do
+    follow_playlist_url(owner_id, playlist_id)
+  end
+
+  @doc false
+  defp follow_playlist_url(owner_id, playlist_id) do
+    "https://api.spotify.com/v1/users/#{owner_id}/playlists/#{playlist_id}/followers"
   end
 
   defp query_string(params) do
