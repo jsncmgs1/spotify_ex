@@ -9,7 +9,11 @@ defmodule Spotify.Mixfile do
      package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps]
+     source_url: "https://github.com/jsncmgs1/spotify_ex",
+     homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
+     deps: deps,
+     docs: [extras: ["README.md"]]
+   ]
   end
 
   defp package do
