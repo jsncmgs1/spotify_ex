@@ -1,8 +1,10 @@
-defmodule AuthStub do
+defmodule OathAuthorizationFlow do
+  use ExUnit.Case
+  import Mock
+  use Plug.Test
+  alias Spotify.{Authentication}
+  doctest Spotify.Authentication
 
-  @doc """
-  AuthRequest only exists so we can mock the call to Spotify with the client mock
-  """
   defmacro with_auth_mock(block) do
     quote do
       with_mock AuthRequest, [post: fn(params) -> AuthenticationClientMock.post(params) end] do
@@ -10,15 +12,6 @@ defmodule AuthStub do
       end
     end
   end
-end
-
-defmodule OathAuthorizationFlow do
-  use ExUnit.Case
-  import Mock
-  import AuthStub
-  use Plug.Test
-  alias Spotify.{Authentication}
-  doctest Spotify.Authentication
 
   describe "authentication" do
     test "a successful attemp sets the cookies" do
