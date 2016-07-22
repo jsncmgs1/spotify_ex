@@ -74,7 +74,7 @@ defmodule Spotify.Playlist do
 
   @doc """
   Remove the current user as a follower of a playlist.
-  [Spotify Documentation](https://developer.spotify.com/web-api/follow-playlist/)
+  [Spotify Documentation](https://developer.spotify.com/web-api/unfollow-playlist/)
 
   **Method**: `DELETE`
 
@@ -88,6 +88,22 @@ defmodule Spotify.Playlist do
   @doc false
   defp follow_playlist_url(owner_id, playlist_id) do
     "https://api.spotify.com/v1/users/#{owner_id}/playlists/#{playlist_id}/followers"
+  end
+
+  @doc """
+  [Spotify Documentation](https://developer.spotify.com/web-api/search-item/)
+
+  **Method**: `GET`
+  ** Required Params: `q`
+  ** Optional Params: `limit`, `offset`, `market`
+
+      iex> Spotify.Playlist.search(q: "foo", limit: 5)
+      "https://api.spotify.com/v1/search?type=playlist&q=foo&limit=5"
+
+  """
+  def search(enum)
+  def search(params)  do
+    "https://api.spotify.com/v1/search?type=playlist&" <> URI.encode_query(params)
   end
 
   defp query_string(params) do

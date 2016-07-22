@@ -59,4 +59,9 @@ defmodule PlaylistTest do
     assert Playlist.follow_playlist("123", "456")
   end
 
+  test "search/1" do
+    expected = "https://api.spotify.com/v1/search?type=playlist&q=foo&limit=5"
+    assert Playlist.search(q: "foo", limit: 5)
+  end
+
 end
