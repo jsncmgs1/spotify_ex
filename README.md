@@ -68,7 +68,7 @@ defmodule SpotifyExTest.AuthorizationController do
   use SpotifyExTest.Web, :controller
 
   def authorize(conn, _params) do
-    redirect conn, external: Spotify.Authorization.call
+    redirect conn, external: Spotify.Authorization.url
   end
 end
 ```
@@ -102,7 +102,7 @@ config :spotify_ex, callback_url: "http://localhost:4000/authenticate"
 Authenticate like this:
 
 ```elixir
-Spotify.Authentication.call(conn, params)
+Spotify.Authentication.authenticate(conn, params)
 ```
 
 Spotify.Authentication.call will look for params["code"]; the code sent back by Spotify after authorization request. If successful, the user will be redirected to the URL set in the ```spotify.exs``` file, where you can handle different responses.
@@ -112,70 +112,20 @@ defmodule SpotifyExTest.AuthenticationController do
   use SpotifyExTest.Web, :controller
 
   def authenticate(conn, params) do
-    case Spotify.Authentication.call(conn, params) do
-      { 200, conn, %{"access_token" => token} } ->
-        # do stuff with token if you wish
+    case Spotify.Authentication.authenticate(conn, params) do
+      {:ok, conn } ->
+        # do stuff
         redirect conn, to: "/whereever-you-want-to-go"
-      { 404, _ } -> redirect conn, to: "/error"
-      { 500, _ }-> redirect conn, to: "/error"
+      { :error, reason, conn }-> redirect conn, to: "/error"
     end
   end
 end
 ```
 
-The authentication module will set refresh and access tokens in a cookie. The access token expires every hour, and you'll need to check your reponses for 401 errors. Call Spotify.Authentication.refresh, if there is a refresh token present.  If not, you'll need to redirect back to Authorization:
+The authentication module will set refresh and access tokens in a cookie. The access token expires every hour, and you'll need to check your reponses for 401 errors. Call Spotify.Authentication.refresh, if there is a refresh token present.  If not, you'll need to redirect back to authorization.
 
 ** Phoenix example (Example app found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)) **
 
-```elixir
-defmodule SpotifyExTest.PlaylistController do
-  use SpotifyExTest.Web, :controller
-  plug :check_tokens
-
-  def index(conn, _params) do
-    case Spotify.Playlist.current_user_playlists(conn) do
-      :authorize -> redirect conn, external: Spotify.Authorization.call
-      { 200, playlists } ->
-        render conn, "index.html", playlists: playlists
-    end
-  end
-
-  defp check_tokens(conn, _params) do
-    unless Spotify.Authentication.tokens_present?(conn) do
-      redirect conn, external: Spotify.Authorization.call
-    end
-    conn
-  end
-end
-
-defmodule Spotify.Playlist do
-  def current_user_playlists(conn) do
-    case HTTPoison.get("https://api.spotify.com/v1/users/#{Spotify.current_user}/playlists", headers(conn)) do
-        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-          {:ok, %{ "items" => items }} = Poison.decode(body)
-          {200, items}
-        {:ok, %HTTPoison.Response{status_code: 404}} ->
-          { 404, "Not found :(" }
-        {:ok, %HTTPoison.Response{status_code: 401, body: _body}} ->
-          if Spotify.Authentication.get_refresh_token do
-            { 200, conn, %{ "access_token" => access_token }} = Spotify.Authentication.refresh(conn)
-            conn = Spotify.Authentication.set_access_cookie(conn, access_token)
-            current_user_playlists(conn)
-          else
-            :authorize
-          end
-        {:error, %HTTPoison.Error{reason: reason}} ->
-          { 500, reason }
-    end
-  end
-
-  def headers(conn) do
-    [
-      {"Authorization", "Bearer #{Spotify.Authentication.get_access_cookie(conn)}"},
-      {"Content-Type", "application/x-www-form-urlencoded"}
-    ]
-  end
-end
 ```
 **TODO:** Client credentials flow and Implicit grant flow examples. The good
 news is they are much simpler than the Authorization flows. The better news is
