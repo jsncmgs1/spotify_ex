@@ -1,5 +1,6 @@
 defmodule Spotify.Playlist do
   import Helpers, only: [query_string: 1]
+
   @moduledoc """
     Playlist API endpoints
 
@@ -64,7 +65,7 @@ defmodule Spotify.Playlist do
 
   @doc false
   def category_url(id) do
-    "https://api.spotify.com/v1/browse/categories/#{to_string(id)}/playlists"
+    "https://api.spotify.com/v1/browse/categories/#{id}/playlists"
   end
 
   @doc """
@@ -97,7 +98,7 @@ defmodule Spotify.Playlist do
 
   @doc false
   defp follow_playlist_url(owner_id, playlist_id) do
-    "https://api.spotify.com/v1/users/#{owner_id}/playlists/#{playlist_id}/followers"
+    get_playlist_url(owner_id, playlist_id) <>"/followers"
   end
 
   @doc """
@@ -170,7 +171,7 @@ defmodule Spotify.Playlist do
   [Spotify Documentation](https://developer.spotify.com/web-api/get-playlist/)
 
   **Method**: `GET`
-  ** Optional Params `fields, market`
+  **Optional Params `fields, market`
 
       iex> Spotify.Playlist.get_playlist("123", "456", market: "foo")
       "https://api.spotify.com/v1/users/123/playlists/456?market=foo"
@@ -183,5 +184,114 @@ defmodule Spotify.Playlist do
     "https://api.spotify.com/v1/users/#{user_id}/playlists/#{playlist_id}"
   end
 
+  @doc """
+  Get full details of the tracks of a playlist owned by a Spotify user.
+  [Spotify Documentation](https://developer.spotify.com/web-api/get-playlists-tracks/)
+
+  **Method**: `GET`
+
+      iex> Spotify.Playlist.get_playlist_tracks("123", "456")
+      "https://api.spotify.com/v1/users/123/playlists/456/tracks"
+  """
+  def get_playlist_tracks(user_id, playlist_id) do
+    playlist_tracks_url(user_id, playlist_id)
+  end
+
+  @doc """
+  Get full details of the tracks of a playlist owned by a Spotify user.
+  [Spotify Documentation](https://developer.spotify.com/web-api/get-playlists-tracks/)
+
+  **Method**: `GET`
+  **Optional Params `fields`, `market`, `limit`, `offset`
+
+      iex> Spotify.Playlist.get_playlist_tracks("123", "456", limit: 5, offset: 5)
+      "https://api.spotify.com/v1/users/123/playlists/456/tracks?limit=5&offset=5"
+  """
+  def get_playlist_tracks(user_id, playlist_id, params) do
+    playlist_tracks_url(user_id, playlist_id) <> query_string(params)
+  end
+
+  defp playlist_tracks_url(user_id, playlist_id) do
+    get_playlist_url(user_id, playlist_id) <> "/tracks"
+  end
+
+  @doc """
+  Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+  [Spotify Documentation](https://developer.spotify.com/web-api/create-playlist/)
+
+  **Method**: `POST`
+  **Body Params**: `name`, `public`
+
+      iex> Spotify.Playlist.create_playlist("123")
+      "https://api.spotify.com/v1/users/123/playlists"
+  """
+  def create_playlist(user_id) do
+    "https://api.spotify.com/v1/users/#{user_id}/playlists"
+  end
+
+  @doc """
+  Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
+  [Spotify Documentation](https://developer.spotify.com/web-api/change-playlist-details/)
+
+  **Method**: `PUT`
+  **Request Data)**: `name`, `public`
+
+      iex> Spotify.Playlist.change_playlist("123", "456")
+      "https://api.spotify.com/v1/users/123/playlists/456"
+
+  """
+  def change_playlist(user_id, playlist_id) do
+    get_playlist_url(user_id, playlist_id)
+  end
+
+  @doc """
+  Add one or more tracks to a user’s playlist.
+  [Spotify Documentation](https://developer.spotify.com/web-api/add-tracks-to-playlist/)
+
+  **Method**: `POST`
+  **Optional Params**: `uris`, `position`
+
+  You can also pass the URI param in the request body. Use `add_tracks/2`. See Spotify docs.
+
+      iex> Spotify.Playlist.add_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
+      "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh"
+  """
+
+  def add_tracks(user_id, playlist_id, params) do
+    playlist_tracks_url(user_id, playlist_id) <> query_string(params)
+  end
+
+  def add_tracks(user_id, playlist_id) do
+    playlist_tracks_url(user_id, playlist_id)
+  end
+
+  @doc """
+  Remove one or more tracks from a user’s playlist.
+  [Spotify Documentation](https://developer.spotify.com/web-api/remove-tracks-playlist/)
+  **Method**: `DELETE`
+  **Request Data**: `tracks`
+
+      iex> Spotify.Playlist.remove_tracks("123", "456")
+      "https://api.spotify.com/v1/users/123/playlists/456/tracks"
+  """
+  def remove_tracks(user_id, playlist_id) do
+    playlist_tracks_url(user_id, playlist_id)
+  end
+
+  @doc """
+  Reorder a track or a group of tracks in a playlist.
+  [Spotify Documentation](https://developer.spotify.com/web-api/reorder-playlists-tracks/)
+
+  **Method**: `PUT`
+  **Required Request Body Data**: `range_start`, `insert_before`
+  **Optional Request Body Data**: `range_length`, `snapshot_id`
+
+      iex> Spotify.Playlist.reorder_tracks("123", "456")
+      "https://api.spotify.com/v1/users/123/playlists/456/tracks"
+
+  """
+  def reorder_tracks(user_id, playlist_id) do
+    playlist_tracks_url(user_id, playlist_id)
+  end
 
 end
