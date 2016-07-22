@@ -48,7 +48,7 @@ defmodule Spotify.Playlist do
   def by_category(id), do: category_url(id)
 
   @doc"""
-  Get a category's playlists with additional parameters.
+  Get a category's playlists.
   [Spotify Documentation](https://developer.spotify.com/web-api/get-categorys-playlists/)
 
   **Valid params**: `country`, `limit`, `offset`
@@ -256,11 +256,14 @@ defmodule Spotify.Playlist do
       iex> Spotify.Playlist.add_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh"
   """
-
   def add_tracks(user_id, playlist_id, params) do
     playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
 
+  @doc """
+  Add one or more tracks to a user’s playlist.
+  [Spotify Documentation](https://developer.spotify.com/web-api/add-tracks-to-playlist/)
+  """
   def add_tracks(user_id, playlist_id) do
     playlist_tracks_url(user_id, playlist_id)
   end
@@ -268,6 +271,7 @@ defmodule Spotify.Playlist do
   @doc """
   Remove one or more tracks from a user’s playlist.
   [Spotify Documentation](https://developer.spotify.com/web-api/remove-tracks-playlist/)
+
   **Method**: `DELETE`
   **Request Data**: `tracks`
 
@@ -312,11 +316,18 @@ defmodule Spotify.Playlist do
     playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
 
+  @doc """
+  Replace all the tracks in a playlist, overwriting its existing tracks. This
+  powerful request can be useful for replacing tracks, re-ordering existing
+  tracks, or clearing the playlist.
+  [Spotify Documentation](https://developer.spotify.com/web-api/replace-playlists-tracks/)
+  """
   def replace_tracks(user_id, playlist_id) do
     playlist_tracks_url(user_id, playlist_id)
   end
 
   @doc """
+  Check to see if one or more Spotify users are following a specified playlist.
   [Spotify Documentation](https://developer.spotify.com/web-api/check-user-following-playlist/)
 
   **Method**: `GET`

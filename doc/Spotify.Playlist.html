@@ -98,6 +98,26 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
+    <a href="#add_tracks/2">add_tracks(user_id, playlist_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Add one or more tracks to a user’s playlist.
+<a href="https://developer.spotify.com/web-api/add-tracks-to-playlist/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#add_tracks/3">add_tracks(user_id, playlist_id, params)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Add one or more tracks to a user’s playlist.
+<a href="https://developer.spotify.com/web-api/add-tracks-to-playlist/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#by_category/1">by_category(id)</a>
   </div>
   
@@ -111,8 +131,38 @@
     <a href="#by_category/2">by_category(id, params)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Get a category’s playlists with additional parameters.
+    <div class="summary-synopsis"><p>Get a category’s playlists.
 <a href="https://developer.spotify.com/web-api/get-categorys-playlists/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#change_playlist/2">change_playlist(user_id, playlist_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
+<a href="https://developer.spotify.com/web-api/change-playlist-details/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#check_followers/3">check_followers(owner_id, playlist_id, params)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Check to see if one or more Spotify users are following a specified playlist.
+<a href="https://developer.spotify.com/web-api/check-user-following-playlist/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_playlist/1">create_playlist(user_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+<a href="https://developer.spotify.com/web-api/create-playlist/">Spotify Documentation</a></p>
 </div>
   
 </div>
@@ -168,6 +218,26 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#get_playlist_tracks/2">get_playlist_tracks(user_id, playlist_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Get full details of the tracks of a playlist owned by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-playlists-tracks/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_playlist_tracks/3">get_playlist_tracks(user_id, playlist_id, params)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Get full details of the tracks of a playlist owned by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-playlists-tracks/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#get_users_playlists/1">get_users_playlists(user_id)</a>
   </div>
   
@@ -188,10 +258,55 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#remove_tracks/2">remove_tracks(user_id, playlist_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Remove one or more tracks from a user’s playlist.
+<a href="https://developer.spotify.com/web-api/remove-tracks-playlist/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#reorder_tracks/2">reorder_tracks(user_id, playlist_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Reorder a track or a group of tracks in a playlist.
+<a href="https://developer.spotify.com/web-api/reorder-playlists-tracks/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#replace_tracks/2">replace_tracks(user_id, playlist_id)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Replace all the tracks in a playlist, overwriting its existing tracks. This
+powerful request can be useful for replacing tracks, re-ordering existing
+tracks, or clearing the playlist.
+<a href="https://developer.spotify.com/web-api/replace-playlists-tracks/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#replace_tracks/3">replace_tracks(user_id, playlist_id, params)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Replace all the tracks in a playlist, overwriting its existing tracks. This
+powerful request can be useful for replacing tracks, re-ordering existing
+tracks, or clearing the playlist.
+<a href="https://developer.spotify.com/web-api/replace-playlists-tracks/">Spotify Documentation</a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#search/1">search(params)</a>
   </div>
   
-    <div class="summary-synopsis"><p><a href="https://developer.spotify.com/web-api/search-item/">Spotify Documentation</a></p>
+    <div class="summary-synopsis"><p>Search for a playlist.
+<a href="https://developer.spotify.com/web-api/search-item/">Spotify Documentation</a></p>
 </div>
   
 </div>
@@ -226,14 +341,59 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="by_category/1">
+          <div class="detail" id="add_tracks/2">
+  <div class="detail-header">
+    <a href="#add_tracks/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">add_tracks(user_id, playlist_id)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L267" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Add one or more tracks to a user’s playlist.
+<a href="https://developer.spotify.com/web-api/add-tracks-to-playlist/">Spotify Documentation</a></p>
+
+  </section>
+</div>
+<div class="detail" id="add_tracks/3">
+  <div class="detail-header">
+    <a href="#add_tracks/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">add_tracks(user_id, playlist_id, params)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L259" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Add one or more tracks to a user’s playlist.
+<a href="https://developer.spotify.com/web-api/add-tracks-to-playlist/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">POST</code>
+<strong>Optional Params</strong>: <code class="inline">uris</code>, <code class="inline">position</code></p>
+<p>You can also pass the URI param in the request body. Use <a href="#add_tracks/2"><code class="inline">add_tracks/2</code></a>. See Spotify docs.</p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.add_tracks(&quot;123&quot;, &quot;456&quot;, uris: &quot;spotify:track:4iV5W9uYEdYUVa79Axb7Rh&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="by_category/1">
   <div class="detail-header">
     <a href="#by_category/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">by_category(id)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L46" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L48" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -255,7 +415,7 @@
     </a>
     <span class="signature">by_category(id, params)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L60" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L62" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -263,13 +423,85 @@
   </div>
   
   <section class="docstring">
-    <p>Get a category’s playlists with additional parameters.
+    <p>Get a category’s playlists.
 <a href="https://developer.spotify.com/web-api/get-categorys-playlists/">Spotify Documentation</a></p>
 <p><strong>Valid params</strong>: <code class="inline">country</code>, <code class="inline">limit</code>, <code class="inline">offset</code></p>
 <p><strong>Method</strong>: <code class="inline">GET</code></p>
 <h2>Example:</h2>
 <pre><code class="iex elixir">iex&gt; Spotify.Playlist.by_category(&quot;123&quot;, [country: &quot;US&quot;, limit: 5])
 &quot;https://api.spotify.com/v1/browse/categories/123/playlists?country=US&amp;limit=5&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="change_playlist/2">
+  <div class="detail-header">
+    <a href="#change_playlist/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">change_playlist(user_id, playlist_id)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L243" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
+<a href="https://developer.spotify.com/web-api/change-playlist-details/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">PUT</code>
+<strong>Request Data)</strong>: <code class="inline">name</code>, <code class="inline">public</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.change_playlist(&quot;123&quot;, &quot;456&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="check_followers/3">
+  <div class="detail-header">
+    <a href="#check_followers/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">check_followers(owner_id, playlist_id, params)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L339" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Check to see if one or more Spotify users are following a specified playlist.
+<a href="https://developer.spotify.com/web-api/check-user-following-playlist/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">GET</code>
+**Query Params: <code class="inline">ids</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.check_followers(&quot;123&quot;, &quot;456&quot;, ids: &quot;foo,bar&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456/followers/contains?ids=foo%2Cbar&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="create_playlist/1">
+  <div class="detail-header">
+    <a href="#create_playlist/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">create_playlist(user_id)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L228" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+<a href="https://developer.spotify.com/web-api/create-playlist/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">POST</code>
+<strong>Body Params</strong>: <code class="inline">name</code>, <code class="inline">public</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.create_playlist(&quot;123&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists&quot;</code></pre>
 
   </section>
 </div>
@@ -280,7 +512,7 @@
     </a>
     <span class="signature">featured()</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L22" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L24" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -303,7 +535,7 @@
     </a>
     <span class="signature">featured(params)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L35" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L37" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -327,7 +559,7 @@
     </a>
     <span class="signature">follow_playlist(owner_id, playlist_id)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L80" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L82" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -351,7 +583,7 @@
     </a>
     <span class="signature">get_playlist(user_id, playlist_id)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L162" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L165" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -374,7 +606,7 @@
     </a>
     <span class="signature">get_playlist(user_id, playlist_id, params)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L176" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L179" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -385,9 +617,56 @@
     <p>Get a playlist owned by a Spotify user.
 <a href="https://developer.spotify.com/web-api/get-playlist/">Spotify Documentation</a></p>
 <p><strong>Method</strong>: <code class="inline">GET</code>
-** Optional Params <code class="inline">fields, market</code></p>
+**Optional Params <code class="inline">fields, market</code></p>
 <pre><code class="iex elixir">iex&gt; Spotify.Playlist.get_playlist(&quot;123&quot;, &quot;456&quot;, market: &quot;foo&quot;)
 &quot;https://api.spotify.com/v1/users/123/playlists/456?market=foo&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="get_playlist_tracks/2">
+  <div class="detail-header">
+    <a href="#get_playlist_tracks/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_playlist_tracks(user_id, playlist_id)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L196" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Get full details of the tracks of a playlist owned by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-playlists-tracks/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">GET</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.get_playlist_tracks(&quot;123&quot;, &quot;456&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456/tracks&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="get_playlist_tracks/3">
+  <div class="detail-header">
+    <a href="#get_playlist_tracks/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_playlist_tracks(user_id, playlist_id, params)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L210" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Get full details of the tracks of a playlist owned by a Spotify user.
+<a href="https://developer.spotify.com/web-api/get-playlists-tracks/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">GET</code>
+**Optional Params <code class="inline">fields</code>, <code class="inline">market</code>, <code class="inline">limit</code>, <code class="inline">offset</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.get_playlist_tracks(&quot;123&quot;, &quot;456&quot;, limit: 5, offset: 5)
+&quot;https://api.spotify.com/v1/users/123/playlists/456/tracks?limit=5&amp;offset=5&quot;</code></pre>
 
   </section>
 </div>
@@ -398,7 +677,7 @@
     </a>
     <span class="signature">get_users_playlists(user_id)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L129" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L132" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -421,7 +700,7 @@
     </a>
     <span class="signature">get_users_playlists(user_id, params)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L144" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L147" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -438,14 +717,14 @@
 
   </section>
 </div>
-<div class="detail" id="search/1">
+<div class="detail" id="remove_tracks/2">
   <div class="detail-header">
-    <a href="#search/1" class="detail-link" title="Link to this function">
+    <a href="#remove_tracks/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">search(params)</span>
+    <span class="signature">remove_tracks(user_id, playlist_id)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L116" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L281" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -453,7 +732,106 @@
   </div>
   
   <section class="docstring">
-    <p><a href="https://developer.spotify.com/web-api/search-item/">Spotify Documentation</a></p>
+    <p>Remove one or more tracks from a user’s playlist.
+<a href="https://developer.spotify.com/web-api/remove-tracks-playlist/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">DELETE</code>
+<strong>Request Data</strong>: <code class="inline">tracks</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.remove_tracks(&quot;123&quot;, &quot;456&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456/tracks&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="reorder_tracks/2">
+  <div class="detail-header">
+    <a href="#reorder_tracks/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">reorder_tracks(user_id, playlist_id)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L297" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Reorder a track or a group of tracks in a playlist.
+<a href="https://developer.spotify.com/web-api/reorder-playlists-tracks/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">PUT</code>
+<strong>Required Request Body Data</strong>: <code class="inline">range_start</code>, <code class="inline">insert_before</code>
+<strong>Optional Request Body Data</strong>: <code class="inline">range_length</code>, <code class="inline">snapshot_id</code></p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.reorder_tracks(&quot;123&quot;, &quot;456&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456/tracks&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="replace_tracks/2">
+  <div class="detail-header">
+    <a href="#replace_tracks/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">replace_tracks(user_id, playlist_id)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L325" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Replace all the tracks in a playlist, overwriting its existing tracks. This
+powerful request can be useful for replacing tracks, re-ordering existing
+tracks, or clearing the playlist.
+<a href="https://developer.spotify.com/web-api/replace-playlists-tracks/">Spotify Documentation</a></p>
+
+  </section>
+</div>
+<div class="detail" id="replace_tracks/3">
+  <div class="detail-header">
+    <a href="#replace_tracks/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">replace_tracks(user_id, playlist_id, params)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L315" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Replace all the tracks in a playlist, overwriting its existing tracks. This
+powerful request can be useful for replacing tracks, re-ordering existing
+tracks, or clearing the playlist.
+<a href="https://developer.spotify.com/web-api/replace-playlists-tracks/">Spotify Documentation</a></p>
+<p><strong>Method</strong>: <code class="inline">PUT</code>
+<strong>Optional Query Params</strong>: <code class="inline">uris</code></p>
+<p>You can also pass the URI param in the request body. Use <a href="#replace_tracks/2"><code class="inline">replace_tracks/2</code></a>. See Spotify docs.</p>
+<pre><code class="iex elixir">iex&gt; Spotify.Playlist.replace_tracks(&quot;123&quot;, &quot;456&quot;, uris: &quot;spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:adkjaklsd94h&quot;)
+&quot;https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh%2Cspotify%3Atrack%3Aadkjaklsd94h&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="search/1">
+  <div class="detail-header">
+    <a href="#search/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">search(params)</span>
+    
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L119" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Search for a playlist.
+<a href="https://developer.spotify.com/web-api/search-item/">Spotify Documentation</a></p>
 <p><strong>Method</strong>: <code class="inline">GET</code></p>
 <p>** Required Params: <code class="inline">q</code></p>
 <p>** Optional Params: <code class="inline">limit</code>, <code class="inline">offset</code>, <code class="inline">market</code></p>
@@ -469,7 +847,7 @@
     </a>
     <span class="signature">unfollow_playlist(owner_id, playlist_id)</span>
     
-      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L93" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jsncmgs1/spotify_ex/blob/master/lib/spotify/playlist.ex#L95" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
