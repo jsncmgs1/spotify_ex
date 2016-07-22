@@ -1,4 +1,5 @@
 defmodule Spotify.Playlist do
+  import Helpers, only: [query_string: 1]
   @moduledoc """
     Playlist API endpoints
 
@@ -182,8 +183,5 @@ defmodule Spotify.Playlist do
     "https://api.spotify.com/v1/users/#{user_id}/playlists/#{playlist_id}"
   end
 
-  defp query_string(params) do
-    "?" <> URI.encode_query(params)
-  end
 
 end
