@@ -15,11 +15,9 @@
           [applications: [:spotify_ex]]
         end
 
-## Coverage:
-* OAuth
-* Playlists
+## This package is under active development and will change frequently.
+Breaking changes will occur until 1.0!
 
-More coming soon.
 ## Usage
 
 This README will go into some detail about the OAuth process. Consult the
