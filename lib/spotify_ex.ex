@@ -23,4 +23,5 @@ defmodule Spotify do
       {"Authorization", "Basic #{encoded_credentials}"}
     ]
   end
+
 end

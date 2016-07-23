@@ -69,12 +69,19 @@ defmodule Spotify.Playlist do
   **Optional Body Params**: `public`
 
   **Method**: `PUT`
+      Spotify.Playlist.follow_playlist!("123", "456")
+      %HTTPoison.Response{...}
 
       iex> Spotify.Playlist.follow_playlist("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/followers"
   """
   def follow_playlist(owner_id, playlist_id) do
     follow_playlist_url(owner_id, playlist_id)
+  end
+
+  def follow_playlist!(owner_id, playlist_id, body \\ "") do
+    url = follow_playlist_url(owner_id, playlist_id)
+    Client.put(url, body)
   end
 
   @doc """
@@ -229,12 +236,22 @@ defmodule Spotify.Playlist do
   **Method**: `PUT`
 
   **Request Data)**: `name`, `public`
+
+      body = { "name": "foo", "public": true }
+      Spotify.Playlist.change_playlist!("123", "456", body)
+      %HTTPoison.Response{..}
+
       iex> Spotify.Playlist.change_playlist("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456"
 
   """
   def change_playlist(user_id, playlist_id) do
     get_playlist_url(user_id, playlist_id)
+  end
+
+  def change_playlist!(user_id, playlist_id, body) do
+    url = change_playlist(user_id, playlist_id)
+    Client.put(url, body)
   end
 
   @doc """
@@ -283,12 +300,21 @@ defmodule Spotify.Playlist do
 
   **Optional Request Body Data**: `range_length`, `snapshot_id`
 
+      body = { "range_start": "..." }
+      Spotify.Playlist.change_playlist!("123", "456", body)
+      %HTTPoison.Response{..}
+
       iex> Spotify.Playlist.reorder_tracks("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks"
 
   """
   def reorder_tracks(user_id, playlist_id) do
     playlist_tracks_url(user_id, playlist_id)
+  end
+
+  def reorder_tracks!(user_id, playlist_id, body) do
+    url = playlist_tracks_url(user_id, playlist_id)
+    Client.put(url, body)
   end
 
   @doc """
@@ -310,6 +336,11 @@ defmodule Spotify.Playlist do
   """
   def replace_tracks(user_id, playlist_id, params \\ []) do
     playlist_tracks_url(user_id, playlist_id) <> query_string(params)
+  end
+
+  def replace_tracks!(user_id, playlist_id, params \\ []) do
+    url = replace_tracks(user_id, playlist_id, params)
+    Client.put(url)
   end
 
   @doc """
