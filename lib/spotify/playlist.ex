@@ -3,7 +3,17 @@ defmodule Spotify.Playlist do
   alias Spotify.Client
 
   @moduledoc """
-    Endpoints for retrieving information about a user’s playlists and for managing a user’s playlists.
+    Endpoints for retrieving information about a user’s playlists and for
+    managing a user’s playlists.
+
+    Each endpoint has normal function which returns the endpoint URL, and a
+    bang version which makes the request and returns a `HTTPoison.Response` struct.
+
+        Spotify.Playlist.featured!(country: "US")
+        # => %HTTPoison.Response{...}
+
+        Spotify.Playlist.featured
+        # => "https://api.spotify.com/v1/browse/featured-playlists"
 
     API calls in this module require valid Authorization headers. See the OAuth
     section for more details.
@@ -20,7 +30,7 @@ defmodule Spotify.Playlist do
   **Method**: `GET`
 
       Spotify.Playlist.featured!(country: "US")
-      %HTTPoison.Response{...}
+      # => %HTTPoison.Response{...}
 
       iex> Spotify.Playlist.featured
       "https://api.spotify.com/v1/browse/featured-playlists"
@@ -46,7 +56,7 @@ defmodule Spotify.Playlist do
 
   ## Example:
       Spotify.by_category!
-      %HTTPoison.Response{...}
+      # => %HTTPoison.Response{...}
 
       iex> Spotify.Playlist.by_category("123")
       "https://api.spotify.com/v1/browse/categories/123/playlists"
@@ -70,7 +80,7 @@ defmodule Spotify.Playlist do
 
   **Method**: `PUT`
       Spotify.Playlist.follow_playlist!("123", "456")
-      %HTTPoison.Response{...}
+      # => %HTTPoison.Response{...}
 
       iex> Spotify.Playlist.follow_playlist("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/followers"
@@ -90,11 +100,19 @@ defmodule Spotify.Playlist do
 
   **Method**: `DELETE`
 
-      iex> Spotify.Playlist.follow_playlist("123", "456")
+      Spotify.Playlist.unfollow_playlist("123", "456")
+      # => %HTTPoison.Response{...}
+
+      iex> Spotify.Playlist.unfollow_playlist("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/followers"
   """
   def unfollow_playlist(owner_id, playlist_id) do
     follow_playlist_url(owner_id, playlist_id)
+  end
+
+  def unfollow_playlist!(owner_id, playlist_id) do
+    url = unfollow_playlist(owner_id, playlist_id)
+    Client.delete(url)
   end
 
   @doc false
@@ -113,7 +131,7 @@ defmodule Spotify.Playlist do
   **Optional Params:** `limit`, `offset`, `market`
 
       Spotify.Playlist.search!(q: "foo", limit: 5)
-      %HTTPoison.Response{..}
+      # => %HTTPoison.Response{...}
 
       iex> Spotify.Playlist.search(q: "foo", limit: 5)
       "https://api.spotify.com/v1/search?type=playlist&q=foo&limit=5"
@@ -137,7 +155,7 @@ defmodule Spotify.Playlist do
   ** Optional Params: `limit`, `offset`
 
       Spotify.Playlist.get_users_playlists!("123", q: "foo", limit: 5)
-      %HTTPoison.Response{..}
+      # => %HTTPoison.Response{...}
 
       iex> Spotify.Playlist.get_users_playlists("123")
       "https://api.spotify.com/v1/users/123/playlists"
@@ -163,7 +181,7 @@ defmodule Spotify.Playlist do
   **Optional Params `fields, market`
 
       Spotify.Playlist.get_playlist!("123", "456")
-      %HTTPoison.Response{..}
+      # => %HTTPoison.Response{...}
 
       iex> Spotify.Playlist.get_playlist("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456"
@@ -193,7 +211,7 @@ defmodule Spotify.Playlist do
 
   **Optional Params `fields`, `market`, `limit`, `offset`
       Spotify.Playlist.get_playlist_tracks!("123", "456")
-      %HTTPoison.Response{..}
+      # => %HTTPoison.Response{...}
 
       iex> Spotify.Playlist.get_playlist_tracks("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks"
@@ -222,11 +240,20 @@ defmodule Spotify.Playlist do
 
   **Body Params**: `name`, `public`
 
+      body = "\{\"name\": \"foo\"}"
+      Spotify.Playlist.create_playlist("123", body)
+      # => %HTTPoison.Response{..}
+
       iex> Spotify.Playlist.create_playlist("123")
       "https://api.spotify.com/v1/users/123/playlists"
   """
   def create_playlist(user_id) do
     "https://api.spotify.com/v1/users/#{user_id}/playlists"
+  end
+
+  def create_playlist!(user_id, body) do
+    url = create_playlist(user_id)
+    Client.post(url, body)
   end
 
   @doc """
@@ -239,7 +266,7 @@ defmodule Spotify.Playlist do
 
       body = { "name": "foo", "public": true }
       Spotify.Playlist.change_playlist!("123", "456", body)
-      %HTTPoison.Response{..}
+      # => %HTTPoison.Response{...}
 
       iex> Spotify.Playlist.change_playlist("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456"
@@ -263,6 +290,8 @@ defmodule Spotify.Playlist do
   **Optional Params**: `uris`, `position`
 
   You can also pass the URI param in the request body. Use `add_tracks/2`. See Spotify docs.
+      Spotify.Playlist.add_tracks!("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
+      # => %HTTPoison.Response{..}
 
       iex> Spotify.Playlist.add_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh"
@@ -275,6 +304,11 @@ defmodule Spotify.Playlist do
     playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
 
+  def add_tracks!(user_id, playlist_id, params \\ []) do
+    url = add_tracks(user_id, playlist_id, params)
+    Client.post(url)
+  end
+
   @doc """
   Remove one or more tracks from a user’s playlist.
   [Spotify Documentation](https://developer.spotify.com/web-api/remove-tracks-playlist/)
@@ -283,11 +317,19 @@ defmodule Spotify.Playlist do
 
   **Request Data**: `tracks`
 
+      Spotify.Playlist.remove_tracks!("123", "456")
+      # => %HTTPoison.Response{..}
+
       iex> Spotify.Playlist.remove_tracks("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks"
   """
   def remove_tracks(user_id, playlist_id) do
     playlist_tracks_url(user_id, playlist_id)
+  end
+
+  def remove_tracks!(user_id, playlist_id) do
+    url = playlist_tracks_url(user_id, playlist_id)
+    Client.delete(url)
   end
 
   @doc """
@@ -302,7 +344,7 @@ defmodule Spotify.Playlist do
 
       body = { "range_start": "..." }
       Spotify.Playlist.change_playlist!("123", "456", body)
-      %HTTPoison.Response{..}
+      # => %HTTPoison.Response{...}
 
       iex> Spotify.Playlist.reorder_tracks("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks"
@@ -328,6 +370,9 @@ defmodule Spotify.Playlist do
   **Optional Query Params**: `uris`
 
   You can also pass the URI param in the request body. Use `replace_tracks/2`. See Spotify docs.
+      Spotify.Playlist.replace_tracks!("123", "456")
+      # => %HTTPoison.Response{...}
+
       iex> Spotify.Playlist.replace_tracks("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks" # Must send request data
 
@@ -352,7 +397,7 @@ defmodule Spotify.Playlist do
   **Query Params: `ids`
 
       Spotify.Playlist.check_followers!("123", "456", ids: "foo,bar")
-      %HTTPoison.Response{..}
+      # => %HTTPoison.Response{..}
 
       iex> Spotify.Playlist.check_followers("123", "456", ids: "foo,bar")
       "https://api.spotify.com/v1/users/123/playlists/456/followers/contains?ids=foo%2Cbar"

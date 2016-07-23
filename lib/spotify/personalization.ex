@@ -5,6 +5,15 @@ defmodule Spotify.Personalization do
   @moduledoc """
   Endpoints for retrieving information about the user’s listening habits
 
+  Each endpoint has a function which returns the endpoint URL, and a
+  bang version which makes the request and returns a `HTTPoison.Response` struct.
+
+        Spotify.Playlist.featured!(country: "US")
+        # => %HTTPoison.Response{...}
+
+        Spotify.Playlist.featured
+        # => "https://api.spotify.com/v1/browse/featured-playlists"
+
   https://developer.spotify.com/web-api/web-api-personalization-endpoints/
   """
 
