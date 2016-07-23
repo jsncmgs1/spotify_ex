@@ -1,5 +1,6 @@
 defmodule Spotify.Personalization do
   import Helpers
+  alias Spotify.Client
 
   @moduledoc """
   Endpoints for retrieving information about the user’s listening habits
@@ -15,6 +16,9 @@ defmodule Spotify.Personalization do
 
   **Optional Params**: `limit`, `offset`, `time_range`
 
+      Spotify.Personalization.top_artists!
+      %HTTPoison.Response{..}
+
       iex> Spotify.Personalization.top_artists
       "https://api.spotify.com/v1/me/top/artists"
 
@@ -26,6 +30,10 @@ defmodule Spotify.Personalization do
     url <> "artists" <> query_string(params)
   end
 
+  def top_artists!(params \\ []) do
+    Client.get(top_artists(params))
+  end
+
   @doc """
   Get the current user’s top tracks based on calculated affinity.
   [Spotify Documentation](https://developer.spotify.com/web-api/get-users-top-artists-and-tracks/)
@@ -33,6 +41,9 @@ defmodule Spotify.Personalization do
   **Method**: `GET`
 
   **Optional Params**: `limit`, `offset`, `time_range`
+
+      Spotify.Personalization.top_tracks!
+      %HTTPoison.Response{..}
 
       iex> Spotify.Personalization.top_tracks
       "https://api.spotify.com/v1/me/top/tracks"
@@ -42,6 +53,10 @@ defmodule Spotify.Personalization do
   """
   def top_tracks(params \\ []) do
     url <> "tracks" <> query_string(params)
+  end
+
+  def top_tracks!(params \\ []) do
+    Client.get(top_tracks(params))
   end
 
   def url do

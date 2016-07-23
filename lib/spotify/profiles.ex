@@ -5,6 +5,8 @@ defmodule Spotify.Profile do
   https://developer.spotify.com/web-api/user-profile-endpoints/
   """
 
+  alias Spotify.Client
+
   @doc """
   Get detailed profile information about the current user (including the current user’s username).
   [Spotify Documentation](https://developer.spotify.com/web-api/get-current-users-profile/)
@@ -17,6 +19,7 @@ defmodule Spotify.Profile do
 
   """
   def me, do: "https://api.spotify.com/v1/me"
+  def me!, do: Client.get(me)
 
   @doc """
   Get public profile information about a Spotify user.
@@ -29,4 +32,5 @@ defmodule Spotify.Profile do
 
   """
   def user(user_id), do: "https://api.spotify.com/v1/users/#{user_id}"
+  def user!(user_id), do: Client.get(user(user_id))
 end

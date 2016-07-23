@@ -17,4 +17,10 @@ defmodule Spotify do
       {"Content-Type", "application/x-www-form-urlencoded"}
     ]
   end
+
+  def token_header do
+    [
+      {"Authorization", "Basic #{encoded_credentials}"}
+    ]
+  end
 end
