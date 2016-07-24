@@ -1,4 +1,7 @@
 defmodule Spotify.Profile do
+  defstruct ~w[ birthdate country display_name email external_urls
+    followers href id images product type uri ]a
+
   @moduledoc """
   Endpoints for retrieving information about a user’s profile.
 
