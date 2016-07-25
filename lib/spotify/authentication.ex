@@ -80,6 +80,10 @@ defmodule Spotify.Authentication do
     !!(get_refresh_cookie(conn) && get_access_cookie(conn))
   end
 
+  def authenticated?(conn) do
+    get_access_cookie(conn)
+  end
+
   @doc false
   def refresh_body_params(conn) do
     "grant_type=refresh_token&refresh_token=#{get_refresh_cookie(conn)}"

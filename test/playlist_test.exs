@@ -120,6 +120,6 @@ defmodule PlaylistTest do
   test "check_followers/3" do
     actual = "https://api.spotify.com/v1/users/123/playlists/456/followers/contains?ids=foo%2Cbar"
     expected = Playlist.check_followers("123", "456", ids: "foo,bar")
-    assert actual = expected
+    assert actual == expected
   end
 end

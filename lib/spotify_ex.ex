@@ -20,7 +20,7 @@ defmodule Spotify do
 
   def token_header do
     [
-      {"Authorization", "Basic #{encoded_credentials}"}
+      {"Authorization", "Bearer #{encoded_credentials}"}
     ]
   end
 

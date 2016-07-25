@@ -1,7 +1,4 @@
 defmodule Spotify.Profile do
-  defstruct ~w[ birthdate country display_name email external_urls
-    followers href id images product type uri ]a
-
   @moduledoc """
   Endpoints for retrieving information about a user’s profile.
 
@@ -17,7 +14,14 @@ defmodule Spotify.Profile do
   https://developer.spotify.com/web-api/user-profile-endpoints/
   """
 
+  @doc """
+  Defines the profile struct
+  """
+  defstruct ~w[ birthdate country display_name email external_urls
+    followers href id images product type uri ]a
+
   alias Spotify.Client
+  import Helpers
 
   @doc """
   Get detailed profile information about the current user (including the current user’s username).
@@ -26,12 +30,15 @@ defmodule Spotify.Profile do
   **Method**: `GET`
 
   Uses your auth token to find your profile.
-      iex> Spotify.Profile.me
+      Spotify.Profile.me(conn)
+      # => %HTTPoison.Response{..}
+
+      iex> Spotify.Profile.me_url
       "https://api.spotify.com/v1/me"
 
   """
-  def me, do: "https://api.spotify.com/v1/me"
-  def me!, do: Client.get(me)
+  def me(conn), do: send_request Client.get(conn, me_url)
+  def me_url, do: "https://api.spotify.com/v1/me"
 
   @doc """
   Get public profile information about a Spotify user.
@@ -39,10 +46,13 @@ defmodule Spotify.Profile do
 
   **Method**: `GET`
 
-      iex> Spotify.Profile.user("123")
+      Spotify.Profile.user(conn, "123")
+      # => %HTTPoison.Response{..}
+
+      iex> Spotify.Profile.user_url("123")
       "https://api.spotify.com/v1/users/123"
 
   """
-  def user(user_id), do: "https://api.spotify.com/v1/users/#{user_id}"
-  def user!(user_id), do: Client.get(user(user_id))
+  def user(conn, user_id), do: send_request Client.get(conn, user_url(user_id))
+  def user_url(user_id), do: "https://api.spotify.com/v1/users/#{user_id}"
 end
