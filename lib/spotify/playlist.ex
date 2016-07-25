@@ -1,6 +1,4 @@
 defmodule Spotify.Playlist do
-  import Helpers
-  alias Spotify.Client
 
   @moduledoc """
     Endpoints for retrieving information about a user’s playlists and for
@@ -21,6 +19,12 @@ defmodule Spotify.Playlist do
     https://developer.spotify.com/web-api/playlist-endpoints/
   """
 
+  import Helpers, only: [query_string: 1, to_struct: 2]
+  alias Spotify.Client
+
+  defstruct ~w[ collaborative description external_urls followers
+    href id images name owner public snapshot_id tracks type uri ]a
+
   @doc"""
   Get a list of featured playlists.
   [Spotify Documenation](https://developer.spotify.com/web-api/get-list-featured-playlists/)
@@ -35,8 +39,30 @@ defmodule Spotify.Playlist do
       iex> Spotify.Playlist.featured_url(country: "US")
       "https://api.spotify.com/v1/browse/featured-playlists?country=US"
   """
-  def featured(params \\ []) do
-    send_request Client.get(featured(params))
+  defmacro send_request(request) do
+    quote do
+      case unquote(request) do
+        { :ok, %HTTPoison.Response{ status_code: 200, body: body } } ->
+          body = Poison.decode!(body)
+
+          IO.inspect "***************** SPOTIFY RESPONSE BODY **************"
+          IO.inspect body
+
+          data = case body["playlists"] do
+            nil -> to_struct(__MODULE__, body)
+            playlists ->
+              Enum.into(playlists["items"], [], fn(playlist) ->
+                to_struct(__MODULE__, playlist)
+              end)
+          end
+          { :ok, data }
+        rest -> rest
+      end
+    end
+  end
+
+  def featured(conn, params \\ []) do
+    send_request Client.get(conn, featured_url(params))
   end
 
   def featured_url(params \\ [])  do
