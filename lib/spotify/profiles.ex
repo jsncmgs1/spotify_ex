@@ -5,17 +5,17 @@ defmodule Spotify.Profile do
   Each endpoint has normal function which returns the endpoint URL, and a
   bang version which makes the request and returns a `HTTPoison.Response` struct.
 
-        Spotify.Playlist.featured!(country: "US")
+        Spotify.Playlist.featured(country: "US")
         # => %HTTPoison.Response{...}
 
-        Spotify.Playlist.featured
-        # => "https://api.spotify.com/v1/browse/featured-playlists"
+        iex> Spotify.Playlist.featured_url
+        "https://api.spotify.com/v1/browse/featured-playlists"
 
   https://developer.spotify.com/web-api/user-profile-endpoints/
   """
 
   @doc """
-  Defines the profile struct
+  Defines the Profile struct.
   """
   defstruct ~w[ birthdate country display_name email external_urls
     followers href id images product type uri ]a

@@ -2,7 +2,7 @@ defmodule Spotify.Client do
   @moduledoc false
   @put_headers [ Spotify.token_header,  {"Content-Type", "application/json"} ]
 
-  def get(conn, url, headers \\ @get_headers) do
+  def get(conn, url) do
     HTTPoison.get(url, auth_header(conn))
   end
 

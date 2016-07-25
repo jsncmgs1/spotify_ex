@@ -1,5 +1,5 @@
 defmodule Spotify.Playlist do
-  import Helpers, only: [query_string: 1]
+  import Helpers
   alias Spotify.Client
 
   @moduledoc """
@@ -29,22 +29,20 @@ defmodule Spotify.Playlist do
 
   **Method**: `GET`
 
-      Spotify.Playlist.featured!(country: "US")
+      Spotify.Playlist.featured(country: "US")
       # => %HTTPoison.Response{...}
 
-      iex> Spotify.Playlist.featured
-      "https://api.spotify.com/v1/browse/featured-playlists"
-
-      iex> Spotify.Playlist.featured(country: "US")
+      iex> Spotify.Playlist.featured_url(country: "US")
       "https://api.spotify.com/v1/browse/featured-playlists?country=US"
   """
-  def featured(params \\ [])  do
+  def featured(params \\ []) do
+    send_request Client.get(featured(params))
+  end
+
+  def featured_url(params \\ [])  do
     "https://api.spotify.com/v1/browse/featured-playlists" <> query_string(params)
   end
 
-  def featured!(params \\ []) do
-    Client.get(featured(params))
-  end
 
   @doc"""
   Get a category's playlists.
