@@ -1,13 +1,12 @@
 defmodule Spotify.Client do
   @moduledoc false
-  @put_headers [ Spotify.token_header,  {"Content-Type", "application/json"} ]
 
   def get(conn, url) do
-    HTTPoison.get(url, auth_header(conn))
+    HTTPoison.get(url, get_headers(conn))
   end
 
-  def put(url, body \\ "", headers \\@put_headers) do
-    HTTPoison.put(url, body, headers)
+  def put(conn, url, body \\ "") do
+    HTTPoison.put(url, body, put_headers(conn))
   end
 
   def post(url, body \\ "", headers \\@put_headers) do
@@ -18,8 +17,15 @@ defmodule Spotify.Client do
     HTTPoison.delete(url, headers)
   end
 
-  def auth_header(conn) do
+  def get_headers(conn) do
     [{"Authorization", "Bearer #{conn.cookies["spotify_access_token"]}" }]
+  end
+
+  def put_headers(conn) do
+    [
+      {"Authorization", "Bearer #{conn.cookies["spotify_access_token"]}" },
+      {"Content-Type", "application/json"}
+    ]
   end
 
 end

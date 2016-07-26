@@ -87,19 +87,23 @@ defmodule Spotify.Playlist do
   **Optional Body Params**: `public`
 
   **Method**: `PUT`
-      Spotify.Playlist.follow_playlist!("123", "456")
-      # => %HTTPoison.Response{...}
+      Spotify.Playlist.follow_playlist(conn, "123", "456")
+      # => :ok
 
-      iex> Spotify.Playlist.follow_playlist("123", "456")
+      iex> Spotify.Playlist.follow_playlist_url("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/followers"
   """
-  def follow_playlist(owner_id, playlist_id) do
-    follow_playlist_url(owner_id, playlist_id)
+  def follow_playlist(conn, owner_id, playlist_id, body \\ "") do
+    url = follow_playlist_url(owner_id, playlist_id)
+
+    case Client.put(conn, url, body) do
+      {:ok, %HTTPoison.Response{status_code: 200}} -> :ok
+      rest -> rest
+    end
   end
 
-  def follow_playlist!(owner_id, playlist_id, body \\ "") do
-    url = follow_playlist_url(owner_id, playlist_id)
-    Client.put(url, body)
+  def follow_playlist_url(owner_id, playlist_id) do
+    get_playlist_url(owner_id, playlist_id) <>"/followers"
   end
 
   @doc """
@@ -123,10 +127,6 @@ defmodule Spotify.Playlist do
     Client.delete(url)
   end
 
-  @doc false
-  defp follow_playlist_url(owner_id, playlist_id) do
-    get_playlist_url(owner_id, playlist_id) <>"/followers"
-  end
 
   @doc """
   Search for a playlist.
@@ -259,22 +259,26 @@ defmodule Spotify.Playlist do
 
   **Request Data)**: `name`, `public`
 
-      body = { "name": "foo", "public": true }
-      Spotify.Playlist.change_playlist!("123", "456", body)
-      # => %HTTPoison.Response{...}
+      body = "{ \"name\": \"foo\", \"public\": true }"
+      Spotify.Playlist.change_playlist!(conn, "123", "456", body)
+      # => :ok
 
-      iex> Spotify.Playlist.change_playlist("123", "456")
+      iex> Spotify.Playlist.change_playlist_url("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456"
 
   """
-  def change_playlist(user_id, playlist_id) do
+  def change_playlist(conn, user_id, playlist_id, body) do
+    url = change_playlist_url(user_id, playlist_id)
+    case Client.put(conn, url, body) do
+      {:ok, %HTTPoison.Response{status_code: 200}} -> :ok
+      rest -> rest
+    end
+  end
+
+  def change_playlist_url(user_id, playlist_id) do
     get_playlist_url(user_id, playlist_id)
   end
 
-  def change_playlist!(user_id, playlist_id, body) do
-    url = change_playlist(user_id, playlist_id)
-    Client.put(url, body)
-  end
 
   @doc """
   Add one or more tracks to a user’s playlist.
@@ -337,21 +341,25 @@ defmodule Spotify.Playlist do
 
   **Optional Request Body Data**: `range_length`, `snapshot_id`
 
-      body = { "range_start": "..." }
-      Spotify.Playlist.change_playlist!("123", "456", body)
-      # => %HTTPoison.Response{...}
+      body = { \"range_start\": \"...\" }
+      Spotify.Playlist.change_playlist(conn, "123", "456", body)
+      # => {:ok, %{"snapshot_id" => "klq34klj..."} }
 
-      iex> Spotify.Playlist.reorder_tracks("123", "456")
+      iex> Spotify.Playlist.reorder_tracks_url("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks"
 
   """
-  def reorder_tracks(user_id, playlist_id) do
+  def reorder_tracks_url(user_id, playlist_id) do
     playlist_tracks_url(user_id, playlist_id)
   end
 
-  def reorder_tracks!(user_id, playlist_id, body) do
+  def reorder_tracks(conn, user_id, playlist_id, body) do
     url = playlist_tracks_url(user_id, playlist_id)
-    Client.put(url, body)
+
+    case Client.put(conn, url, body) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, body}
+      rest -> rest
+    end
   end
 
   @doc """
@@ -365,22 +373,22 @@ defmodule Spotify.Playlist do
   **Optional Query Params**: `uris`
 
   You can also pass the URI param in the request body. Use `replace_tracks/2`. See Spotify docs.
-      Spotify.Playlist.replace_tracks!("123", "456")
-      # => %HTTPoison.Response{...}
+      Spotify.Playlist.replace_tracks(conn, "123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:adkjaklsd94h")
+      :ok
 
-      iex> Spotify.Playlist.replace_tracks("123", "456")
-      "https://api.spotify.com/v1/users/123/playlists/456/tracks" # Must send request data
-
-      iex> Spotify.Playlist.replace_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:adkjaklsd94h")
+      iex> Spotify.Playlist.replace_tracks_url("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:adkjaklsd94h")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh%2Cspotify%3Atrack%3Aadkjaklsd94h"
   """
-  def replace_tracks(user_id, playlist_id, params \\ []) do
+  def replace_tracks_url(user_id, playlist_id, params \\ []) do
     playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
 
-  def replace_tracks!(user_id, playlist_id, params \\ []) do
-    url = replace_tracks(user_id, playlist_id, params)
-    Client.put(url)
+  def replace_tracks(conn, user_id, playlist_id, params \\ []) do
+    url = replace_tracks_url(user_id, playlist_id, params)
+    case Client.put(conn, url) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> :ok
+      rest -> rest
+    end
   end
 
   @doc """
