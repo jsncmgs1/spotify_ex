@@ -4,18 +4,6 @@ defmodule Spotify.Playlist do
     Endpoints for retrieving information about a user’s playlists and for
     managing a user’s playlists.
 
-    Each endpoint has normal function which returns the endpoint URL, and a
-    bang version which makes the request and returns a `HTTPoison.Response` struct.
-
-        Spotify.Playlist.featured!(country: "US")
-        # => %HTTPoison.Response{...}
-
-        Spotify.Playlist.featured
-        # => "https://api.spotify.com/v1/browse/featured-playlists"
-
-    API calls in this module require valid Authorization headers. See the OAuth
-    section for more details.
-
     https://developer.spotify.com/web-api/playlist-endpoints/
   """
 
@@ -25,20 +13,6 @@ defmodule Spotify.Playlist do
   defstruct ~w[ collaborative description external_urls followers
     href id images name owner public snapshot_id tracks type uri ]a
 
-  @doc"""
-  Get a list of featured playlists.
-  [Spotify Documenation](https://developer.spotify.com/web-api/get-list-featured-playlists/)
-
-  **Valid params**: `locale`, `country`, `timestamp`, `limit`, `offset`
-
-  **Method**: `GET`
-
-      Spotify.Playlist.featured(country: "US")
-      # => %HTTPoison.Response{...}
-
-      iex> Spotify.Playlist.featured_url(country: "US")
-      "https://api.spotify.com/v1/browse/featured-playlists?country=US"
-  """
   defmacro send_request(request) do
     quote do
       case unquote(request) do
@@ -61,6 +35,20 @@ defmodule Spotify.Playlist do
     end
   end
 
+  @doc"""
+  Get a list of featured playlists.
+  [Spotify Documenation](https://developer.spotify.com/web-api/get-list-featured-playlists/)
+
+  **Valid params**: `locale`, `country`, `timestamp`, `limit`, `offset`
+
+  **Method**: `GET`
+
+      Spotify.Playlist.featured(country: "US")
+      # => {:ok, %Spotify.Playlist{..}}
+
+      iex> Spotify.Playlist.featured_url(country: "US")
+      "https://api.spotify.com/v1/browse/featured-playlists?country=US"
+  """
   def featured(conn, params \\ []) do
     send_request Client.get(conn, featured_url(params))
   end
@@ -68,7 +56,6 @@ defmodule Spotify.Playlist do
   def featured_url(params \\ [])  do
     "https://api.spotify.com/v1/browse/featured-playlists" <> query_string(params)
   end
-
 
   @doc"""
   Get a category's playlists.
@@ -79,21 +66,18 @@ defmodule Spotify.Playlist do
   **Method**: `GET`
 
   ## Example:
-      Spotify.by_category!
-      # => %HTTPoison.Response{...}
+      Spotify.by_category(conn, "123")
+      # => {:ok, [%Spotify.Playlist{..}]}
 
-      iex> Spotify.Playlist.by_category("123")
-      "https://api.spotify.com/v1/browse/categories/123/playlists"
-
-      iex> Spotify.Playlist.by_category("123", [country: "US", limit: 5])
+      iex> Spotify.Playlist.by_category_url("123", [country: "US", limit: 5])
       "https://api.spotify.com/v1/browse/categories/123/playlists?country=US&limit=5"
   """
-  def by_category(id, params \\ []) do
-    "https://api.spotify.com/v1/browse/categories/#{id}/playlists" <> query_string(params)
+  def by_category(conn, id, params \\ []) do
+    send_request Client.get(conn, by_category_url(params))
   end
 
-  def by_category!(id, params \\ []) do
-    Client.get(by_category(params))
+  def by_category_url(id, params \\ []) do
+    "https://api.spotify.com/v1/browse/categories/#{id}/playlists" <> query_string(params)
   end
 
   @doc """
@@ -154,20 +138,20 @@ defmodule Spotify.Playlist do
 
   **Optional Params:** `limit`, `offset`, `market`
 
-      Spotify.Playlist.search!(q: "foo", limit: 5)
-      # => %HTTPoison.Response{...}
+      Spotify.Playlist.search(conn, q: "foo", limit: 5)
+      # => {:ok, [%Spotify.Playlist{..}]}
 
-      iex> Spotify.Playlist.search(q: "foo", limit: 5)
+      iex> Spotify.Playlist.search_url(q: "foo", limit: 5)
       "https://api.spotify.com/v1/search?type=playlist&q=foo&limit=5"
 
   """
 
-  def search(params)  do
+  def search_url(params)  do
     "https://api.spotify.com/v1/search?type=playlist&" <> URI.encode_query(params)
   end
 
-  def search!(params) do
-    Client.get(search(params))
+  def search(conn, params) do
+    Client.get(search_url(params))
   end
 
   @doc """
@@ -178,23 +162,21 @@ defmodule Spotify.Playlist do
 
   ** Optional Params: `limit`, `offset`
 
-      Spotify.Playlist.get_users_playlists!("123", q: "foo", limit: 5)
-      # => %HTTPoison.Response{...}
+      Spotify.Playlist.get_users_playlists(conn, "123", q: "foo", limit: 5)
+      # => {:ok, [%Spotify.Playlist{..}]}
 
-      iex> Spotify.Playlist.get_users_playlists("123")
-      "https://api.spotify.com/v1/users/123/playlists"
-
-      iex> Spotify.Playlist.get_users_playlists("123", limit: 5)
+      iex> Spotify.Playlist.get_users_playlists_url("123", limit: 5)
       "https://api.spotify.com/v1/users/123/playlists?limit=5"
   """
+  def get_users_playlists(conn, user_id, params \\ []) do
+    url = get_users_playlists_url(user_id, params)
+    send_request Client.get(conn, url)
+  end
 
-  def get_users_playlists(user_id, params \\ []) do
+  def get_users_playlists_url(user_id, params \\ []) do
     "https://api.spotify.com/v1/users/#{user_id}/playlists" <> query_string(params)
   end
 
-  def get_users_playlists!(user_id, params \\ []) do
-    Client.get(get_users_playlists(user_id, params))
-  end
 
   @doc """
   Get a playlist owned by a Spotify user.
@@ -204,27 +186,19 @@ defmodule Spotify.Playlist do
 
   **Optional Params `fields, market`
 
-      Spotify.Playlist.get_playlist!("123", "456")
-      # => %HTTPoison.Response{...}
+      Spotify.Playlist.get_playlist(conn, "123", "456")
+      # => {:ok, %Spotify.Playlist{..}}
 
-      iex> Spotify.Playlist.get_playlist("123", "456")
-      "https://api.spotify.com/v1/users/123/playlists/456"
-
-      iex> Spotify.Playlist.get_playlist("123", "456", market: "foo")
+      iex> Spotify.Playlist.get_playlist_url("123", "456", market: "foo")
       "https://api.spotify.com/v1/users/123/playlists/456?market=foo"
   """
-
-  def get_playlist(user_id, playlist_id, params \\ []) do
-    get_playlist_url(user_id, playlist_id) <> query_string(params)
+  def get_playlist(conn, user_id, playlist_id, params \\ []) do
+    url = get_playlist_url(user_id, playlist_id, params)
+    send_request Client.get(conn, url)
   end
 
-  def get_playlist!(user_id, playlist_id, params \\ []) do
-    url = get_playlist(user_id, playlist_id, params)
-    Client.get(url)
-  end
-
-  defp get_playlist_url(user_id, playlist_id) do
-    "https://api.spotify.com/v1/users/#{user_id}/playlists/#{playlist_id}"
+  def get_playlist_url(user_id, playlist_id, params \\ []) do
+    "https://api.spotify.com/v1/users/#{user_id}/playlists/#{playlist_id}" <> query_string(params)
   end
 
   @doc """
@@ -234,22 +208,19 @@ defmodule Spotify.Playlist do
   **Method**: `GET`
 
   **Optional Params `fields`, `market`, `limit`, `offset`
-      Spotify.Playlist.get_playlist_tracks!("123", "456")
-      # => %HTTPoison.Response{...}
+      Spotify.Playlist.get_playlist_tracks(conn, "123", "456")
+      # => {:ok, %Spotify.Playlist{..}}
 
-      iex> Spotify.Playlist.get_playlist_tracks("123", "456")
-      "https://api.spotify.com/v1/users/123/playlists/456/tracks"
-
-      iex> Spotify.Playlist.get_playlist_tracks("123", "456", limit: 5, offset: 5)
+      iex> Spotify.Playlist.get_playlist_tracks_url("123", "456", limit: 5, offset: 5)
       "https://api.spotify.com/v1/users/123/playlists/456/tracks?limit=5&offset=5"
   """
-  def get_playlist_tracks(user_id, playlist_id, params \\ []) do
-    playlist_tracks_url(user_id, playlist_id) <> query_string(params)
+  def get_playlist_tracks(conn, user_id, playlist_id, params \\ []) do
+    url = get_playlist_tracks(user_id, playlist_id, params)
+    send_request Client.get(conn, url)
   end
 
-  def get_playlist_tracks!(user_id, playlist_id, params \\ []) do
-    url = get_playlist_tracks(user_id, playlist_id, params)
-    Client.get(url)
+  def get_playlist_tracks_url(user_id, playlist_id, params \\ []) do
+    playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
 
   defp playlist_tracks_url(user_id, playlist_id) do
@@ -420,20 +391,21 @@ defmodule Spotify.Playlist do
 
   **Query Params: `ids`
 
-      Spotify.Playlist.check_followers!("123", "456", ids: "foo,bar")
-      # => %HTTPoison.Response{..}
+      Spotify.Playlist.check_followers(conn, "123", "456", ids: "foo,bar")
+      # => {:ok, boolean}
 
-      iex> Spotify.Playlist.check_followers("123", "456", ids: "foo,bar")
+      iex> Spotify.Playlist.check_followers_url("123", "456", ids: "foo,bar")
       "https://api.spotify.com/v1/users/123/playlists/456/followers/contains?ids=foo%2Cbar"
   """
-  def check_followers(owner_id, playlist_id, params) do
+  def check_followers(conn, owner_id, playlist_id, params) do
+    url = check_followers_url(owner_id, playlist_id, params)
+    send_request Client.get(conn, url)
+  end
+
+  def check_followers_url(owner_id, playlist_id, params) do
     "https://api.spotify.com/v1/users/#{owner_id}/playlists/#{playlist_id}/followers/contains"
     <> query_string(params)
   end
 
-  def check_followers!(owner_id, playlist_id, params) do
-    url = check_followers(owner_id, playlist_id, params)
-    Client.get(url)
-  end
 
 end
