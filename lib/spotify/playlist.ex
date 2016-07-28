@@ -20,7 +20,12 @@ defmodule Spotify.Playlist do
   defstruct ~w[ collaborative description external_urls followers
     href id images name owner public snapshot_id tracks type uri ]a
 
-  def build_structs({ :ok, %HTTPoison.Response{ status_code: _status_code, body: body }}) do
+  def build_structs({ message, %HTTPoison.Response{ status_code: code, body: body }})
+    when code in 400..499 do
+      { message, body}
+    end
+
+  def build_structs({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
     data = body
       |> Poison.decode!
       |> build_struct
