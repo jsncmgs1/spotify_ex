@@ -4,6 +4,9 @@ defmodule Spotify.Playlist do
     Functions for retrieving information about a user’s playlists and for
     managing a user’s playlists.
 
+    Some endpoints return collections. Spotify wraps the collection in a paging object,
+    this API does the same. A single piece of data will not be wrapped.
+
     There are two functions for each endpoint, one that actually makes the request,
     and one that provides the endpoint:
 
@@ -59,7 +62,7 @@ defmodule Spotify.Playlist do
       # => {:ok, %{ items: [%Spotify.Playlist{..} ...]}}
   """
   def by_category(conn, id, params \\ []) do
-    url = by_category_url(params)
+    url = by_category_url(id, params)
     conn |> Client.get(url) |> build_structs
   end
 
@@ -115,7 +118,7 @@ defmodule Spotify.Playlist do
     url = unfollow_playlist_url(owner_id, playlist_id)
 
     case Client.delete(conn, url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> :ok
+      { :ok, %HTTPoison.Response{status_code: 200} } -> :ok
       rest -> rest
     end
   end
@@ -225,9 +228,8 @@ defmodule Spotify.Playlist do
     alias Spotify.Playlist.Track, as: Track
 
     url = get_playlist_tracks(user_id, playlist_id, params)
-    conn |> Client.get(url) |> Track.build_structs
+    conn |> Client.get(url) |> Track.build_response
   end
-
 
   @doc"""
   Get full details of the tracks of a playlist owned by a Spotify user.
@@ -412,7 +414,7 @@ defmodule Spotify.Playlist do
   def replace_tracks(conn, user_id, playlist_id, params \\ []) do
     url = replace_tracks_url(user_id, playlist_id, params)
     case Client.put(conn, url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> :ok
+      {:ok, %HTTPoison.Response{status_code: 200} } -> :ok
       rest -> rest
     end
   end

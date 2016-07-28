@@ -1,4 +1,7 @@
 defmodule Spotify.Playlist.Track do
+  @moduledoc """
+  Requesting track info from a specific playkist
+  """
   import Helpers
 
   defstruct ~w[
@@ -12,7 +15,7 @@ defmodule Spotify.Playlist.Track do
     tracks = body["items"]
     tracks = Enum.map(tracks, fn(track) ->
       track_info = to_struct(__MODULE__, track)
-      track = Map.update(track_info, :track, to_struct(Spotify.Track, track_info.track))
+      Map.put(track_info, :track, to_struct(Spotify.Track, track_info.track))
     end)
 
     Paging.response(body, tracks)

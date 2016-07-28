@@ -3,7 +3,7 @@ defmodule HTTPoison.Response do
 end
 
 defmodule AuthenticationClientMock do
-  def post(params) do
+  def post(_params) do
     { :ok, _successful_response }
   end
 
