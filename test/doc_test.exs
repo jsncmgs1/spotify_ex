@@ -3,10 +3,12 @@ defmodule DocTest do
   alias Spotify.{
     Profile,
     Personalization,
-    Playlist
+    Playlist,
+    Track
   }
 
   doctest Profile
   doctest Personalization
   doctest Playlist
+  doctest Track
 end
