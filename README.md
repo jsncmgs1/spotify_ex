@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/jsncmgs1/spotify_ex.svg)](https://travis-ci.org/jsncmgs1/spotify_ex)
 # Spotify
 **Elixir Wrapper for the Spotify Web API**
 
