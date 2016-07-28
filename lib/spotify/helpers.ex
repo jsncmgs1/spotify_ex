@@ -11,15 +11,5 @@ defmodule Helpers do
       end
     end
   end
-
-  defmacro send_request(request) do
-    quote do
-      case unquote(request) do
-        { :ok, %HTTPoison.Response{ status_code: 200, body: body } } ->
-          struct = to_struct(__MODULE__, Poison.decode!(body))
-          { :ok, struct }
-        rest -> rest
-      end
-    end
-  end
 end
+
