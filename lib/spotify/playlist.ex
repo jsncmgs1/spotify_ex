@@ -237,20 +237,20 @@ defmodule Spotify.Playlist do
   **Body Params**: `name`, `public`
 
       body = "\{\"name\": \"foo\"}"
-      Spotify.Playlist.create_playlist("123", body)
-      # => %HTTPoison.Response{..}
+      Spotify.Playlist.create_playlist(conn, "123", body)
+      # => %Spotify.Playlist{..}
 
-      iex> Spotify.Playlist.create_playlist("123")
+      iex> Spotify.Playlist.create_playlist_url("123")
       "https://api.spotify.com/v1/users/123/playlists"
   """
-  def create_playlist(user_id) do
+  def create_playlist(conn, user_id, body) do
+    url = create_playlist_url(user_id)
+    send_request Client.post(conn, url, body), status: 201
+  end
+  def create_playlist_url(user_id) do
     "https://api.spotify.com/v1/users/#{user_id}/playlists"
   end
 
-  def create_playlist!(user_id, body) do
-    url = create_playlist(user_id)
-    Client.post(url, body)
-  end
 
   @doc """
   Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)

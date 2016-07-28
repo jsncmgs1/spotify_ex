@@ -28,5 +28,4 @@ defmodule Spotify.Client do
 
   def post_headers(conn), do: put_headers(conn)
   def delete_headers(conn), do: get_headers(conn)
-
 end
