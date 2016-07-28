@@ -4,14 +4,11 @@ defmodule Spotify.Personalization do
   @moduledoc """
   Endpoints for retrieving information about the user’s listening habits
 
-  Each endpoint has a function which returns the endpoint URL, and a
-  bang version which makes the request and returns a `HTTPoison.Response` struct.
+  There are two functions for each endpoint, one that actually makes the request,
+  and one that provides the endpoint:
 
-      Spotify.Playlist.featured(conn, country: "US")
-      # => %HTTPoison.Response{...}
-
-      Spotify.Playlist.featured_url
-      # => "https://api.spotify.com/v1/browse/featured-playlists"
+        Spotify.Playist.create_playlist(conn, "foo", "bar") # makes the POST request.
+        Spotify.Playist.create_playlist_url("foo", "bar") # provides the url for the request.
 
   https://developer.spotify.com/web-api/web-api-personalization-endpoints/
   """
@@ -32,10 +29,11 @@ defmodule Spotify.Personalization do
   **Optional Params**: `limit`, `offset`, `time_range`
 
       Spotify.Personalization.top_artists(conn)
-      %HTTPoison.Response{..}
+      { :ok, artists: [%Spotify.Artist{..}...], paging: %Paging{next:...} }
   """
   def top_artists(conn, params \\ []) do
-    foo = send_request Client.get(conn, top_artists_url(params))
+    url = top_artists_url(params)
+    conn |> Client.get(url) |> build_response
   end
 
   @doc """
@@ -57,11 +55,12 @@ defmodule Spotify.Personalization do
   **Optional Params**: `limit`, `offset`, `time_range`
 
       Spotify.Personalization.top_tracks(conn)
-      %HTTPoison.Response{..}
+      { :ok, tracks: [%Spotify.Tracks{..}...], paging: %Paging{next:...} }
 
   """
   def top_tracks(conn, params \\ []) do
-    send_request Client.get(conn, top_tracks_url(params))
+    url = top_tracks_url(params)
+    conn |> Client.get(url) |> build_response
   end
 
   @doc """
@@ -79,6 +78,40 @@ defmodule Spotify.Personalization do
   """
   def url do
     "https://api.spotify.com/v1/me/top/"
+  end
+
+  @doc false
+  def build_response({ message, %HTTPoison.Response{status_code: code, body: body} })
+    when code in 400..499 do
+      { message, body }
+    end
+
+  @doc false
+
+  def build_response({:ok, %HTTPoison.Response{status_code: _code, body: body}}) do
+    body = Poison.decode!(body)
+
+    items = Enum.map(body["items"], fn(item) ->
+      case item["type"] do
+        "artist" -> build_artist_struct(item)
+        "track"  -> build_track_struct(item)
+      end
+    end)
+
+    paging = to_struct(Paging, body)
+    response = Map.put(paging, :items, items)
+
+    { :ok, response }
+  end
+
+  @doc false
+  def build_artist_struct(artist) do
+    to_struct(Spotify.Artist, artist)
+  end
+
+  @doc false
+  def build_track_struct(track) do
+    to_struct(Spotify.Track, track)
   end
 
 end
