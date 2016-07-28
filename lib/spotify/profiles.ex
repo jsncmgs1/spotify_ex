@@ -2,14 +2,11 @@ defmodule Spotify.Profile do
   @moduledoc """
   Endpoints for retrieving information about a user’s profile.
 
-  Each endpoint has normal function which returns the endpoint URL, and a
-  bang version which makes the request and returns a `HTTPoison.Response` struct.
+  There are two functions for each endpoint, one that actually makes the request,
+  and one that provides the endpoint:
 
-        Spotify.Playlist.featured(country: "US")
-        # => %HTTPoison.Response{...}
-
-        iex> Spotify.Playlist.featured_url
-        "https://api.spotify.com/v1/browse/featured-playlists"
+        Spotify.Playist.create_playlist(conn, "foo", "bar") # makes the POST request.
+        Spotify.Playist.create_playlist_url("foo", "bar") # provides the url for the request.
 
   https://developer.spotify.com/web-api/user-profile-endpoints/
   """
@@ -31,9 +28,11 @@ defmodule Spotify.Profile do
 
   Uses your auth token to find your profile.
       Spotify.Profile.me(conn)
-      # => %HTTPoison.Response{..}
+      # => { :ok, %Spotify.Profile{..} }
   """
-  def me(conn), do: send_request Client.get(conn, me_url)
+  def me(conn) do
+    foo = conn |> Client.get(me_url) |> build_profile
+  end
 
   @doc """
   Get detailed profile information about the current user (including the current user’s username).
@@ -50,9 +49,12 @@ defmodule Spotify.Profile do
   **Method**: `GET`
 
       Spotify.Profile.user(conn, "123")
-      # => %HTTPoison.Response{..}
+      # => { :ok, %Spotify.Profile{..} }
   """
-  def user(conn, user_id), do: send_request Client.get(conn, user_url(user_id))
+  def user(conn, user_id) do
+    url = user_url(user_id)
+    conn |> Client.get(url) |> build_profile
+  end
 
   @doc """
   Get public profile information about a Spotify user.
@@ -61,4 +63,23 @@ defmodule Spotify.Profile do
       "https://api.spotify.com/v1/users/123"
   """
   def user_url(user_id), do: "https://api.spotify.com/v1/users/#{user_id}"
+
+  @doc false
+  def build_profile({ :ok, %HTTPoison.Response{ status_code: code, body: body }})
+    when code in [400..499]do
+      body = body |> Poison.decode!
+      profile = to_struct(__MODULE__, body)
+
+      { :ok, profile }
+    end
+
+  @doc false
+
+  def build_profile({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
+    body = body |> Poison.decode!
+    profile = to_struct(__MODULE__, body)
+
+    { :ok, profile }
+  end
+
 end

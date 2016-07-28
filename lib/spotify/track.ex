@@ -1,4 +1,6 @@
 defmodule Spotify.Track do
+  import Helpers
+
   defstruct ~w[
     album
     artists
