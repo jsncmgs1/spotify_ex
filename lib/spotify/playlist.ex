@@ -20,29 +20,6 @@ defmodule Spotify.Playlist do
   defstruct ~w[ collaborative description external_urls followers
     href id images name owner public snapshot_id tracks type uri ]a
 
-  def build_structs({ message, %HTTPoison.Response{ status_code: code, body: body }})
-    when code in 400..499 do
-      { message, body}
-    end
-
-  def build_structs({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
-    data = body
-      |> Poison.decode!
-      |> build_struct
-
-    { :ok, data }
-  end
-
-  def build_struct(body) do
-    playlists = body["playlists"]
-
-    if playlists do
-      Enum.into(playlists["items"], [], &to_struct(__MODULE__, &1))
-    else
-      to_struct(__MODULE__, body)
-    end
-  end
-
   @doc"""
   Get a list of featured playlists.
   [Spotify Documenation](https://developer.spotify.com/web-api/get-list-featured-playlists/)
@@ -55,7 +32,8 @@ defmodule Spotify.Playlist do
       # => {:ok, %Spotify.Playlist{..}}
   """
   def featured(conn, params \\ []) do
-    conn |> Client.get(featured_url(params)) |> build_structs
+    url =-featured_url(params)
+    conn |> Client.get(url) |> build_structs
   end
 
   @doc"""
@@ -81,7 +59,8 @@ defmodule Spotify.Playlist do
       # => {:ok, [%Spotify.Playlist{..}]}
   """
   def by_category(conn, id, params \\ []) do
-    conn |> Client.get(by_category_url(params)) |> build_structs
+    url = by_category_url(params)
+    conn |> Client.get(url) |> build_structs
   end
 
   @doc"""
@@ -134,6 +113,7 @@ defmodule Spotify.Playlist do
   """
   def unfollow_playlist(conn, owner_id, playlist_id) do
     url = unfollow_playlist_url(owner_id, playlist_id)
+
     case Client.delete(conn, url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> :ok
       rest -> rest
@@ -164,7 +144,8 @@ defmodule Spotify.Playlist do
       # => {:ok, [%Spotify.Playlist{..}]}
   """
   def search(conn, params) do
-    conn |> Client.get(search_url(params)) |> build_structs
+    url = search_url(params)
+    conn |> Client.get(url) |> build_structs
   end
 
   @doc"""
@@ -190,7 +171,6 @@ defmodule Spotify.Playlist do
   """
   def get_users_playlists(conn, user_id, params \\ []) do
     url = get_users_playlists_url(user_id, params)
-
     conn |> Client.get(url) |> build_structs
   end
 
@@ -471,4 +451,26 @@ defmodule Spotify.Playlist do
     <> query_string(params)
   end
 
+  defp build_structs({ message, %HTTPoison.Response{ status_code: code, body: body }})
+    when code in 400..499 do
+      { message, body}
+    end
+
+  defp build_structs({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
+    data = body
+      |> Poison.decode!
+      |> build_struct
+
+    { :ok, data }
+  end
+
+  defp build_struct(body) do
+    playlists = body["playlists"]
+
+    if playlists do
+      Enum.into(playlists["items"], [], &to_struct(__MODULE__, &1))
+    else
+      to_struct(__MODULE__, body)
+    end
+  end
 end
