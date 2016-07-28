@@ -13,10 +13,11 @@ defmodule Spotify.Playlist do
   defstruct ~w[ collaborative description external_urls followers
     href id images name owner public snapshot_id tracks type uri ]a
 
-  defmacro send_request(request) do
+  defmacro send_request(request, opts \\ []) do
     quote do
+      status = unquote(opts[:status] || 200)
       case unquote(request) do
-        { :ok, %HTTPoison.Response{ status_code: 200, body: body } } ->
+        { :ok, %HTTPoison.Response{ status_code: status, body: body } } ->
           body = Poison.decode!(body)
 
           IO.inspect "***************** SPOTIFY RESPONSE BODY **************"
@@ -414,6 +415,5 @@ defmodule Spotify.Playlist do
     "https://api.spotify.com/v1/users/#{owner_id}/playlists/#{playlist_id}/followers/contains"
     <> query_string(params)
   end
-
 
 end
