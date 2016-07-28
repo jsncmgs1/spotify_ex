@@ -98,7 +98,7 @@ defmodule Spotify.Playlist do
     url = follow_playlist_url(owner_id, playlist_id)
 
     case Client.put(conn, url, body) do
-      {:ok, %HTTPoison.Response{status_code: 200}} -> :ok
+      {:ok, %HTTPoison.Response{status_code: 200, body: ""}} -> :ok
       rest -> rest
     end
   end
@@ -113,21 +113,23 @@ defmodule Spotify.Playlist do
 
   **Method**: `DELETE`
 
-      Spotify.Playlist.unfollow_playlist("123", "456")
-      # => %HTTPoison.Response{...}
+      Spotify.Playlist.unfollow_playlist(conn, "123", "456")
+      # => :ok
 
-      iex> Spotify.Playlist.unfollow_playlist("123", "456")
+      iex> Spotify.Playlist.unfollow_playlist_url("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/followers"
   """
-  def unfollow_playlist(owner_id, playlist_id) do
+  def unfollow_playlist(conn, owner_id, playlist_id) do
+    url = unfollow_playlist_url(owner_id, playlist_id)
+    case Client.delete(conn, url) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> :ok
+      rest -> rest
+    end
+  end
+
+  def unfollow_playlist_url(owner_id, playlist_id) do
     follow_playlist_url(owner_id, playlist_id)
   end
-
-  def unfollow_playlist!(owner_id, playlist_id) do
-    url = unfollow_playlist(owner_id, playlist_id)
-    Client.delete(url)
-  end
-
 
   @doc """
   Search for a playlist.
@@ -317,19 +319,22 @@ defmodule Spotify.Playlist do
 
   **Request Data**: `tracks`
 
-      Spotify.Playlist.remove_tracks!("123", "456")
-      # => %HTTPoison.Response{..}
+      Spotify.Playlist.remove_tracks(conn, "123", "456")
+      # => {:ok, %{"snapshot_id": "foo"}}
 
       iex> Spotify.Playlist.remove_tracks("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks"
   """
-  def remove_tracks(user_id, playlist_id) do
-    playlist_tracks_url(user_id, playlist_id)
+  def remove_tracks(conn, user_id, playlist_id) do
+    url = playlist_tracks_url(user_id, playlist_id)
+    case Client.delete(conn, url) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, body}
+      rest -> rest
+    end
   end
 
-  def remove_tracks!(user_id, playlist_id) do
-    url = playlist_tracks_url(user_id, playlist_id)
-    Client.delete(url)
+  def remove_tracks_url(user_id, playlist_id) do
+    playlist_tracks_url(user_id, playlist_id)
   end
 
   @doc """

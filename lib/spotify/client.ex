@@ -13,8 +13,8 @@ defmodule Spotify.Client do
     HTTPoison.post(url, body, post_headers(conn))
   end
 
-  def delete(url, headers \\ @get_headers) do
-    HTTPoison.delete(url, headers)
+  def delete(conn, url) do
+    HTTPoison.delete(url, delete_headers(conn))
   end
 
   def get_headers(conn) do
