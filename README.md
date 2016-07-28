@@ -133,6 +133,3 @@ The authentication module will set refresh and access tokens in a cookie. The ac
 ** Phoenix example (Example app found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)) **
 
 ```
-**TODO:** Client credentials flow and Implicit grant flow examples. The good
-news is they are much simpler than the Authorization flows. The better news is
-they're already possible with provided given above.
