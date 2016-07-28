@@ -14,7 +14,7 @@ defmodule Spotify.Playlist do
     https://developer.spotify.com/web-api/playlist-endpoints/
   """
 
-  import Helpers, only: [query_string: 1, to_struct: 2]
+  import Helpers
   alias Spotify.Client
 
   defstruct ~w[ collaborative description external_urls followers
@@ -29,10 +29,10 @@ defmodule Spotify.Playlist do
   **Method**: `GET`
 
       Spotify.Playlist.featured(country: "US")
-      # => {:ok, %Spotify.Playlist{..}}
+      # => {:ok, %{ items: [%Spotify.Playlist{..} ...]}}
   """
   def featured(conn, params \\ []) do
-    url =-featured_url(params)
+    url = featured_url(params)
     conn |> Client.get(url) |> build_structs
   end
 
@@ -56,7 +56,7 @@ defmodule Spotify.Playlist do
 
   ## Example:
       Spotify.by_category(conn, "123")
-      # => {:ok, [%Spotify.Playlist{..}]}
+      # => {:ok, %{ items: [%Spotify.Playlist{..} ...]}}
   """
   def by_category(conn, id, params \\ []) do
     url = by_category_url(params)
@@ -141,7 +141,7 @@ defmodule Spotify.Playlist do
   **Optional Params:** `limit`, `offset`, `market`
 
       Spotify.Playlist.search(conn, q: "foo", limit: 5)
-      # => {:ok, [%Spotify.Playlist{..}]}
+      # => {:ok, %{ items: [%Spotify.Playlist{..} ...]}}
   """
   def search(conn, params) do
     url = search_url(params)
@@ -167,7 +167,7 @@ defmodule Spotify.Playlist do
   ** Optional Params: `limit`, `offset`
 
       Spotify.Playlist.get_users_playlists(conn, "123", q: "foo", limit: 5)
-      # => {:ok, [%Spotify.Playlist{..}]}
+      # => {:ok, %{ items: [%Spotify.Playlist{..} ...]}}
   """
   def get_users_playlists(conn, user_id, params \\ []) do
     url = get_users_playlists_url(user_id, params)
@@ -222,9 +222,12 @@ defmodule Spotify.Playlist do
       # => {:ok, %Spotify.Playlist{..}}
   """
   def get_playlist_tracks(conn, user_id, playlist_id, params \\ []) do
+    alias Spotify.Playlist.Track, as: Track
+
     url = get_playlist_tracks(user_id, playlist_id, params)
-    conn |> Client.get(url) |> build_structs
+    conn |> Client.get(url) |> Track.build_structs
   end
+
 
   @doc"""
   Get full details of the tracks of a playlist owned by a Spotify user.
@@ -451,26 +454,27 @@ defmodule Spotify.Playlist do
     <> query_string(params)
   end
 
-  defp build_structs({ message, %HTTPoison.Response{ status_code: code, body: body }})
+  def build_structs({ message, %HTTPoison.Response{ status_code: code, body: body }})
     when code in 400..499 do
       { message, body}
     end
 
-  defp build_structs({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
-    data = body
-      |> Poison.decode!
-      |> build_struct
+  def build_structs({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
+    data = body |> Poison.decode! |> build_response
 
     { :ok, data }
   end
 
-  defp build_struct(body) do
+  def build_response(body) do
     playlists = body["playlists"]
 
     if playlists do
-      Enum.into(playlists["items"], [], &to_struct(__MODULE__, &1))
+      playlists = Enum.map(playlists["items"], &to_struct(__MODULE__, &1))
+
+      Paging.response(body, playlists)
     else
       to_struct(__MODULE__, body)
     end
   end
+
 end
