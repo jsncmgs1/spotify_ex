@@ -148,13 +148,12 @@ defmodule Spotify.Playlist do
       "https://api.spotify.com/v1/search?type=playlist&q=foo&limit=5"
 
   """
+  def search(conn, params) do
+    send_request Client.get(search_url(params))
+  end
 
   def search_url(params)  do
     "https://api.spotify.com/v1/search?type=playlist&" <> URI.encode_query(params)
-  end
-
-  def search(conn, params) do
-    Client.get(search_url(params))
   end
 
   @doc """
@@ -263,7 +262,7 @@ defmodule Spotify.Playlist do
   **Request Data)**: `name`, `public`
 
       body = "{ \"name\": \"foo\", \"public\": true }"
-      Spotify.Playlist.change_playlist!(conn, "123", "456", body)
+      Spotify.Playlist.change_playlist(conn, "123", "456", body)
       # => :ok
 
       iex> Spotify.Playlist.change_playlist_url("123", "456")
@@ -292,24 +291,25 @@ defmodule Spotify.Playlist do
   **Optional Params**: `uris`, `position`
 
   You can also pass the URI param in the request body. Use `add_tracks/2`. See Spotify docs.
-      Spotify.Playlist.add_tracks!("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
-      # => %HTTPoison.Response{..}
+      Spotify.Playlist.add_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
+      # => {:ok, %{"snapshot_id" => "foo"}}
 
-      iex> Spotify.Playlist.add_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
+      iex> Spotify.Playlist.add_tracks_url("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh"
-
-      iex> Spotify.Playlist.add_tracks("123", "456") # Must send request data using this function
-      "https://api.spotify.com/v1/users/123/playlists/456/tracks"
-
   """
-  def add_tracks(user_id, playlist_id, params \\ []) do
+  def add_tracks(conn, user_id, playlist_id, params \\ []) do
+    url = add_tracks(user_id, playlist_id, params)
+
+    case Client.post(conn, url) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, body}
+      rest -> rest
+    end
+  end
+
+  def add_tracks_url(user_id, playlist_id, params \\ []) do
     playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
 
-  def add_tracks!(user_id, playlist_id, params \\ []) do
-    url = add_tracks(user_id, playlist_id, params)
-    Client.post(url)
-  end
 
   @doc """
   Remove one or more tracks from a user’s playlist.
@@ -322,7 +322,7 @@ defmodule Spotify.Playlist do
       Spotify.Playlist.remove_tracks(conn, "123", "456")
       # => {:ok, %{"snapshot_id": "foo"}}
 
-      iex> Spotify.Playlist.remove_tracks("123", "456")
+      iex> Spotify.Playlist.remove_tracks_url("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks"
   """
   def remove_tracks(conn, user_id, playlist_id) do
@@ -355,10 +355,6 @@ defmodule Spotify.Playlist do
       "https://api.spotify.com/v1/users/123/playlists/456/tracks"
 
   """
-  def reorder_tracks_url(user_id, playlist_id) do
-    playlist_tracks_url(user_id, playlist_id)
-  end
-
   def reorder_tracks(conn, user_id, playlist_id, body) do
     url = playlist_tracks_url(user_id, playlist_id)
 
@@ -366,6 +362,10 @@ defmodule Spotify.Playlist do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, body}
       rest -> rest
     end
+  end
+
+  def reorder_tracks_url(user_id, playlist_id) do
+    playlist_tracks_url(user_id, playlist_id)
   end
 
   @doc """
@@ -385,16 +385,16 @@ defmodule Spotify.Playlist do
       iex> Spotify.Playlist.replace_tracks_url("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:adkjaklsd94h")
       "https://api.spotify.com/v1/users/123/playlists/456/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh%2Cspotify%3Atrack%3Aadkjaklsd94h"
   """
-  def replace_tracks_url(user_id, playlist_id, params \\ []) do
-    playlist_tracks_url(user_id, playlist_id) <> query_string(params)
-  end
-
   def replace_tracks(conn, user_id, playlist_id, params \\ []) do
     url = replace_tracks_url(user_id, playlist_id, params)
     case Client.put(conn, url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> :ok
       rest -> rest
     end
+  end
+
+  def replace_tracks_url(user_id, playlist_id, params \\ []) do
+    playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
 
   @doc """
