@@ -32,12 +32,15 @@ defmodule Spotify.Profile do
   Uses your auth token to find your profile.
       Spotify.Profile.me(conn)
       # => %HTTPoison.Response{..}
+  """
+  def me(conn), do: send_request Client.get(conn, me_url)
+
+  @doc """
+  Get detailed profile information about the current user (including the current user’s username).
 
       iex> Spotify.Profile.me_url
       "https://api.spotify.com/v1/me"
-
   """
-  def me(conn), do: send_request Client.get(conn, me_url)
   def me_url, do: "https://api.spotify.com/v1/me"
 
   @doc """
@@ -48,11 +51,14 @@ defmodule Spotify.Profile do
 
       Spotify.Profile.user(conn, "123")
       # => %HTTPoison.Response{..}
+  """
+  def user(conn, user_id), do: send_request Client.get(conn, user_url(user_id))
+
+  @doc """
+  Get public profile information about a Spotify user.
 
       iex> Spotify.Profile.user_url("123")
       "https://api.spotify.com/v1/users/123"
-
   """
-  def user(conn, user_id), do: send_request Client.get(conn, user_url(user_id))
   def user_url(user_id), do: "https://api.spotify.com/v1/users/#{user_id}"
 end
