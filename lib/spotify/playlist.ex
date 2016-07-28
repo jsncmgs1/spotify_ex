@@ -76,9 +76,7 @@ defmodule Spotify.Playlist do
       # => {:ok, [%Spotify.Playlist{..}]}
   """
   def by_category(conn, id, params \\ []) do
-    conn
-    |> Client.get(by_category_url(params))
-    |> build_structs
+    conn |> Client.get(by_category_url(params)) |> build_structs
   end
 
   @doc"""
@@ -271,7 +269,7 @@ defmodule Spotify.Playlist do
   """
   def create_playlist(conn, user_id, body) do
     url = create_playlist_url(user_id)
-    conn |> Client.get(url) |> build_structs
+    conn |> Client.post(url, body) |> build_structs
   end
   @doc"""
   Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
