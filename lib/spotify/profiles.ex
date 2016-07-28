@@ -31,7 +31,7 @@ defmodule Spotify.Profile do
       # => { :ok, %Spotify.Profile{..} }
   """
   def me(conn) do
-    foo = conn |> Client.get(me_url) |> build_profile
+    foo = conn |> Client.get(me_url) |> build_response
   end
 
   @doc """
@@ -53,7 +53,7 @@ defmodule Spotify.Profile do
   """
   def user(conn, user_id) do
     url = user_url(user_id)
-    conn |> Client.get(url) |> build_profile
+    conn |> Client.get(url) |> build_response
   end
 
   @doc """
@@ -65,17 +65,13 @@ defmodule Spotify.Profile do
   def user_url(user_id), do: "https://api.spotify.com/v1/users/#{user_id}"
 
   @doc false
-  def build_profile({ :ok, %HTTPoison.Response{ status_code: code, body: body }})
-    when code in [400..499]do
-      body = body |> Poison.decode!
-      profile = to_struct(__MODULE__, body)
-
-      { :ok, profile }
+  def build_response({ message, %HTTPoison.Response{ status_code: code, body: body }})
+    when code in 400..499 do
+      { message, body }
     end
 
   @doc false
-
-  def build_profile({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
+  def build_response({ :ok, %HTTPoison.Response{ status_code: code, body: body }}) do
     body = body |> Poison.decode!
     profile = to_struct(__MODULE__, body)
 
