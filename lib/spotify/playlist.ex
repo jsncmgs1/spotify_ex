@@ -20,26 +20,21 @@ defmodule Spotify.Playlist do
   defstruct ~w[ collaborative description external_urls followers
     href id images name owner public snapshot_id tracks type uri ]a
 
-  defmacro send_request(request, opts \\ []) do
-    quote do
-      status = unquote(opts[:status] || 200)
-      case unquote(request) do
-        { :ok, %HTTPoison.Response{ status_code: status, body: body } } ->
-          body = Poison.decode!(body)
+  def build_structs({ :ok, %HTTPoison.Response{ status_code: _status_code, body: body }}) do
+    data = body
+      |> Poison.decode!
+      |> build_struct
 
-          IO.inspect "***************** SPOTIFY RESPONSE BODY **************"
-          IO.inspect body
+    { :ok, data }
+  end
 
-          data = case body["playlists"] do
-            nil -> to_struct(__MODULE__, body)
-            playlists ->
-              Enum.into(playlists["items"], [], fn(playlist) ->
-                to_struct(__MODULE__, playlist)
-              end)
-          end
-          { :ok, data }
-        rest -> rest
-      end
+  def build_struct(body) do
+    playlists = body["playlists"]
+
+    if playlists do
+      Enum.into(playlists["items"], [], &to_struct(__MODULE__, &1))
+    else
+      to_struct(__MODULE__, body)
     end
   end
 
@@ -55,7 +50,7 @@ defmodule Spotify.Playlist do
       # => {:ok, %Spotify.Playlist{..}}
   """
   def featured(conn, params \\ []) do
-    send_request Client.get(conn, featured_url(params))
+    conn |> Client.get(featured_url(params)) |> build_structs
   end
 
   @doc"""
@@ -81,7 +76,9 @@ defmodule Spotify.Playlist do
       # => {:ok, [%Spotify.Playlist{..}]}
   """
   def by_category(conn, id, params \\ []) do
-    send_request Client.get(conn, by_category_url(params))
+    conn
+    |> Client.get(by_category_url(params))
+    |> build_structs
   end
 
   @doc"""
@@ -164,7 +161,7 @@ defmodule Spotify.Playlist do
       # => {:ok, [%Spotify.Playlist{..}]}
   """
   def search(conn, params) do
-    send_request Client.get(search_url(params))
+    conn |> Client.get(search_url(params)) |> build_structs
   end
 
   @doc"""
@@ -190,7 +187,8 @@ defmodule Spotify.Playlist do
   """
   def get_users_playlists(conn, user_id, params \\ []) do
     url = get_users_playlists_url(user_id, params)
-    send_request Client.get(conn, url)
+
+    conn |> Client.get(url) |> build_structs
   end
 
   @doc"""
@@ -217,7 +215,7 @@ defmodule Spotify.Playlist do
   """
   def get_playlist(conn, user_id, playlist_id, params \\ []) do
     url = get_playlist_url(user_id, playlist_id, params)
-    send_request Client.get(conn, url)
+    conn |> Client.get(url) |> build_structs
   end
 
   @doc"""
@@ -242,7 +240,7 @@ defmodule Spotify.Playlist do
   """
   def get_playlist_tracks(conn, user_id, playlist_id, params \\ []) do
     url = get_playlist_tracks(user_id, playlist_id, params)
-    send_request Client.get(conn, url)
+    conn |> Client.get(url) |> build_structs
   end
 
   @doc"""
@@ -273,7 +271,7 @@ defmodule Spotify.Playlist do
   """
   def create_playlist(conn, user_id, body) do
     url = create_playlist_url(user_id)
-    send_request Client.post(conn, url, body), status: 201
+    conn |> Client.get(url) |> build_structs
   end
   @doc"""
   Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
@@ -456,7 +454,7 @@ defmodule Spotify.Playlist do
   """
   def check_followers(conn, owner_id, playlist_id, params) do
     url = check_followers_url(owner_id, playlist_id, params)
-    send_request Client.get(conn, url)
+    conn |> Client.get(url) |> build_structs
   end
 
   @doc"""
