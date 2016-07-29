@@ -40,8 +40,10 @@ This README will go into some detail about the OAuth process. Consult the
 
 [OAuth](#oauth)
 
-<a name='oauth'><a>
-### OAuth
+<a name='oauth'></a>
+
+## OAuth
+
 The Spotify API follows the O Auth 2 spec, providing 3 potential authentication flows:
 
 - [Authorization Code flow](https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow)
@@ -53,7 +55,7 @@ To connect with the Spotify API, first you must register your app with Spotify, 
 In ```/config```, create ```config/secret.exs``` and ```config/spotify.exs``` files
 
 ```elixir
-#secret.exs
+\# /config/secret.exs
 
 use Mix.Config
 
@@ -62,7 +64,7 @@ config :spotify_ex, client_id: "<YOUR CLIENT ID>"
 ```
 
 ```elixir
-#spotify.exs
+\# /config/spotify.exs
 
 use Mix.Config
 
@@ -103,7 +105,7 @@ You must be explicit about the permissions your users have when handling Spotify
 To set your scopes, add them to the list in your ```spotify.exs``` file,
 
 ```elixir
-#config/spotify.exs
+\#config/spotify.exs
 
 config :spotify_ex, scopes: ["playlist-read-private", "playlist-modify-private" "# more scopes"]
 ```
@@ -126,7 +128,7 @@ Authenticate like this:
 Spotify.Authentication.authenticate(conn, params)
 ```
 
-Spotify.Authentication.call will look for params["code"]; the code sent back by Spotify after authorization request. If successful, the user will be redirected to the URL set in the ```spotify.exs``` file, where you can handle different responses.
+`Spotify.Authentication.call` will look for `params["code"]`; the code sent back by Spotify after authorization request. If successful, the user will be redirected to the URL set in the ```spotify.exs``` file, where you can handle different responses.
 
 ```elixir
 defmodule SpotifyExTest.AuthenticationController do
@@ -145,6 +147,4 @@ end
 
 The authentication module will set refresh and access tokens in a cookie. The access token expires every hour, and you'll need to check your reponses for 401 errors. Call Spotify.Authentication.refresh, if there is a refresh token present.  If not, you'll need to redirect back to authorization.
 
-** Phoenix example (Example app found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)) **
-
-```
+** A basic Phoenix example can be found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test) **
