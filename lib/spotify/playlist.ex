@@ -18,6 +18,9 @@ defmodule Spotify.Playlist do
   """
 
   import Helpers
+  use Responder
+  @behaviour Responder
+
   alias Spotify.Client
 
   defstruct ~w[ collaborative description external_urls followers
@@ -454,19 +457,6 @@ defmodule Spotify.Playlist do
   def check_followers_url(owner_id, playlist_id, params) do
     "https://api.spotify.com/v1/users/#{owner_id}/playlists/#{playlist_id}/followers/contains"
     <> query_string(params)
-  end
-
-  @doc false
-  def handle_response({ message, %HTTPoison.Response{ status_code: code, body: body }})
-    when code in 400..499 do
-      { message, Poison.decode!(body)}
-    end
-
-  @doc false
-  def handle_response({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
-    data = body |> Poison.decode! |> build_response
-
-    { :ok, data }
   end
 
   @doc false
