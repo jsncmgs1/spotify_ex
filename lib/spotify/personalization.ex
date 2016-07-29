@@ -4,6 +4,9 @@ defmodule Spotify.Personalization do
   @moduledoc """
   Endpoints for retrieving information about the user’s listening habits
 
+  Some endpoints return collections. Spotify wraps the collection in a paging object,
+  this API does the same. A single piece of data will not be wrapped.
+
   There are two functions for each endpoint, one that actually makes the request,
   and one that provides the endpoint:
 
