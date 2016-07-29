@@ -1,4 +1,5 @@
 defmodule Spotify.Track do
+  @moduledoc false
   import Helpers
 
   defstruct ~w[
