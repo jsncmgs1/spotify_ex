@@ -1,4 +1,5 @@
 defmodule Spotify.Artist do
+  @moduledoc false
   defstruct ~w[
     external_urls
     followers
