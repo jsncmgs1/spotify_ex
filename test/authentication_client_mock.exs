@@ -26,3 +26,4 @@ defmodule AuthenticationClientMock do
     }
   end
 end
+
