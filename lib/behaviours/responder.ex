@@ -4,9 +4,10 @@ defmodule Responder do
 
   defmacro __using__(_) do
     quote do
-      def handle_response({ :ok, %HTTPoison.Response{ status_code: 200, body: "" }}) do
-        :ok
-      end
+      def handle_response({ :ok, %HTTPoison.Response{ status_code: code, body: "" }})
+        when code in [ 200, 201 ] do
+          :ok
+        end
 
       def handle_response({ message, %HTTPoison.Response{ status_code: code, body: body }})
       when code in 400..499 do
