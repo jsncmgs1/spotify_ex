@@ -1,4 +1,5 @@
 defmodule Responder do
+  @moduledoc false
   @callback build_response(map) :: any
 
   defmacro __using__(_) do
