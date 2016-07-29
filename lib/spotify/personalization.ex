@@ -1,6 +1,4 @@
 defmodule Spotify.Personalization do
-  import Helpers
-
   @moduledoc """
   Endpoints for retrieving information about the user’s listening habits
 
@@ -16,6 +14,9 @@ defmodule Spotify.Personalization do
   https://developer.spotify.com/web-api/web-api-personalization-endpoints/
   """
 
+  import Helpers
+  use Responder
+  @behaviour Responder
   alias Spotify.Client
 
   @doc """
@@ -35,8 +36,9 @@ defmodule Spotify.Personalization do
       { :ok, artists: [%Spotify.Artist{..}...], paging: %Paging{next:...} }
   """
   def top_artists(conn, params \\ []) do
+
     url = top_artists_url(params)
-    conn |> Client.get(url) |> build_response
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
@@ -63,7 +65,7 @@ defmodule Spotify.Personalization do
   """
   def top_tracks(conn, params \\ []) do
     url = top_tracks_url(params)
-    conn |> Client.get(url) |> build_response
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
@@ -84,16 +86,7 @@ defmodule Spotify.Personalization do
   end
 
   @doc false
-  def build_response({ message, %HTTPoison.Response{status_code: code, body: body} })
-    when code in 400..499 do
-      { message, body }
-    end
-
-  @doc false
-
-  def build_response({:ok, %HTTPoison.Response{status_code: _code, body: body}}) do
-    body = Poison.decode!(body)
-
+  def build_response(body) do
     items = Enum.map(body["items"], fn(item) ->
       case item["type"] do
         "artist" -> build_artist_struct(item)
@@ -102,9 +95,7 @@ defmodule Spotify.Personalization do
     end)
 
     paging = to_struct(Paging, body)
-    response = Map.put(paging, :items, items)
-
-    { :ok, response }
+     Map.put(paging, :items, items)
   end
 
   @doc false
