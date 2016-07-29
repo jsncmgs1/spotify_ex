@@ -91,11 +91,8 @@ defmodule Spotify.Playlist do
   """
   def follow_playlist(conn, owner_id, playlist_id, body \\ "") do
     url = follow_playlist_url(owner_id, playlist_id)
+    conn |> Client.put(url) |> handle_response
 
-    case Client.put(conn, url, body) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: ""}} -> :ok
-      rest -> rest
-    end
   end
 
   @doc"""
@@ -119,11 +116,7 @@ defmodule Spotify.Playlist do
   """
   def unfollow_playlist(conn, owner_id, playlist_id) do
     url = unfollow_playlist_url(owner_id, playlist_id)
-
-    case Client.delete(conn, url) do
-      { :ok, %HTTPoison.Response{status_code: 200} } -> :ok
-      rest -> rest
-    end
+    conn |> Client.delete(url) |> handle_response
   end
 
   @doc"""
@@ -289,10 +282,7 @@ defmodule Spotify.Playlist do
   """
   def change_playlist(conn, user_id, playlist_id, body) do
     url = change_playlist_url(user_id, playlist_id)
-    case Client.put(conn, url, body) do
-      {:ok, %HTTPoison.Response{status_code: 200}} -> :ok
-      rest -> rest
-    end
+    conn |> Client.put(url) |> handle_response
   end
 
   @doc"""
@@ -320,11 +310,7 @@ defmodule Spotify.Playlist do
   """
   def add_tracks(conn, user_id, playlist_id, params \\ []) do
     url = add_tracks(user_id, playlist_id, params)
-
-    case Client.post(conn, url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, body}
-      rest -> rest
-    end
+    conn |> Client.put(url) |> handle_response
   end
 
   @doc"""
@@ -351,10 +337,7 @@ defmodule Spotify.Playlist do
   """
   def remove_tracks(conn, user_id, playlist_id) do
     url = playlist_tracks_url(user_id, playlist_id)
-    case Client.delete(conn, url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, body}
-      rest -> rest
-    end
+    conn |> Client.delete(url) |> handle_response
   end
 
   @doc"""
@@ -383,11 +366,7 @@ defmodule Spotify.Playlist do
   """
   def reorder_tracks(conn, user_id, playlist_id, body) do
     url = playlist_tracks_url(user_id, playlist_id)
-
-    case Client.put(conn, url, body) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, body}
-      rest -> rest
-    end
+    conn |> Client.put(url) |> handle_response
   end
 
   @doc"""
@@ -416,10 +395,7 @@ defmodule Spotify.Playlist do
   """
   def replace_tracks(conn, user_id, playlist_id, params \\ []) do
     url = replace_tracks_url(user_id, playlist_id, params)
-    case Client.put(conn, url) do
-      {:ok, %HTTPoison.Response{status_code: 200} } -> :ok
-      rest -> rest
-    end
+    conn |> Client.put(url) |> handle_response
   end
 
   @doc"""
