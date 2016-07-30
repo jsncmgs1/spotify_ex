@@ -1,11 +1,10 @@
 [![Build Status](https://travis-ci.org/jsncmgs1/spotify_ex.svg)](https://travis-ci.org/jsncmgs1/spotify_ex)
-
 [![Hex.pm](https://img.shields.io/hexpm/v/spotify_ex.svg?maxAge=2592000)](https://hex.pm/packages/spotify_ex)
-
 [![Inline docs](http://inch-ci.org/github/jsncmgs1/spotify_ex.svg)](http://inch-ci.org/github/jsncmgs1/spotify_ex)
 
-# Spotify
+# SpotifyEx
 **Elixir Wrapper for the Spotify Web API**
+
 
 ## Installation
 
@@ -43,9 +42,7 @@ Breaking changes will occur until 1.0!
 This README will go into some detail about the OAuth process. Consult the
 [docs](https://hexdocs.pm/spotify_ex/0.1.1/api-reference.html) for other parts of the API.
 
-[OAuth](#oauth)
-
-<a name='oauth'></a>
+## A basic Phoenix example can be found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)
 
 ## OAuth
 
@@ -152,4 +149,3 @@ end
 
 The authentication module will set refresh and access tokens in a cookie. The access token expires every hour, and you'll need to check your reponses for 401 errors. Call Spotify.Authentication.refresh, if there is a refresh token present.  If not, you'll need to redirect back to authorization.
 
-** A basic Phoenix example can be found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test) **
