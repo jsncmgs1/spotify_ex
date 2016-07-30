@@ -1,6 +1,9 @@
 [![Build Status](https://travis-ci.org/jsncmgs1/spotify_ex.svg)](https://travis-ci.org/jsncmgs1/spotify_ex)
+
 [![Hex.pm](https://img.shields.io/hexpm/v/spotify_ex.svg?maxAge=2592000)](https://hex.pm/packages/spotify_ex)
+
 [![Inline docs](http://inch-ci.org/github/jsncmgs1/spotify_ex.svg)](http://inch-ci.org/github/jsncmgs1/spotify_ex)
+
 # Spotify
 **Elixir Wrapper for the Spotify Web API**
 
