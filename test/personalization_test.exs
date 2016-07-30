@@ -27,7 +27,7 @@ defmodule PersonalizationTest do
   test "%Spotify.Personalization{}" do
     attrs = ~w[href items limit next previous total]a
 
-    expected = Map.from_struct(%Personalization{}) |> Map.keys
+    expected = %Personalization{} |> Map.from_struct |> Map.keys
     assert expected == attrs
   end
 

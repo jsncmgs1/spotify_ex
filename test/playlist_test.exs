@@ -24,8 +24,7 @@ defmodule PlaylistTest do
     attrs = ~w[collaborative description external_urls followers
     href id images name owner public snapshot_id tracks type uri]a
 
-    expected = Map.from_struct(%Playlist{}) |> Map.keys
-
+    expected = %Playlist{} |> Map.from_struct |> Map.keys
     assert expected == attrs
   end
 
