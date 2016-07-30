@@ -18,7 +18,7 @@ defmodule OathAuthorizationFlow do
       with_auth_mock do
         conn = conn(:post, "/authenticate", %{"code" => "valid"})
         conn = Plug.Conn.fetch_cookies(conn)
-        
+
         assert { :ok, new_conn } = Authentication.authenticate(conn, conn.params)
         assert new_conn.cookies["spotify_access_token"]  == "access_token"
         assert new_conn.cookies["spotify_refresh_token"] == "refresh_token"

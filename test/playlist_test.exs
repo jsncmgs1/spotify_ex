@@ -5,11 +5,9 @@ defmodule PlaylistTest do
   describe "build_response/1" do
     test "the API returns a collection" do
       actual = Playlist.build_response(response_body_with_collection)
-
       collection = [%Playlist{name: "foo"}, %Playlist{name: "bar"}]
       playlists = Enum.map(collection, &playlist/1)
-
-      expected = Map.merge(%Paging{}, %Paging{items: playlists})
+      expected = paging(%Paging{items: playlists})
 
       assert actual == expected
     end
@@ -31,6 +29,7 @@ defmodule PlaylistTest do
     assert expected == attrs
   end
 
+  def paging(pager), do: Map.merge(%Paging{}, pager)
   def playlist(playlist), do: Map.merge(%Playlist{}, playlist)
 
   def response_body_with_collection do

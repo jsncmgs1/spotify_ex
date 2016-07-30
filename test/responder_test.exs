@@ -15,7 +15,7 @@ end
 defmodule ResponderTest do
   use ExUnit.Case
 
-  describe "handle_responde" do
+  describe "handle_response" do
     test "with 200/201 status and an empty body" do
       assert GenericMock.some_endpoint(success_empty_body) == :ok
     end
