@@ -1,6 +1,6 @@
 defmodule Spotify.Playlist.Track do
   @moduledoc """
-  Requesting track info from a specific playkist
+  Requesting track info from a specific playlist
   """
   import Helpers
   use Responder
