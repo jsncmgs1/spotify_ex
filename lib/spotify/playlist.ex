@@ -435,7 +435,9 @@ defmodule Spotify.Playlist do
     <> query_string(params)
   end
 
-  @doc false
+  @doc """
+  Implements the hook expected by the Responder behaviour
+  """
   def build_response(body) do
     playlists = body["playlists"]
 

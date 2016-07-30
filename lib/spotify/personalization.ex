@@ -85,7 +85,9 @@ defmodule Spotify.Personalization do
     "https://api.spotify.com/v1/me/top/"
   end
 
-  @doc false
+  @doc """
+  Implements the hook expected by the Responder behaviour
+  """
   def build_response(body) do
     items = Enum.map(body["items"], fn(item) ->
       case item["type"] do

@@ -1,6 +1,9 @@
 defmodule Spotify.Track do
   @moduledoc false
+
   import Helpers
+  @behaviour Responder
+  use Responder
 
   defstruct ~w[
     album
@@ -102,17 +105,9 @@ defmodule Spotify.Track do
     "https://api.spotify.com/v1/tracks/#{id}"
   end
 
-  def handle_response({ message, %HTTPoison.Response{ status_code: code, body: body }})
-    when code in 400..499 do
-      { message, Poison.decode!(body)}
-    end
-
-  def handle_response({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
-    data = body |> Poison.decode! |> build_response
-
-    { :ok, data }
-  end
-
+  @doc """
+  Implements the hook expected by the Responder behaviour
+  """
   def build_response(body) do
     if audio_features = body["audio_features"] do
       audio_features = Enum.map(audio_features, &to_struct(AudioFeatures, &1))
