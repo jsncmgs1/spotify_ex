@@ -18,6 +18,8 @@ defmodule Paging do
     Param items should be structs from that collections types, for example
     getting a collection playlists, items should be [%Spotify.Playlist{}, ...]
     Replaces the map currently items with the collection.
+
+    Not every collection is wrapped in a paging object.
   """
   def response(body, items) do
     to_struct(__MODULE__, body) |> Map.put(:items, items)

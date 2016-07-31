@@ -8,4 +8,43 @@ defmodule TrackTest do
     expected = %Track{} |> Map.from_struct |> Map.keys
     assert expected == attrs
   end
+
+  describe "build_response/1 when audio features are requested" do
+    test "API returns a single item" do
+      response = %{album: "foo"}
+
+      expected = { :ok, %Track{album: "foo"} }
+      actual = Track.build_response(response)
+
+      assert expected == actual
+    end
+
+    test "API returns a collection" do
+      response = %{tracks: [%{"album" => "foo"}, %{"album" => "bar"}]}
+
+      expected = { :ok, [%Track{album: "foo"}, %Track{album: "bar"}] }
+      actual = Track.build_response(response)
+
+      assert expected == actual
+    end
+  end
+
+  describe "build_response/1 when tracks are requested" do
+    test "API returns a single item" do
+      response = %{"energy": "foo"}
+      expected = { :ok, %AudioFeatures{energy: "foo"} }
+      actual = Track.build_response(response)
+
+      assert expected == actual
+    end
+
+    test "API returns a collection" do
+      response = %{audio_features: [%{"energy" => "foo"}, %{"energy" => "bar"}]}
+      expected = { :ok, [%AudioFeatures{energy: "foo"},
+                         %AudioFeatures{energy: "bar"}] }
+      actual = Track.build_response(response)
+
+      assert expected == actual
+    end
+  end
 end
