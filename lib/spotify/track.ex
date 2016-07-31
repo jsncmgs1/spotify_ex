@@ -1,7 +1,7 @@
 defmodule Spotify.Track do
   @moduledoc false
 
-  alias Spotify.Track
+  alias Spotify.{Track, Client}
   import Helpers
   @behaviour Responder
   use Responder
@@ -131,14 +131,14 @@ defmodule Spotify.Track do
   Implements the hook expected by the Responder behaviour
   """
   def build_response(body) do
-    response = case body do
+    require IEx; IEx.pry
+
+    case body do
       %{audio_features: audio_features} -> build_audio_features(audio_features)
       %{tracks: tracks} -> build_tracks(tracks)
-      %{album: _ }  -> struct(Track, body)
-      %{energy: _ } -> struct(AudioFeatures, body)
+      %{"album" => _ }  -> to_struct(Track, body)
+      %{"energy" => _ } -> struct(AudioFeatures, body)
     end
-
-    {:ok, response}
   end
 
   defp build_tracks(tracks) do

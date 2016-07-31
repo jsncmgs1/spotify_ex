@@ -11,9 +11,9 @@ defmodule TrackTest do
 
   describe "build_response/1 when audio features are requested" do
     test "API returns a single item" do
-      response = %{album: "foo"}
+      response = %{"album" => "foo"}
 
-      expected = { :ok, %Track{album: "foo"} }
+      expected = %Track{album: "foo"}
       actual = Track.build_response(response)
 
       assert expected == actual
@@ -22,7 +22,7 @@ defmodule TrackTest do
     test "API returns a collection" do
       response = %{tracks: [%{"album" => "foo"}, %{"album" => "bar"}]}
 
-      expected = { :ok, [%Track{album: "foo"}, %Track{album: "bar"}] }
+      expected = [%Track{album: "foo"}, %Track{album: "bar"}]
       actual = Track.build_response(response)
 
       assert expected == actual
@@ -31,8 +31,8 @@ defmodule TrackTest do
 
   describe "build_response/1 when tracks are requested" do
     test "API returns a single item" do
-      response = %{"energy": "foo"}
-      expected = { :ok, %AudioFeatures{energy: "foo"} }
+      response = %{"energy" => "foo"}
+      expected = %AudioFeatures{energy: "foo"}
       actual = Track.build_response(response)
 
       assert expected == actual
@@ -40,8 +40,7 @@ defmodule TrackTest do
 
     test "API returns a collection" do
       response = %{audio_features: [%{"energy" => "foo"}, %{"energy" => "bar"}]}
-      expected = { :ok, [%AudioFeatures{energy: "foo"},
-                         %AudioFeatures{energy: "bar"}] }
+      expected = [%AudioFeatures{energy: "foo"}, %AudioFeatures{energy: "bar"}]
       actual = Track.build_response(response)
 
       assert expected == actual
