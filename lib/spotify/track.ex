@@ -35,9 +35,9 @@ defmodule Spotify.Track do
       Spotify.Track.audio_features(conn, ids: "1, 3")
       # => {:ok [%Spotify.AudioFeatures, ...]}
   """
-  def audio_features(conn, ids) when is_list(ids) do
-    url = audio_features_url(ids)
-    conn |> Client.get(ids) |> handle_response
+  def audio_features(conn, params) when is_list(params) do
+    url = audio_features_url(params)
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
@@ -52,7 +52,7 @@ defmodule Spotify.Track do
   """
   def audio_features(conn, id) do
     url = audio_features_url(id)
-    conn |> Client.get(id) |> handle_response
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
@@ -61,8 +61,8 @@ defmodule Spotify.Track do
       iex> Spotify.Track.audio_features_url(ids: "1,3")
       "https://api.spotify.com/v1/audio-features?ids=1%2C3"
   """
-  def audio_features_url(ids) when is_list(ids) do
-    "https://api.spotify.com/v1/audio-features" <> query_string(ids)
+  def audio_features_url(params) when is_list(params) do
+    "https://api.spotify.com/v1/audio-features" <> query_string(params)
   end
 
   @doc """
@@ -83,8 +83,8 @@ defmodule Spotify.Track do
       # => { :ok , [%Spotify.Track{}, ...] }
   **Method**: `GET`
   """
-  def get_tracks(conn, ids: ids) do
-    url = get_tracks_url(ids)
+  def get_tracks(conn, params) do
+    url = get_tracks_url(params)
     conn |> Client.get(url) |> handle_response
   end
 
@@ -112,8 +112,8 @@ defmodule Spotify.Track do
       "https://api.spotify.com/v1/tracks?ids=1%2C3"
 
   """
-  def get_tracks_url(ids) when is_list(ids) do
-    "https://api.spotify.com/v1/tracks" <> query_string(ids)
+  def get_tracks_url(params) do
+    "https://api.spotify.com/v1/tracks" <> query_string(params)
   end
 
   @doc """
@@ -131,13 +131,11 @@ defmodule Spotify.Track do
   Implements the hook expected by the Responder behaviour
   """
   def build_response(body) do
-    require IEx; IEx.pry
-
     case body do
-      %{audio_features: audio_features} -> build_audio_features(audio_features)
-      %{tracks: tracks} -> build_tracks(tracks)
+      %{"audio_features" => audio_features} -> build_audio_features(audio_features)
+      %{"tracks" => tracks} -> build_tracks(tracks)
       %{"album" => _ }  -> to_struct(Track, body)
-      %{"energy" => _ } -> struct(AudioFeatures, body)
+      %{"energy" => _ } -> to_struct(AudioFeatures, body)
     end
   end
 
@@ -145,8 +143,8 @@ defmodule Spotify.Track do
     Enum.map(tracks, &to_struct(Track, &1))
   end
 
-  defp build_audio_features(tracks) do
-    Enum.map(tracks, &to_struct(AudioFeatures, &1))
+  defp build_audio_features(audio_features) do
+    Enum.map(audio_features, &to_struct(AudioFeatures, &1))
   end
 
 end

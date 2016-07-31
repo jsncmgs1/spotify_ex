@@ -20,7 +20,7 @@ defmodule TrackTest do
     end
 
     test "API returns a collection" do
-      response = %{tracks: [%{"album" => "foo"}, %{"album" => "bar"}]}
+      response = %{"tracks" => [%{"album" => "foo"}, %{"album" => "bar"}]}
 
       expected = [%Track{album: "foo"}, %Track{album: "bar"}]
       actual = Track.build_response(response)
@@ -39,7 +39,7 @@ defmodule TrackTest do
     end
 
     test "API returns a collection" do
-      response = %{audio_features: [%{"energy" => "foo"}, %{"energy" => "bar"}]}
+      response = %{"audio_features" => [%{"energy" => "foo"}, %{"energy" => "bar"}]}
       expected = [%AudioFeatures{energy: "foo"}, %AudioFeatures{energy: "bar"}]
       actual = Track.build_response(response)
 
