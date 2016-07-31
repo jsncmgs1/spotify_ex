@@ -1,6 +1,10 @@
 defmodule Spotify.Track do
   @moduledoc false
+
+  alias Spotify.{Track, Client}
   import Helpers
+  @behaviour Responder
+  use Responder
 
   defstruct ~w[
     album
@@ -24,22 +28,31 @@ defmodule Spotify.Track do
 
   @doc """
   Get audio features for several tracks
+  [Spotify Documentation](https://developer.spotify.com/web-api/get-several-audio-features/)
 
   **Method**: `GET`
+
+      Spotify.Track.audio_features(conn, ids: "1, 3")
+      # => {:ok [%Spotify.AudioFeatures, ...]}
   """
-  def audio_features(conn, ids) when is_list(ids) do
-    url = audio_features_url(ids)
-    conn |> Client.get(conn, ids) |> handle_response
+  def audio_features(conn, params) when is_list(params) do
+    url = audio_features_url(params)
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
   Get audio features for a track
+  [Spotify Documentation](https://developer.spotify.com/web-api/get-audio-features/)
 
   **Method**: `GET`
+
+      Spotify.Track.audio_features(conn, "1")
+      # => {:ok ,%Spotify.AudioFeatures{}}
+
   """
   def audio_features(conn, id) do
-    url = audio_feature_url(id)
-    conn |> Client.get(conn, id) |> handle_response
+    url = audio_features_url(id)
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
@@ -48,36 +61,48 @@ defmodule Spotify.Track do
       iex> Spotify.Track.audio_features_url(ids: "1,3")
       "https://api.spotify.com/v1/audio-features?ids=1%2C3"
   """
-  def audio_features_url(ids) do
-    "https://api.spotify.com/v1/audio-features" <> query_string(ids)
+  def audio_features_url(params) when is_list(params) do
+    "https://api.spotify.com/v1/audio-features" <> query_string(params)
   end
 
   @doc """
   Get audio features for a track
 
-      iex> Spotify.Track.audio_feature_url("1")
+      iex> Spotify.Track.audio_features_url("1")
       "https://api.spotify.com/v1/audio-features/1"
   """
-  def audio_feature_url(id) do
+  def audio_features_url(id) do
     "https://api.spotify.com/v1/audio-features/#{id}"
   end
 
   @doc """
   Get several tracks
+  [Spotify Documentation](https://developer.spotify.com/web-api/get-several-tracks/)
 
+      Spotify.Track.get_tracks(conn, ids: "1,3")
+      # => { :ok , [%Spotify.Track{}, ...] }
   **Method**: `GET`
   """
-  def get_tracks(conn, ids: ids) do
-
+  def get_tracks(conn, params) do
+    url = get_tracks_url(params)
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
   Get a track
+  [Spotify Documentation](https://developer.spotify.com/web-api/get-track/)
 
   **Method**: `GET`
-  """
-  def get_tracks(conn, id) do
 
+  **Optional Params**: `market`
+
+      Spotify.get_track(conn, id)
+      # => { :ok , %Spotify.Track{} }
+
+  """
+  def get_track(conn, id) do
+    url = get_track_url(id)
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
@@ -87,8 +112,8 @@ defmodule Spotify.Track do
       "https://api.spotify.com/v1/tracks?ids=1%2C3"
 
   """
-  def get_tracks_url(ids) when is_list(ids) do
-    "https://api.spotify.com/v1/tracks" <> query_string(ids)
+  def get_tracks_url(params) do
+    "https://api.spotify.com/v1/tracks" <> query_string(params)
   end
 
   @doc """
@@ -102,23 +127,24 @@ defmodule Spotify.Track do
     "https://api.spotify.com/v1/tracks/#{id}"
   end
 
-  def handle_response({ message, %HTTPoison.Response{ status_code: code, body: body }})
-    when code in 400..499 do
-      { message, Poison.decode!(body)}
+  @doc """
+  Implements the hook expected by the Responder behaviour
+  """
+  def build_response(body) do
+    case body do
+      %{"audio_features" => audio_features} -> build_audio_features(audio_features)
+      %{"tracks" => tracks} -> build_tracks(tracks)
+      %{"album" => _ }  -> to_struct(Track, body)
+      %{"energy" => _ } -> to_struct(AudioFeatures, body)
     end
-
-  def handle_response({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
-    data = body |> Poison.decode! |> build_response
-
-    { :ok, data }
   end
 
-  def build_response(body) do
-    if audio_features = body["audio_features"] do
-      audio_features = Enum.map(audio_features, &to_struct(AudioFeatures, &1))
-    else
-      to_struct(__MODULE__, body)
-    end
+  defp build_tracks(tracks) do
+    Enum.map(tracks, &to_struct(Track, &1))
+  end
+
+  defp build_audio_features(audio_features) do
+    Enum.map(audio_features, &to_struct(AudioFeatures, &1))
   end
 
 end

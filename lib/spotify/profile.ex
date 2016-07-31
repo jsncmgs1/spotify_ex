@@ -66,7 +66,9 @@ defmodule Spotify.Profile do
   """
   def user_url(user_id), do: "https://api.spotify.com/v1/users/#{user_id}"
 
-  @doc false
+  @doc """
+  Implements the hook expected by the Responder behaviour
+  """
   def build_response(body) do
     to_struct(__MODULE__, body)
   end
