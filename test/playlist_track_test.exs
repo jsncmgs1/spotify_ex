@@ -7,7 +7,7 @@ defmodule Playlist.TrackTest do
     attrs = ~w[added_at added_by is_local track]a
     expected = %PT{} |> Map.from_struct |> Map.keys
 
-    assert attrs = expected
+    assert attrs == expected
   end
 
   test "handle_response/1" do
@@ -16,7 +16,7 @@ defmodule Playlist.TrackTest do
     tracks = [ %Track{name: "foo"} ]
     expected = %Paging{items: [%PT{track: tracks}]}
 
-    assert actual = expected
+    assert actual == expected
   end
 
   def response do
