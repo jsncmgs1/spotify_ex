@@ -90,7 +90,7 @@ defmodule Spotify.Album do
       Spotify.Album.get_album_tracks("1")
       # => { :ok, %Paging{items: [%Spotify.Tracks{}, ...] } }
   """
-  def get_album_tracks(conn, id, params) do
+  def get_album_tracks(conn, id, params \\ []) do
     url = get_album_tracks_url(id, params)
     conn |> Client.get(url) |> handle_response
   end
