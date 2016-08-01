@@ -139,11 +139,11 @@ defmodule Spotify.Track do
     end
   end
 
-  defp build_tracks(tracks) do
+  def build_tracks(tracks) do
     Enum.map(tracks, &to_struct(Track, &1))
   end
 
-  defp build_audio_features(audio_features) do
+  def build_audio_features(audio_features) do
     Enum.map(audio_features, &to_struct(AudioFeatures, &1))
   end
 
