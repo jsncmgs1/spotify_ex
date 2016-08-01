@@ -10,18 +10,21 @@ defmodule Playlist.TrackTest do
     assert attrs == expected
   end
 
-  test "handle_response/1" do
+  test "build_response/1" do
     actual = PT.build_response(response)
 
-    tracks = [ %Track{name: "foo"} ]
-    expected = %Paging{items: [%PT{track: tracks}]}
+    track = %Track{name: "foo"}
+    expected = %Paging{items: [%PT{added_at: "2014-08-18T20:16:08Z", track: track}]}
 
     assert actual == expected
   end
 
   def response do
     %{ "items" => [
-        %{ "track" => %Track{name: "foo"} }
+        %{
+          "added_at" => "2014-08-18T20:16:08Z",
+          "track" => %{"name" => "foo"}
+        }
       ]
     }
   end
