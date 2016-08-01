@@ -26,14 +26,14 @@ APIs covered so far:
 - Playlists
 - Personalization
 - Profile
+- Albums
+- Tracks
 
 APIs In Progress:
-- Albums
 - Artists
 - Browse
 - Follow
 - Library
-- Tracks
 
 Breaking changes will occur until 1.0!
 
