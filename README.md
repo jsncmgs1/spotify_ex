@@ -9,8 +9,8 @@
 
   1. Add spotify_ex to your list of dependencies in `mix.exs`:
 
-       def deps do
-          [{:spotify_ex, "~> 0.1.3"}]
+        def deps do
+           [{:spotify_ex, "~> 0.1.4"}]
         end
 
   2. Ensure spotify_ex is started before your application:
