@@ -439,15 +439,14 @@ defmodule Spotify.Playlist do
   Implements the hook expected by the Responder behaviour
   """
   def build_response(body) do
-    playlists = body["playlists"]
-
-    if playlists do
-      playlists = Enum.map(playlists["items"], &to_struct(__MODULE__, &1))
-
-      Paging.response(body, playlists)
-    else
-      to_struct(__MODULE__, body)
+    case body do
+      %{"playlists" => playlists} -> %Paging{items: build_playlists(playlists["items"])}
+      _ -> to_struct(__MODULE__, body)
     end
+  end
+
+  def build_playlists(playlists) do
+    Enum.map(playlists, &to_struct(__MODULE__, &1))
   end
 
 end
