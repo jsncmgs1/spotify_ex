@@ -6,4 +6,5 @@ defmodule DocTest do
   doctest Spotify.Personalization
   doctest Spotify.Playlist
   doctest Spotify.Track
+  doctest Spotify.Artist
 end

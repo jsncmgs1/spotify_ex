@@ -1,10 +1,32 @@
 defmodule Spotify.Artist do
-  @moduledoc false
+  @moduledoc """
+    Functions for retrieving information about artists and for
+    managing a user’s followed artists.
+
+    Some of the endpoints in the offical docs are not implemented in this module.
+
+    - Following and Unfollowing an artist is also the same endpoint as following a user,
+    so related functions live in `Spotify.Follow`.
+
+    - Top artists is also the same function for top tracks, it lives in
+    `Spotify.Personalization`.
+
+    - Artist's albums lives in `Spotify.Albums`.
+
+    There are two functions for each endpoint, one that actually makes the request,
+    and one that provides the endpoint:
+
+        Spotify.Playist.create_playlist(conn, "foo", "bar") # makes the POST request.
+        Spotify.Playist.create_playlist_url("foo", "bar") # provides the url for the request.
+
+
+    https://developer.spotify.com/web-api/artist-endpoints/
+  """
 
   import Helpers
   use Responder
   @behaviour Responder
-  alias Spotify.Client
+  alias Spotify.{Client, Artist, Track}
 
   defstruct ~w[
     external_urls
@@ -24,11 +46,21 @@ defmodule Spotify.Artist do
   [Spotify Documenation](https://developer.spotify.com/web-api/get-artist/)
 
   **Method**: `GET`
+
+      Spotify.Artist.get_artist(conn, "4")
+      # => { :ok, %Artist{}}
   """
   def get_artist(conn, id) do
-
+    url = get_artist_url(id)
+    conn |> CLient.get(url) |> handle_response
   end
 
+  @doc """
+  Get Spotify catalog information for a single artist identified by their unique Spotify ID.
+
+      iex> Spotify.Artist.get_artist_url("4")
+      "https://api.spotify.com/v1/artists/4"
+  """
   def get_artist_url(id) do
     "https://api.spotify.com/v1/artists/#{id}"
   end
@@ -40,25 +72,23 @@ defmodule Spotify.Artist do
   **Method**: `GET`
 
   **Required Params**: `ids`
-  """
-  def get_artists(conn, params) do
 
+      Spotify.Artist.get_artists(conn, ids: "1,4")
+      # => { :ok, [%Artist{}, ...] }
+  """
+  def get_artists(conn, params = [ids: _ids]) do
+    url = get_artists_url(params)
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
-  Get Spotify catalog information about an artist’s albums.
-  [Spotify Documenation](https://developer.spotify.com/web-api/get-artists-albums/)
+  Get Spotify catalog information for several artists based on their Spotify IDs.
 
-  **Method**: `GET`
-
-  **Optional Params**: `market`, `album_type`, `offset`, `limit`
+      iex> Spotify.Artist.get_artists_url(ids: "1,4")
+      "https://api.spotify.com/v1/artists?ids=1%2C4"
   """
-  def get_artists_albums(conn, id, params \\ []) do
-
-  end
-
-  def get_artists_albums_url(id, params) do
-    "https://api.spotify.com/v1/artists/#{id}/albums" <> query_string(params)
+  def get_artists_url(params) do
+    "https://api.spotify.com/v1/artists" <> query_string(params)
   end
 
   @doc """
@@ -68,73 +98,85 @@ defmodule Spotify.Artist do
   **Method**: `GET`
 
   **Required Params**: `country`
-  """
-  def get_top_tracks(conn, id, params) do
 
+      Spotify.get_top_tracks(conn, "4", country: "US")
+      # => { :ok, [%Track{}, ...] }
+  """
+  def get_top_tracks(conn, id, params = [country: _country]) do
+    url = get_top_tracks_url(id, params)
+    conn |> Client.get(url) |> handle_response
   end
 
-  def get_top_tracks_url(id, params) do
+  @doc """
+  Get Spotify catalog information about an artist’s top tracks by country.
+
+      iex> Spotify.Artist.get_top_tracks_url("4", country: "US")
+      "https://api.spotify.com/v1/artists/4/top-tracks?country=US"
+  """
+  def get_top_tracks_url(id, params = [country: _country]) do
     "https://api.spotify.com/v1/artists/#{id}/top-tracks" <> query_string(params)
   end
 
   @doc """
+  Get Spotify catalog information about artists similar to a given artist.
+  [Spotify Documenation](https://developer.spotify.com/web-api/get-related-artists/)
+
   ** Method **: `GET`
+
+      Spotify.Artist.get_related_artists(conn, "4")
+      # => { :ok, [ %Artist{}, ... ] }
   """
   def get_related_artists(conn, id) do
-
+    url = get_related_artists_url(id)
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
-  ** Method **: `GET`
-  """
-  def my_following(conn) do
+    Get Spotify catalog information about artists similar to a given artist.
 
+        iex> Spotify.Artist.get_related_artists_url("4")
+        "https://api.spotify.com/v1/artists/4/related-artists"
+  """
+  def get_related_artists_url(id) do
+    "https://api.spotify.com/v1/artists/#{id}/related-artists"
   end
 
   @doc """
-  ** Method **: `PUT`
-  """
-  def follow(conn, params) do
+  Get the current user’s followed artists.
 
+  **Method**: `GET`
+
+  **Optional Params**: `type`, `limit`, `after`
+
+      Spotify.Artist.artists_I_follow_url(conn)
+      # => { :ok, %Paging{items: [%Artist{}, ...]} }
+  """
+  def artists_I_follow(conn, params \\ []) do
+    url = artists_I_follow_url(params)
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """
-  ** Method **: `DELETE`
+  Get the current user’s followed artists.
+
+      iex> Spotify.Artist.artists_I_follow_url(limit: 5)
+      "https://api.spotify.com/v1/me/following?type=artist&limit=5"
   """
-  def unfollow(conn, params) do
-
-  end
-
-  @doc """
-  ** Method **: `GET`
-  """
-  def check_following(conn, params) do
-
-  end
-
-  @doc """
-  ** Method **: `GET`
-  """
-  def my_top_tracks(conn) do
-
-  end
-
-  @doc """
-  ** Method **: `GET`
-  """
-  def my_top_artists(conn) do
-
-  end
-
-  @doc """
-  ** Method **: `GET`
-  """
-  def search(conn, params) do
-
+  def artists_I_follow_url(params) do
+    "https://api.spotify.com/v1/me/following?type=artist&" <> URI.encode_query(params)
   end
 
   def build_response(body) do
+    case body do
+      %{ "artists" => artists }  -> build_artists(artists)
+      %{ "tracks" => tracks }    -> Track.build_tracks(tracks)
+      %{ "name" => _ }           -> to_struct(Artist, body)
+      booleans_or_error          -> booleans_or_error
+    end
+  end
 
+  def build_artists(artists) do
+    Enum.map(artists, &to_struct(Artist, &1))
   end
 
 end

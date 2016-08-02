@@ -2,7 +2,7 @@ defmodule PagingTest do
   use ExUnit.Case
 
   test "%Paging{}" do
-    expected = ~w[ href items limit next offset previous total ]a
+    expected = ~w[ cursor href items limit next offset previous total ]a
     actual = %Paging{} |> Map.from_struct |> Map.keys
 
     assert expected == actual

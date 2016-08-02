@@ -312,7 +312,7 @@ defmodule Spotify.Album do
     paging = to_struct(Paging, album.tracks)
     tracks = Enum.map(paging.items, &to_struct(Track, &1))
     paging = Map.put(paging, :items, tracks)
-    album  = Map.put(album, :tracks, paging)
+    Map.put(album, :tracks, paging)
   end
 
   defp build_albums(albums), do: Enum.map(albums, &build_album/1)
