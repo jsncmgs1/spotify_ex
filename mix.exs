@@ -26,7 +26,7 @@ defmodule Spotify.Mixfile do
   end
   defp description do
     """
-    An Elixir wrapper for Spotify API.
+    An Elixir wrapper for the Spotify Web API.
     """
   end
 
