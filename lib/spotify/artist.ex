@@ -52,7 +52,7 @@ defmodule Spotify.Artist do
   """
   def get_artist(conn, id) do
     url = get_artist_url(id)
-    conn |> CLient.get(url) |> handle_response
+    conn |> Client.get(url) |> handle_response
   end
 
   @doc """

@@ -4,7 +4,7 @@ defmodule SearchTest do
 
   describe "build_response/1" do
     test "responds with artists" do
-      response = %{ "artists" => [ %{"name" => "foo"} ] }
+      response = %{ "artists" => %{"items" => [ %{"name" => "foo"} ] }}
 
       expected = %Paging{items: [%Artist{name: "foo"}]}
       actual = Search.build_response(response)
@@ -13,7 +13,7 @@ defmodule SearchTest do
     end
 
     test "responds with tracks" do
-      response = %{ "tracks" => [ %{"name" => "foo"} ] }
+      response = %{ "tracks" => %{"items" => [ %{"name" => "foo"} ] }}
 
       expected = %Paging{items: [%Track{name: "foo"}]}
       actual = Search.build_response(response)
@@ -22,7 +22,7 @@ defmodule SearchTest do
     end
 
     test "responds with playlists" do
-      response = %{ "playlists" => [ %{"name" => "foo"} ] }
+      response = %{ "playlists" => %{"items" => [ %{"name" => "foo"} ] }}
 
       expected = %Paging{items: [%Playlist{name: "foo"}]}
       actual = Search.build_response(response)
@@ -31,10 +31,9 @@ defmodule SearchTest do
     end
 
     test "responds with albums" do
-      response = %{ "albums" => [ %{"name" => "foo" }]}
+      response = %{ "albums" => %{"items" => [ %{"name" => "foo" }]}}
 
       expected = %Paging{items: [%Album{name: "foo"}] }
-
       actual = Search.build_response(response)
 
       assert actual == expected

@@ -27,9 +27,9 @@ APIs covered so far:
 - Profile
 - Albums
 - Tracks
+- Artists
 
 APIs In Progress:
-- Artists
 - Browse
 - Follow
 - Library

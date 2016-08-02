@@ -37,10 +37,10 @@ defmodule Spotify.Search do
 
   def build_response(body) do
     case body do
-      %{ "albums" => albums }       -> build_albums(body, albums)
-      %{ "artists" => artists }     -> build_artists(body, artists)
-      %{ "playlists" => playlists } -> build_playlists(body, playlists)
-      %{ "tracks" => tracks }       -> build_tracks(body, tracks)
+      %{ "albums" => albums }       -> build_albums(body, albums["items"])
+      %{ "artists" => artists }     -> build_artists(body, artists["items"])
+      %{ "playlists" => playlists } -> build_playlists(body, playlists["items"])
+      %{ "tracks" => tracks }       -> build_tracks(body, tracks["items"])
     end
   end
 
