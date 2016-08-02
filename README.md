@@ -10,8 +10,8 @@
 
   1. Add spotify_ex to your list of dependencies in `mix.exs`:
 
-        def deps do
-          [{:spotify_ex, "~> 0.1.2"}]
+       def deps do
+          [{:spotify_ex, "~> 0.1.3"}]
         end
 
   2. Ensure spotify_ex is started before your application:
@@ -34,6 +34,8 @@ APIs In Progress:
 - Browse
 - Follow
 - Library
+
+[Documentation](https://hexdocs.pm/spotify_ex/0.1.3/api-reference.html)
 
 Breaking changes will occur until 1.0!
 
@@ -130,7 +132,7 @@ Authenticate like this:
 Spotify.Authentication.authenticate(conn, params)
 ```
 
-`Spotify.Authentication.call` will look for `params["code"]`; the code sent back by Spotify after authorization request. If successful, the user will be redirected to the URL set in the ```spotify.exs``` file, where you can handle different responses.
+`Spotify.Authentication.authenticate` will look for `params["code"]`,the code sent back by Spotify after authorization request. If successful, the user will be redirected to the URL set in the ```spotify.exs``` file, where you can handle different responses.
 
 ```elixir
 defmodule SpotifyExTest.AuthenticationController do
@@ -147,5 +149,5 @@ defmodule SpotifyExTest.AuthenticationController do
 end
 ```
 
-The authentication module will set refresh and access tokens in a cookie. The access token expires every hour, and you'll need to check your reponses for 401 errors. Call Spotify.Authentication.refresh, if there is a refresh token present.  If not, you'll need to redirect back to authorization.
+The authentication module will set refresh and access tokens in a cookie. The access token expires every hour, and you'll need to check your reponses for 401 errors. Call `Spotify.Authentication.refresh`, if there is a refresh token present.  If not, you'll need to redirect back to authorization.
 
