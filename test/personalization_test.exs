@@ -23,10 +23,10 @@ defmodule PersonalizationTest do
   end
 
   test "%Spotify.Personalization{}" do
-    attrs = ~w[href items limit next previous total]a
+    expected = ~w[href items limit next previous total]a
+    actual = %Personalization{} |> Map.from_struct |> Map.keys
 
-    expected = %Personalization{} |> Map.from_struct |> Map.keys
-    assert expected == attrs
+    assert actual == expected
   end
 
   def response_with_artists do
