@@ -5,4 +5,5 @@
 /docs
 erl_crash.dump
 *.ez
+todo.md
 /config/config.secret.exs

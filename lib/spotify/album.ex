@@ -254,37 +254,6 @@ defmodule Spotify.Album do
     "https://api.spotify.com/v1/me/albums/contains" <> query_string(params)
   end
 
-  @doc """
-  Get Spotify catalog information about albums.
-  [Spotify Documentation](https://developer.spotify.com/web-api/search-item/)
-
-  The parameter type is already set to "artist", passing in a `type=artist`
-  param is not neccessary.
-
-  **Method**: `GET`
-
-  **Required Params**: `q`
-
-  **Optional Params**: `market`, `limit`, `offset`
-
-      Spotify.Album.search(q: "foo")
-      { :ok, %Paging{items: [%Spotify.Album{}, ...] }
-  """
-  def search(conn, params) do
-    url = search_url(params)
-    conn |> Client.get(url) |> handle_response
-  end
-
-  @doc """
-  Get Spotify catalog information about albums.
-
-      iex> Spotify.Album.search_url(q: "foo")
-      "https://api.spotify.com/v1/search?type=album&q=foo"
-  """
-  def search_url(params) do
-    "https://api.spotify.com/v1/search?type=album&" <> URI.encode_query(params)
-  end
-
   def build_response(body) do
     case body do
       %{ "albums" => albums } -> build_albums(albums)
@@ -301,13 +270,13 @@ defmodule Spotify.Album do
     end
   end
 
-  defp build_tracks(tracks) do
+  def build_tracks(tracks) do
     paging = %Paging{items: tracks}
     tracks = Track.build_tracks(tracks)
     Map.put(paging, :items, tracks)
   end
 
-  defp build_album(album) do
+  def build_album(album) do
     album  = to_struct(Album, album)
     paging = to_struct(Paging, album.tracks)
     tracks = Enum.map(paging.items, &to_struct(Track, &1))
@@ -315,5 +284,5 @@ defmodule Spotify.Album do
     Map.put(album, :tracks, paging)
   end
 
-  defp build_albums(albums), do: Enum.map(albums, &build_album/1)
+  def build_albums(albums), do: Enum.map(albums, &build_album/1)
 end

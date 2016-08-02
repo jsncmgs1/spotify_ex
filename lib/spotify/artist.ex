@@ -102,7 +102,7 @@ defmodule Spotify.Artist do
       Spotify.get_top_tracks(conn, "4", country: "US")
       # => { :ok, [%Track{}, ...] }
   """
-  def get_top_tracks(conn, id, params = [country: _country]) do
+  def get_top_tracks(conn, id, params) do
     url = get_top_tracks_url(id, params)
     conn |> Client.get(url) |> handle_response
   end
@@ -113,7 +113,7 @@ defmodule Spotify.Artist do
       iex> Spotify.Artist.get_top_tracks_url("4", country: "US")
       "https://api.spotify.com/v1/artists/4/top-tracks?country=US"
   """
-  def get_top_tracks_url(id, params = [country: _country]) do
+  def get_top_tracks_url(id, params) do
     "https://api.spotify.com/v1/artists/#{id}/top-tracks" <> query_string(params)
   end
 

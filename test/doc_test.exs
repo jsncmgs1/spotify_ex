@@ -2,9 +2,10 @@ defmodule DocTest do
   use ExUnit.Case
 
   doctest Spotify.Album
-  doctest Spotify.Profile
+  doctest Spotify.Artist
   doctest Spotify.Personalization
   doctest Spotify.Playlist
+  doctest Spotify.Profile
+  doctest Spotify.Search
   doctest Spotify.Track
-  doctest Spotify.Artist
 end

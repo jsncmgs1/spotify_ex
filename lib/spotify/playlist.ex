@@ -130,34 +130,6 @@ defmodule Spotify.Playlist do
   end
 
   @doc """
-  Search for a playlist.
-  [Spotify Documentation](https://developer.spotify.com/web-api/search-item/)
-
-  **Method**: `GET`
-
-  **Required Params:** `q`
-
-  **Optional Params:** `limit`, `offset`, `market`
-
-      Spotify.Playlist.search(conn, q: "foo", limit: 5)
-      # => {:ok, %{ items: [%Spotify.Playlist{..} ...]}}
-  """
-  def search(conn, params) do
-    url = search_url(params)
-    conn |> Client.get(url) |> handle_response
-  end
-
-  @doc"""
-  Search for a playlist.
-
-      iex> Spotify.Playlist.search_url(q: "foo", limit: 5)
-      "https://api.spotify.com/v1/search?type=playlist&q=foo&limit=5"
-  """
-  def search_url(params)  do
-    "https://api.spotify.com/v1/search?type=playlist&" <> URI.encode_query(params)
-  end
-
-  @doc """
   Get a list of the playlists owned or followed by a Spotify user.
   [Spotify Documentation](https://developer.spotify.com/web-api/get-list-users-playlists/)
 
