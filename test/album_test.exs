@@ -9,7 +9,7 @@ defmodule Album do
       release_date_precision tracks type]a
 
     actual = %Album{} |> Map.from_struct |> Map.keys
-    assert expected == actual
+    assert actual == expected
   end
 
   describe "build_response/1" do

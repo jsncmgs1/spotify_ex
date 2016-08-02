@@ -4,10 +4,10 @@ defmodule ProfileTest do
   alias Spotify.Profile
 
   test "%Spotify.Profile{}" do
-    attrs = ~w[birthdate country display_name email external_urls followers href id images product type uri]a
+    actual = ~w[birthdate country display_name email external_urls followers href id images product type uri]a
     expected = %Profile{} |> Map.from_struct |> Map.keys
 
-    assert expected == attrs
+    assert actual == expected
   end
 
   test "build_response/1" do

@@ -4,10 +4,10 @@ defmodule Playlist.TrackTest do
   alias Spotify.Track
 
   test "%Spotify.Playlist.Track{}" do
-    attrs = ~w[added_at added_by is_local track]a
-    expected = %PT{} |> Map.from_struct |> Map.keys
+    expected = ~w[added_at added_by is_local track]a
+    actual = %PT{} |> Map.from_struct |> Map.keys
 
-    assert attrs == expected
+    assert actual == expected
   end
 
   test "build_response/1" do

@@ -20,11 +20,11 @@ defmodule PlaylistTest do
   end
 
   test "%Spotify.Playlist{}" do
-    attrs = ~w[collaborative description external_urls followers
+    expected = ~w[collaborative description external_urls followers
     href id images name owner public snapshot_id tracks type uri]a
 
-    expected = %Playlist{} |> Map.from_struct |> Map.keys
-    assert expected == attrs
+    actual = %Playlist{} |> Map.from_struct |> Map.keys
+    assert actual == expected
   end
 
   def response_body_with_collection do

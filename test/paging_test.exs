@@ -5,7 +5,7 @@ defmodule PagingTest do
     expected = ~w[ cursor href items limit next offset previous total ]a
     actual = %Paging{} |> Map.from_struct |> Map.keys
 
-    assert expected == actual
+    assert actual == expected
   end
 
   test "response/2" do
