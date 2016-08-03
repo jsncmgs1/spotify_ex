@@ -10,7 +10,7 @@ defmodule Responder do
   defmacro __using__(_) do
     quote do
       def handle_response({ :ok, %HTTPoison.Response{ status_code: code, body: "" }})
-        when code in [ 200, 201 ] do
+        when code in 200..299 do
           :ok
         end
 

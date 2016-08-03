@@ -3,22 +3,11 @@ defmodule Spotify.Artist do
     Functions for retrieving information about artists and for
     managing a user’s followed artists.
 
-    Some of the endpoints in the offical docs are not implemented in this module.
-
-    - Following and Unfollowing an artist is also the same endpoint as following a user,
-    so related functions live in `Spotify.Follow`.
-
-    - Top artists is also the same function for top tracks, it lives in
-    `Spotify.Personalization`.
-
-    - Artist's albums lives in `Spotify.Albums`.
-
     There are two functions for each endpoint, one that actually makes the request,
     and one that provides the endpoint:
 
         Spotify.Playist.create_playlist(conn, "foo", "bar") # makes the POST request.
         Spotify.Playist.create_playlist_url("foo", "bar") # provides the url for the request.
-
 
     https://developer.spotify.com/web-api/artist-endpoints/
   """
