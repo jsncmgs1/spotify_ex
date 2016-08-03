@@ -255,6 +255,9 @@ defmodule Spotify.Album do
     "https://api.spotify.com/v1/me/albums/contains" <> query_string(params)
   end
 
+  @doc """
+  Implement the callback required by the `Responder` behavior
+  """
   def build_response(body) do
     case body do
       %{ "albums" => albums } -> build_albums(albums)
@@ -263,7 +266,8 @@ defmodule Spotify.Album do
     end
   end
 
-  defp infer_type_and_build(items) do
+  @doc false
+  def infer_type_and_build(items) do
     case List.first(items) do
       %{"track_number" => _ } -> build_tracks(items)
       %{"album_type" => _ }   -> build_albums(items)
@@ -271,12 +275,14 @@ defmodule Spotify.Album do
     end
   end
 
+  @doc false
   def build_tracks(tracks) do
     paging = %Paging{items: tracks}
     tracks = Track.build_tracks(tracks)
     Map.put(paging, :items, tracks)
   end
 
+  @doc false
   def build_album(album) do
     album  = to_struct(Album, album)
     paging = to_struct(Paging, album.tracks)
@@ -285,5 +291,6 @@ defmodule Spotify.Album do
     Map.put(album, :tracks, paging)
   end
 
+  @doc false
   def build_albums(albums), do: Enum.map(albums, &build_album/1)
 end

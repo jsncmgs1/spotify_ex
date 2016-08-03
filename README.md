@@ -48,7 +48,11 @@ with the docs.
 This README will go into some detail about the OAuth process. Consult the
 [docs](https://hexdocs.pm/spotify_ex/0.1.1/api-reference.html) for other parts of the API.
 
-## A basic Phoenix example can be found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)
+I haven't made any function's private because I think programmer should have
+access to all of the functions. Anything not documented should be considered
+API private and can change. Use at your own risk.
+
+**A basic Phoenix example can be found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)**
 
 ## OAuth
 
@@ -91,8 +95,6 @@ import "spotify.secret.exs"
 ## Authorization Flow
 
 First your application must be *authorized* by Spotify. SpotifyEx will use the client ID, callback URI, and scopes set in your config file to generate the authorization endpoint.
-
-## Phoenix example (Example app found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test))
 
 ```elixir
 defmodule SpotifyExTest.AuthorizationController do
@@ -157,6 +159,5 @@ The authentication module will set refresh and access tokens in a cookie. The ac
 
 ## Contributing
 
-All contributions are more than Welcome! I will not accept a PR without tests if it
+All contributions are more than welcome! I will not accept a PR without tests if it
 looks like something that should be tested, which is pretty much everything.
-All public API must be documented.

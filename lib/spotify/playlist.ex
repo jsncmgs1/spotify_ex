@@ -209,7 +209,7 @@ defmodule Spotify.Playlist do
     playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
 
-  defp playlist_tracks_url(user_id, playlist_id) do
+  def playlist_tracks_url(user_id, playlist_id) do
     get_playlist_url(user_id, playlist_id) <> "/tracks"
   end
 
