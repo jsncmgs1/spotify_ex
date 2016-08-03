@@ -96,7 +96,8 @@ defmodule Spotify.Album do
   end
 
   @doc"""
-  Foo
+  Get Spotify catalog information about an album’s tracks.
+
       iex> Spotify.Album.get_album_tracks_url("4")
       "https://api.spotify.com/v1/albums/4/tracks"
   """

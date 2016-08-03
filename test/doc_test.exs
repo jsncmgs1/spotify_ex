@@ -3,7 +3,9 @@ defmodule DocTest do
 
   doctest Spotify.Album
   doctest Spotify.Artist
+  doctest Spotify.Category
   doctest Spotify.Personalization
+  doctest Spotify.Recommendation
   doctest Spotify.Playlist
   doctest Spotify.Profile
   doctest Spotify.Search

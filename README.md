@@ -10,7 +10,7 @@
   1. Add spotify_ex to your list of dependencies in `mix.exs`:
 
         def deps do
-           [{:spotify_ex, "~> 0.1.4"}]
+           [{:spotify_ex, "~> 1.0.0"}]
         end
 
   2. Ensure spotify_ex is started before your application:
@@ -19,24 +19,29 @@
           [applications: [:spotify_ex]]
         end
 
-## This package is under active development and will change frequently.
-APIs covered so far:
-- OAuth
-- Playlists
-- Personalization
-- Profile
-- Albums
-- Tracks
-- Artists
-
-APIs In Progress:
-- Browse
-- Follow
-- Library
 
 [Documentation](https://hexdocs.pm/spotify_ex/0.1.3/api-reference.html)
 
-Breaking changes will occur until 1.0!
+## What does this wrapper cover?
+
+This wrapper covers the [Spotify Web
+API](https://developer.spotify.com/web-api/endpoint-reference/).
+
+Follow that link, on the left you'll notice they have the API broken into
+sections, such as Artists, Albums, Playlists, etc. This wrapper does its best
+to keep endpoints in modules mapped to their corresponding section, however
+Spotify duplicates many of its endpoints. For example, there's an endpoint to
+get an artist's albums that's listed under both Artists and Albums. The endpoints
+are not duplicated in this wrapper, so if you don't see an endpoint, it's a
+module that's also related to that endpoint i.e, if you don't see that endpoint
+in the `Artist` module, check `Albums`.
+
+Example: All of the endpoints in the "Follow" section are in other modules, but
+they're all about following Playlists, Artists, etc. The `follow_playlist`
+endpoint will be in the `Playlist` module.
+
+These duplicate endpoints may get aliased in the future to have a 1-1 mapping
+with the docs.
 
 ## Usage
 
@@ -150,3 +155,8 @@ end
 
 The authentication module will set refresh and access tokens in a cookie. The access token expires every hour, and you'll need to check your reponses for 401 errors. Call `Spotify.Authentication.refresh`, if there is a refresh token present.  If not, you'll need to redirect back to authorization.
 
+## Contributing
+
+All contributions are more than Welcome! I will not accept a PR without tests if it
+looks like something that should be tested, which is pretty much everything.
+All public API must be documented.
