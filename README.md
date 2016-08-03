@@ -10,7 +10,7 @@
   1. Add spotify_ex to your list of dependencies in `mix.exs`:
 
         def deps do
-           [{:spotify_ex, "~> 1.0.0"}]
+           [{:spotify_ex, "~> 1.0.1"}]
         end
 
   2. Ensure spotify_ex is started before your application:
@@ -20,7 +20,7 @@
         end
 
 
-[Documentation](https://hexdocs.pm/spotify_ex/0.1.3/api-reference.html)
+[Documentation](https://hexdocs.pm/spotify_ex/1.0.1/api-reference.html)
 
 ## What does this wrapper cover?
 
@@ -35,10 +35,6 @@ get an artist's albums that's listed under both Artists and Albums. The endpoint
 are not duplicated in this wrapper, so if you don't see an endpoint, it's a
 module that's also related to that endpoint i.e, if you don't see that endpoint
 in the `Artist` module, check `Albums`.
-
-Example: All of the endpoints in the "Follow" section are in other modules, but
-they're all about following Playlists, Artists, etc. The `follow_playlist`
-endpoint will be in the `Playlist` module.
 
 These duplicate endpoints may get aliased in the future to have a 1-1 mapping
 with the docs.
