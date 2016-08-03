@@ -30,22 +30,21 @@ defmodule Spotify.Cookies do
   Sets the refresh token
   """
   def set_refresh_cookie(conn, string)
+
+  def set_refresh_cookie(conn, nil), do: conn
   def set_refresh_cookie(conn, refresh_token) do
-    if refresh_token do
-      conn = Plug.Conn.put_resp_cookie(conn, "spotify_refresh_token", refresh_token)
-    end
-    conn
+    Plug.Conn.put_resp_cookie(conn, "spotify_refresh_token", refresh_token)
   end
 
   @doc """
   Sets the access token
   """
+
   def set_access_cookie(conn, string)
+
+  def set_access_cookie(conn, nil), do: conn
   def set_access_cookie(conn, access_token) do
-    if access_token do
-      conn = Plug.Conn.put_resp_cookie(conn, "spotify_access_token", access_token)
-    end
-    conn
+    Plug.Conn.put_resp_cookie(conn, "spotify_access_token", access_token)
   end
 
   @doc """
