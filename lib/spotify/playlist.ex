@@ -91,7 +91,7 @@ defmodule Spotify.Playlist do
   """
   def follow_playlist(conn, owner_id, playlist_id, body \\ "") do
     url = follow_playlist_url(owner_id, playlist_id)
-    conn |> Client.put(url) |> handle_response
+    conn |> Client.put(url, body) |> handle_response
 
   end
 
@@ -254,7 +254,7 @@ defmodule Spotify.Playlist do
   """
   def change_playlist(conn, user_id, playlist_id, body) do
     url = change_playlist_url(user_id, playlist_id)
-    conn |> Client.put(url) |> handle_response
+    conn |> Client.put(url, body) |> handle_response
   end
 
   @doc"""
@@ -338,7 +338,7 @@ defmodule Spotify.Playlist do
   """
   def reorder_tracks(conn, user_id, playlist_id, body) do
     url = playlist_tracks_url(user_id, playlist_id)
-    conn |> Client.put(url) |> handle_response
+    conn |> Client.put(url, body) |> handle_response
   end
 
   @doc"""

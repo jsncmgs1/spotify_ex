@@ -4,7 +4,7 @@ defmodule Spotify.Category do
   use Responder
   @behaviour Responder
   import Helpers
-  alias Spotify.{Category, Client, Seed}
+  alias Spotify.{Category, Client}
 
   defstruct ~w[href icons id name]a
 

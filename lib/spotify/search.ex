@@ -6,7 +6,7 @@ defmodule Spotify.Search do
   use Responder
   @behaviour Responder
   import Helpers
-  alias Spotify.{Search, Client, Album, Artist, Playlist, Track}
+  alias Spotify.{Client, Album, Artist, Playlist, Track}
 
   @doc """
   Search for a playlist.

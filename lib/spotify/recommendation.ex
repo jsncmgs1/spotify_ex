@@ -10,7 +10,7 @@ defmodule Spotify.Recommendation do
   use Responder
   @behaviour Responder
   import Helpers
-  alias Spotify.{Client, Seed, Recommendation}
+  alias Spotify.{Client, Seed, Recommendation, Track}
   defstruct ~w[tracks seeds]a
 
   @doc """
