@@ -35,6 +35,9 @@ defmodule Spotify.Search do
     "https://api.spotify.com/v1/search" <> query_string(params)
   end
 
+  @doc """
+  Implements the hook required by the `Responder` behaviour
+  """
   def build_response(body) do
     case body do
       %{ "albums" => albums }       -> build_albums(body, albums["items"])
@@ -44,22 +47,25 @@ defmodule Spotify.Search do
     end
   end
 
+  @doc false
   def build_albums(body, albums) do
     albums = Enum.map(albums, &to_struct(Album, &1))
-
     Paging.response(body, albums)
   end
 
+  @doc false
   def build_artists(body, artists) do
     artists = Artist.build_artists(artists)
     Paging.response(body, artists)
   end
 
+  @doc false
   def build_playlists(body, playlists) do
     playlists = Playlist.build_playlists(playlists)
     Paging.response(body, playlists)
   end
 
+  @doc false
   def build_tracks(body, tracks) do
     tracks = Track.build_tracks(tracks)
     Paging.response(body, tracks)

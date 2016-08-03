@@ -1,4 +1,12 @@
 defmodule Spotify.Recommendation do
+  @moduledoc """
+  Spotify can make recommendations for you by providing seed data. The
+  recommendation comes with tracks and the seed object
+
+  *Note: The possibilities here are quite large. Please read the spotify documentation.
+
+  https://developer.spotify.com/web-api/get-recommendations/
+  """
   use Responder
   @behaviour Responder
   import Helpers
@@ -35,6 +43,9 @@ defmodule Spotify.Recommendation do
     "https://api.spotify.com/v1/recommendations" <> query_string(params)
   end
 
+  @doc """
+  Implements the hook required by the `Responder` behavior.
+  """
   def build_response(body) do
     seeds = Enum.map(body["seeds"], &to_struct(Seed, &1))
     tracks = Enum.map(body["tracks"], &to_struct(Track, &1))

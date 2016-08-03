@@ -417,6 +417,7 @@ defmodule Spotify.Playlist do
     end
   end
 
+  @doc false
   def build_playlists(playlists) do
     Enum.map(playlists, &to_struct(__MODULE__, &1))
   end
