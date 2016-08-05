@@ -10,7 +10,7 @@
   1. Add spotify_ex to your list of dependencies in `mix.exs`:
 
         def deps do
-           [{:spotify_ex, "~> 1.0.1"}]
+           [{:spotify_ex, "~> 1.0.2"}]
         end
 
   2. Ensure spotify_ex is started before your application:
@@ -48,6 +48,13 @@ I haven't made any function's private because I think programmer should have
 access to all of the functions. Anything not documented should be considered
 API private and can change. Use at your own risk.
 
+There are 2 functions for each endpount. Getting a playlist for example,
+`Spotify.Playlist.get_playlist`, and `Spotify.Playlist.get_playlist_url`.  The
+first will use the url function to make the request, and do give give you back
+a list of `%Spotify.Track` structs.  If you just want the raw response from Spotify
+and/or want to implement your own client and data manipulation, all of the url
+functions are public.
+
 **A basic Phoenix example can be found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)**
 
 ## OAuth
@@ -58,7 +65,9 @@ The Spotify API follows the O Auth 2 spec, providing 3 potential authentication 
 - [Client Credentials Flow](https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow)
 - [Implicit Grant Flow](https://developer.spotify.com/web-api/authorization-guide/#implicit_grant_flow)
 
-To connect with the Spotify API, first you must register your app with Spotify, and get your **Client ID** and **Client Secret**, which are necessary for authentication.
+To connect with the Spotify API, first you must register your app with Spotify,
+and get your **Client ID** and **Client Secret**, which are necessary for
+authentication.
 
 In ```/config```, create ```config/secret.exs``` and ```config/spotify.exs``` files
 
