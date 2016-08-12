@@ -4,7 +4,6 @@ defmodule Spotify.Playlist.Track do
   """
   import Helpers
   use Responder
-  @behaviour Responder
 
   defstruct ~w[
     added_at

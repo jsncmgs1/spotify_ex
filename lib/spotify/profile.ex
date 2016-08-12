@@ -19,7 +19,6 @@ defmodule Spotify.Profile do
 
   alias Spotify.Client
   use Responder
-  @behaviour Responder
   import Helpers
 
   @doc """

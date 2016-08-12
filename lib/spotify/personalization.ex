@@ -16,7 +16,6 @@ defmodule Spotify.Personalization do
 
   import Helpers
   use Responder
-  @behaviour Responder
   alias Spotify.Client
 
   @doc """

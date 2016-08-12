@@ -19,8 +19,6 @@ defmodule Spotify.Playlist do
 
   import Helpers
   use Responder
-  @behaviour Responder
-
   alias Spotify.Client
 
   defstruct ~w[ collaborative description external_urls followers

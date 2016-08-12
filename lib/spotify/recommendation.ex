@@ -8,7 +8,6 @@ defmodule Spotify.Recommendation do
   https://developer.spotify.com/web-api/get-recommendations/
   """
   use Responder
-  @behaviour Responder
   import Helpers
   alias Spotify.{Client, Seed, Recommendation, Track}
   defstruct ~w[tracks seeds]a

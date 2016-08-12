@@ -4,7 +4,6 @@ defmodule Spotify.Search do
   """
 
   use Responder
-  @behaviour Responder
   import Helpers
   alias Spotify.{Client, Album, Artist, Playlist, Track}
 

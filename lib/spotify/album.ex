@@ -18,7 +18,6 @@ defmodule Spotify.Album do
   """
 
   use Responder
-  @behaviour Responder
   import Helpers
   alias Spotify.{Client, Album, Track}
 

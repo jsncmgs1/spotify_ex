@@ -2,7 +2,6 @@ defmodule Spotify.Category do
   @moduledoc false
 
   use Responder
-  @behaviour Responder
   import Helpers
   alias Spotify.{Category, Client}
 

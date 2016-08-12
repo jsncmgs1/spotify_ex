@@ -4,7 +4,6 @@ defmodule Spotify.Follow do
   """
 
   use Responder
-  @behaviour Responder
   import Helpers
   alias Spotify.Client
 
