@@ -3,7 +3,7 @@ defmodule Spotify.Mixfile do
 
   def project do
     [app: :spotify_ex,
-     version: "1.0.2",
+     version: "1.0.3",
      elixir: "~> 1.3",
      description: description,
      package: package,
@@ -49,8 +49,8 @@ defmodule Spotify.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 0.9.0"},
-      {:poison, "~> 2.0"},
-      {:plug, "~> 1.1.6"},
+      {:poison, ">= 1.5.0"},
+      {:plug, "~> 1.2.0"},
       {:mock, "~> 0.1.1", only: :test},
       {:ex_doc, "~> 0.2", only: :dev},
       {:inch_ex, ">= 0.0.0", only: :docs}
