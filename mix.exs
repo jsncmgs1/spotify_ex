@@ -49,7 +49,7 @@ defmodule Spotify.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 0.9.0"},
-      {:poison, "~> 1.5"},
+      {:poison, "~> 2.0"},
       {:plug, "~> 1.1.6"},
       {:mock, "~> 0.1.1", only: :test},
       {:ex_doc, "~> 0.2", only: :dev},
