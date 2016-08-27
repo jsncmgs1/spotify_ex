@@ -41,7 +41,6 @@ defmodule Spotify.Cookies do
   """
 
   def set_access_cookie(conn, string)
-
   def set_access_cookie(conn, nil), do: conn
   def set_access_cookie(conn, access_token) do
     Plug.Conn.put_resp_cookie(conn, "spotify_access_token", access_token)
