@@ -18,9 +18,6 @@ defmodule Spotify.Personalization do
   use Responder
   alias Spotify.Client
 
-  @doc """
-  Defines the Personalization struct.
-  """
   defstruct ~w[ items next previous total limit href ]a
 
   @doc """

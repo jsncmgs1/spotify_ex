@@ -3,7 +3,6 @@ defmodule Spotify.Track do
 
   alias Spotify.{Track, Client}
   import Helpers
-  @behaviour Responder
   use Responder
 
   defstruct ~w[
