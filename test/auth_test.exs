@@ -22,4 +22,9 @@ defmodule Spotify.AuthTest do
       assert @auth == Spotify.Auth.new(@auth)
     end
   end
+
+  test "get_tokens_from_response/1 returns a Spotify.Auth struct" do
+    response = %{"access_token" => @atoken, "refresh_token" => @rtoken}
+    assert @auth == Spotify.Auth.get_tokens_from_response(response)
+  end
 end
