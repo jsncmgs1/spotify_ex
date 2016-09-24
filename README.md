@@ -42,7 +42,8 @@ with the docs.
 ## Usage
 
 This README will go into some detail about the OAuth process. Consult the
-[docs](https://hexdocs.pm/spotify_ex/0.1.1/api-reference.html) for other parts of the API.
+[docs](https://hexdocs.pm/spotify_ex/0.1.1/api-reference.html) for other parts
+of the API.
 
 I haven't made any function's private because I think programmer should have
 access to all of the functions. Anything not documented should be considered
@@ -51,11 +52,12 @@ API private and can change. Use at your own risk.
 There are 2 functions for each endpount. Getting a playlist for example,
 `Spotify.Playlist.get_playlist`, and `Spotify.Playlist.get_playlist_url`.  The
 first will use the url function to make the request, and do give give you back
-a list of `%Spotify.Track` structs.  If you just want the raw response from Spotify
-and/or want to implement your own client and data manipulation, all of the url
-functions are public.
+a list of `%Spotify.Track` structs.  If you just want the raw response from
+Spotify and/or want to implement your own client and data manipulation, all of
+the url functions are public.
 
-**A basic Phoenix example can be found at [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)**
+**A basic Phoenix example can be found at
+[SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)**
 
 ## OAuth
 
@@ -99,7 +101,9 @@ import "spotify.secret.exs"
 
 ## Authorization Flow
 
-First your application must be *authorized* by Spotify. SpotifyEx will use the client ID, callback URI, and scopes set in your config file to generate the authorization endpoint.
+First your application must be *authorized* by Spotify. SpotifyEx will use the
+client ID, callback URI, and scopes set in your config file to generate the
+authorization endpoint.
 
 ```elixir
 defmodule SpotifyExTest.AuthorizationController do
@@ -111,13 +115,19 @@ defmodule SpotifyExTest.AuthorizationController do
 end
 ```
 
-This will take you to the Spotify Authorization page.  After authorizing your app, you will be directed to now authenticate as a Spotify User. When successfull, you will be redirected to the callback uri you set in the config file.
+This will take you to the Spotify Authorization page.  After authorizing your
+app, you will be directed to now authenticate as a Spotify User. When
+successfull, you will be redirected to the callback uri you set in the config
+file.
 
 
 ### A note about scopes
 
-You must be explicit about the permissions your users have when handling Spotify account data.  These permissions are set during the authorization request.  You can read about them [here](https://developer.spotify.com/web-api/using-scopes/).
-To set your scopes, add them to the list in your ```spotify.exs``` file,
+You must be explicit about the permissions your users have when handling
+Spotify account data.  These permissions are set during the authorization
+request.  You can read about them
+[here](https://developer.spotify.com/web-api/using-scopes/).  To set your
+scopes, add them to the list in your ```spotify.exs``` file,
 
 ```elixir
 \#config/spotify.exs
@@ -125,13 +135,19 @@ To set your scopes, add them to the list in your ```spotify.exs``` file,
 config :spotify_ex, scopes: ["playlist-read-private", "playlist-modify-private" "# more scopes"]
 ```
 
-O-auth requires identical reqirect URIs for to use for the authorization and authentication steps. When you attempt to authenticate with Spotify, if successful, Spotify needs to know where to send the user afterwards. The redirect URI tells Spotify where to send them.
+O-auth requires identical reqirect URIs for to use for the authorization and
+authentication steps. When you attempt to authenticate with Spotify, if
+successful, Spotify needs to know where to send the user afterwards. The
+redirect URI tells Spotify where to send them.
 
 ```elixir
 config :spotify_ex, callback_url: "http://www.your-api.com/auth-endpoint"
 ```
 
-Set it in your config file. Now that your application is *authorized*, the user must be *authenticated*. Spotify is going to send an authorization code in the query string to this endpoint, which should then send that code to Spotify to request an **access token** and a **remember token**.
+Set it in your config file. Now that your application is *authorized*, the user
+must be *authenticated*. Spotify is going to send an authorization code in the
+query string to this endpoint, which should then send that code to Spotify to
+request an **access token** and a **remember token**.
 
 ```elixir
 config :spotify_ex, callback_url: "http://localhost:4000/authenticate"
@@ -143,7 +159,10 @@ Authenticate like this:
 Spotify.Authentication.authenticate(conn, params)
 ```
 
-`Spotify.Authentication.authenticate` will look for `params["code"]`,the code sent back by Spotify after authorization request. If successful, the user will be redirected to the URL set in the ```spotify.exs``` file, where you can handle different responses.
+`Spotify.Authentication.authenticate` will look for `params["code"]`,the code
+sent back by Spotify after authorization request. If successful, the user will
+be redirected to the URL set in the ```spotify.exs``` file, where you can
+handle different responses.
 
 ```elixir
 defmodule SpotifyExTest.AuthenticationController do
@@ -160,9 +179,14 @@ defmodule SpotifyExTest.AuthenticationController do
 end
 ```
 
-The authentication module will set refresh and access tokens in a cookie. The access token expires every hour, and you'll need to check your reponses for 401 errors. Call `Spotify.Authentication.refresh`, if there is a refresh token present.  If not, you'll need to redirect back to authorization.
+The authentication module will set refresh and access tokens in a cookie. The
+access token expires every hour, and you'll need to check your reponses for 401
+errors. Call `Spotify.Authentication.refresh`, if there is a refresh token
+present.  If not, you'll need to redirect back to authorization.
 
 ## Contributing
 
-All contributions are more than welcome! I will not accept a PR without tests if it
-looks like something that should be tested, which is pretty much everything.
+All contributions are more than welcome! I will not accept a PR without tests
+if it looks like something that should be tested, which is pretty much
+everything. Development is done on the `development` branch, and moved to
+`master` for release on hexpm.
