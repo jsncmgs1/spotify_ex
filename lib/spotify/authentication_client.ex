@@ -6,7 +6,7 @@ defmodule AuthenticationClient do
     case AuthRequest.post(params) do
       {:ok, %HTTPoison.Response{status_code: _code, body: body}} ->
         { :ok, response } = Poison.decode(body)
-        cookies = get_tokens_from_response(response)
+        cookies = get_cookies_from_response(response)
         conn = set_cookies(conn, cookies)
         { :ok, conn }
       {:error, %HTTPoison.Error{reason: reason}} ->

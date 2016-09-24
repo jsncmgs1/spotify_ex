@@ -4,10 +4,10 @@ defmodule Spotify.Cookies do
   """
 
   @doc """
-    Returns a map of auth tokens from a parsed response body
+    Returns a map of token cookies from a parsed response body
   """
-  def get_tokens_from_response(map)
-  def get_tokens_from_response(response) do
+  def get_cookies_from_response(map)
+  def get_cookies_from_response(response) do
     %{ refresh_token: response["refresh_token"], access_token: response["access_token"]}
   end
 
@@ -30,6 +30,7 @@ defmodule Spotify.Cookies do
   Sets the refresh token
   """
   def set_refresh_cookie(conn, string)
+
   def set_refresh_cookie(conn, nil), do: conn
   def set_refresh_cookie(conn, refresh_token) do
     Plug.Conn.put_resp_cookie(conn, "spotify_refresh_token", refresh_token)
@@ -48,14 +49,14 @@ defmodule Spotify.Cookies do
   @doc """
   Gets the access token
   """
-  def get_access_token(conn) do
+  def get_access_cookie(conn) do
     conn.cookies["spotify_access_token"]
   end
 
   @doc """
   Gets the access token
   """
-  def get_refresh_token(conn) do
+  def get_refresh_cookie(conn) do
     conn.cookies["spotify_refresh_token"]
   end
 end

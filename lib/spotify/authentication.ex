@@ -38,7 +38,7 @@ defmodule Spotify.Authentication do
   def authenticate(conn, map)
 
   def authenticate(conn, %{"code" => code}) do
-    if get_refresh_token(conn) do
+    if get_refresh_cookie(conn) do
       AuthenticationClient.post(conn, refresh_body_params(conn))
     else
       AuthenticationClient.post(conn, body_params(code))
@@ -54,7 +54,7 @@ defmodule Spotify.Authentication do
     Attempts to refresh your access token if the connection cookie exits.
   """
   def refresh(conn) do
-    if get_refresh_token(conn) do
+    if get_refresh_cookie(conn) do
       AuthenticationClient.post(conn, refresh_body_params(conn))
     else
       :unauthorized
@@ -77,16 +77,16 @@ defmodule Spotify.Authentication do
       end
   """
   def tokens_present?(conn) do
-    !!(get_refresh_token(conn) && get_access_token(conn))
+    !!(get_refresh_cookie(conn) && get_access_cookie(conn))
   end
 
   def authenticated?(conn) do
-    get_access_token(conn)
+    get_access_cookie(conn)
   end
 
   @doc false
   def refresh_body_params(conn) do
-    "grant_type=refresh_token&refresh_token=#{get_refresh_token(conn)}"
+    "grant_type=refresh_token&refresh_token=#{get_refresh_cookie(conn)}"
   end
 
   @doc false
