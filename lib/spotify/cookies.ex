@@ -1,29 +1,19 @@
 defmodule Spotify.Cookies do
   @moduledoc """
-    Convinience setters and getters for auth cookies
+  Convenience setters and getters for auth cookies
   """
-
-  @doc """
-    Returns a map of token cookies from a parsed response body
-  """
-  def get_cookies_from_response(map)
-  def get_cookies_from_response(response) do
-    %{ refresh_token: response["refresh_token"], access_token: response["access_token"]}
-  end
 
   @doc """
   Sets the refresh token and access token and returns the conn.
 
-    ##Example:
-      Spotify.Cookies.set_cookies(conn, %{refresh_token: rt, access_token: at})
+  ## Example:
+      Spotify.Cookies.set_cookies(conn, %Spotify.Auth{refresh_token: rt, access_token: at})
   """
-
-  def set_cookies(conn, map)
-  def set_cookies(conn, %{refresh_token: refresh_token, access_token: access_token}) do
+  def set_cookies(conn, auth) do
     conn
     |> Plug.Conn.put_status(200)
-    |> set_refresh_cookie(refresh_token)
-    |> set_access_cookie(access_token)
+    |> set_refresh_cookie(auth.refresh_token)
+    |> set_access_cookie(auth.access_token)
   end
 
   @doc """
