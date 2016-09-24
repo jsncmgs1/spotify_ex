@@ -7,64 +7,74 @@ defmodule AuthenticationError do
 end
 
 defmodule Spotify.Authentication do
-  import Spotify.Cookies
-
   @moduledoc """
-    Authenticates the Spotify user.
+  Authenticates the Spotify user.
 
-    After your app is authorized, the user must be authenticated.  A redirect
-    URL is specified in the config folder.  This is the URL that Spotify
-    redirects to after authorization, and should ultimately end up hitting
-    this module's `authenticate` function. If the authorization is successful,
-    the param `code` will be present.
+  After your app is authorized, the user must be authenticated.  A redirect
+  URL is specified in the config folder.  This is the URL that Spotify
+  redirects to after authorization, and should ultimately end up hitting
+  this module's `authenticate` function. If the authorization is successful,
+  the param `code` will be present.
 
-    If a refresh token still exists, the client will refresh the access token.
+  If a refresh token still exists, the client will refresh the access token.
+
+  You have the option to pass either a Plug.Conn or a Spotify.Auth struct into
+  these functions. If you pass Conn, the auth tokens will be saved in cookies.
+  If you pass Auth, you will be responsible for persisting the auth tokens
+  between requests.
   """
+  alias Spotify.{Auth,Cookies}
 
   @doc """
-    Authenticates the user
+  Authenticates the user
 
-    The authorization code must be present from spotify or an exception
-    will be raised.  The token will be refreshed if possible, otherwise
-    the app will request new access and request tokens.
+  The authorization code must be present from spotify or an exception
+  will be raised.  The token will be refreshed if possible, otherwise
+  the app will request new access and request tokens.
 
-    ## Example: ##
+  ## Example: ##
       Spotify.authenticate(conn, %{"code" => code})
-      # {:ok, "your access token", conn}
+      # {:ok, conn}
 
       Spotify.authenticate(conn, %{"not_a_code" => invalid})
       # AuthenticationError, "No code provided by Spotify. Authorize your app again"
-  """
-  def authenticate(conn, map)
 
-  def authenticate(conn, %{"code" => code}) do
-    if get_refresh_cookie(conn) do
-      AuthenticationClient.post(conn, refresh_body_params(conn))
-    else
-      AuthenticationClient.post(conn, body_params(code))
-    end
+      Spotify.authenticate(auth, params)
+      # {:ok, auth}
+  """
+  def authenticate(conn_or_auth, map)
+
+  def authenticate(conn = %Plug.Conn{}, params) do
+    {:ok, auth} = conn |> Auth.new |> authenticate(params)
+    {:ok, Cookies.set_cookies(conn, auth)}
   end
 
-  def authenticate(_conn, _) do
+  def authenticate(auth, %{"code" => code}) do
+    auth |> body_params(code) |> AuthenticationClient.post
+  end
+
+  def authenticate(_, _) do
     raise AuthenticationError, "No code provided by Spotify. Authorize your app again"
   end
 
 
   @doc """
-    Attempts to refresh your access token if the connection cookie exits.
+  Attempts to refresh your access token if the refresh token exists. Returns
+  `:unauthorized` if there is no refresh token.
   """
-  def refresh(conn) do
-    if get_refresh_cookie(conn) do
-      AuthenticationClient.post(conn, refresh_body_params(conn))
-    else
-      :unauthorized
+  def refresh(conn_or_auth)
+  def refresh(conn = %Plug.Conn{}) do
+    with {:ok, auth} <- conn |> Auth.new |> refresh do
+      {:ok, Cookies.set_cookies(conn, auth)}
     end
   end
+  def refresh(%Auth{refresh_token: nil}), do: :unauthorized
+  def refresh(auth), do: auth |> body_params |> AuthenticationClient.post
 
   @doc """
-    Checks for refresh and access tokens
+  Checks for refresh and access tokens
 
-    ## Example: ##
+  ## Example: ##
 
       defmodule PlayListController do
         plug :check_tokens
@@ -76,22 +86,24 @@ defmodule Spotify.Authentication do
         end
       end
   """
-  def tokens_present?(conn) do
-    !!(get_refresh_cookie(conn) && get_access_cookie(conn))
-  end
+  def tokens_present?(conn_or_auth)
+  def tokens_present?(%Auth{access_token: nil}),  do: false
+  def tokens_present?(%Auth{refresh_token: nil}), do: false
+  def tokens_present?(%Auth{}),                   do: true
+  def tokens_present?(conn), do: conn |> Auth.new |> tokens_present?
 
-  def authenticated?(conn) do
-    get_access_cookie(conn)
+  @doc false
+  def authenticated?(%Auth{access_token: token}), do: token
+  def authenticated?(conn), do: conn |> Auth.new |> authenticated?
+
+  @doc false
+  def body_params(%Auth{refresh_token: token}) do
+    "grant_type=refresh_token&refresh_token=#{token}"
   end
 
   @doc false
-  def refresh_body_params(conn) do
-    "grant_type=refresh_token&refresh_token=#{get_refresh_cookie(conn)}"
-  end
-
-  @doc false
-  def body_params(code) do
+  def body_params(%Auth{refresh_token: nil}, code) do
     "grant_type=authorization_code&code=#{code}&redirect_uri=#{Spotify.callback_url}"
   end
-
+  def body_params(auth, _code), do: body_params(auth)
 end
