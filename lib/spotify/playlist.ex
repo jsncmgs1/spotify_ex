@@ -280,7 +280,7 @@ defmodule Spotify.Playlist do
   """
   def add_tracks(conn, user_id, playlist_id, params \\ []) do
     url = add_tracks_url(user_id, playlist_id, params)
-    conn |> Client.put(url) |> handle_response
+    conn |> Client.post(url) |> handle_response
   end
 
   @doc"""
