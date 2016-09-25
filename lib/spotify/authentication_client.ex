@@ -11,7 +11,7 @@ defmodule AuthenticationClient do
             raise(AuthenticationError, "Error parsing response from Spotify")
         end
       {:error, %HTTPoison.Error{reason: reason}} ->
-        raise(AuthenticationError, "HTTP Error: #{reason}")
+        { :error, reason }
     end
   end
 end
