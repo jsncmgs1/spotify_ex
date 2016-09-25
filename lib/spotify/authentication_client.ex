@@ -5,7 +5,7 @@ defmodule AuthenticationClient do
     case AuthRequest.post(params) do
       {:ok, %HTTPoison.Response{status_code: _code, body: body}} ->
         with {:ok, response} <- Poison.decode(body) do
-          {:ok, Spotify.Auth.get_tokens_from_response(response)}
+          {:ok, Spotify.Credentials.get_tokens_from_response(response)}
         else
           _unmatched ->
             raise(AuthenticationError, "Error parsing response from Spotify")
