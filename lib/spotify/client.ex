@@ -1,6 +1,6 @@
 defmodule Spotify.Client do
   @moduledoc false
-  alias Spotify.Auth
+  alias Spotify.Credentials
 
   def get(auth, url) do
     HTTPoison.get(url, get_headers(auth))
@@ -19,11 +19,11 @@ defmodule Spotify.Client do
   end
 
   def get_headers(auth) do
-    [{"Authorization", "Bearer #{Auth.new(auth).access_token}" }]
+    [{"Authorization", "Bearer #{Credentials.new(auth).access_token}" }]
   end
 
   def put_headers(auth) do
-    [ {"Authorization", "Bearer #{Auth.new(auth).access_token}" },
+    [ {"Authorization", "Bearer #{Credentials.new(auth).access_token}" },
       {"Content-Type", "application/json"} ]
   end
 

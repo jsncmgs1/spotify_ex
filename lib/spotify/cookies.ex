@@ -7,7 +7,7 @@ defmodule Spotify.Cookies do
   Sets the refresh token and access token and returns the conn.
 
   ## Example:
-      Spotify.Cookies.set_cookies(conn, %Spotify.Auth{refresh_token: rt, access_token: at})
+      Spotify.Cookies.set_cookies(conn, %Spotify.Credentials{refresh_token: rt, access_token: at})
   """
   def set_cookies(conn, auth) do
     conn
