@@ -279,7 +279,7 @@ defmodule Spotify.Playlist do
       # => {:ok, %{"snapshot_id" => "foo"}}
   """
   def add_tracks(conn, user_id, playlist_id, params \\ []) do
-    url = add_tracks(user_id, playlist_id, params)
+    url = add_tracks_url(user_id, playlist_id, params)
     conn |> Client.put(url) |> handle_response
   end
 
