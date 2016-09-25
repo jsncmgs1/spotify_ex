@@ -16,12 +16,8 @@ defmodule Spotify.Personalization do
 
   import Helpers
   use Responder
-  @behaviour Responder
   alias Spotify.Client
 
-  @doc """
-  Defines the Personalization struct.
-  """
   defstruct ~w[ items next previous total limit href ]a
 
   @doc """

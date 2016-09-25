@@ -11,15 +11,11 @@ defmodule Spotify.Profile do
   https://developer.spotify.com/web-api/user-profile-endpoints/
   """
 
-  @doc """
-  Defines the Profile struct.
-  """
   defstruct ~w[ birthdate country display_name email external_urls
     followers href id images product type uri ]a
 
   alias Spotify.Client
   use Responder
-  @behaviour Responder
   import Helpers
 
   @doc """

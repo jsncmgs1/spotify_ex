@@ -1,16 +1,17 @@
 defmodule AuthenticationClient do
   @moduledoc false
-  import Spotify.Cookies
 
-  def post(conn, params) do
+  def post(params) do
     case AuthRequest.post(params) do
       {:ok, %HTTPoison.Response{status_code: _code, body: body}} ->
-        { :ok, response } = Poison.decode(body)
-        cookies = get_cookies_from_response(response)
-        conn = set_cookies(conn, cookies)
-        { :ok, conn }
+        with {:ok, response} <- Poison.decode(body) do
+          {:ok, Spotify.Credentials.get_tokens_from_response(response)}
+        else
+          _unmatched ->
+            raise(AuthenticationError, "Error parsing response from Spotify")
+        end
       {:error, %HTTPoison.Error{reason: reason}} ->
-        { :error, reason, conn }
+        { :error, reason }
     end
   end
 end
@@ -21,6 +22,14 @@ defmodule AuthRequest do
   @url "https://accounts.spotify.com/api/token"
 
   def post(params) do
-    HTTPoison.post(@url, params, Spotify.auth_headers)
+    HTTPoison.post(@url, params, headers)
   end
+
+  def headers do
+    [
+      {"Authorization", "Basic #{Spotify.encoded_credentials}"},
+      {"Content-Type", "application/x-www-form-urlencoded"}
+    ]
+  end
+
 end

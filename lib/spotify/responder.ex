@@ -10,16 +10,11 @@ defmodule Responder do
   defmacro __using__(_) do
     quote do
       def handle_response({ :ok, %HTTPoison.Response{ status_code: code, body: "" }})
-        when code in 200..299 do
-          :ok
-        end
+        when code in 200..299, do: :ok
 
       def handle_response({ message, %HTTPoison.Response{ status_code: code, body: body }})
-      when code in 400..499 do
-        { message, Poison.decode!(body)}
-      end
+        when code in 400..499, do: { message, Poison.decode!(body)}
 
-      @doc false
       def handle_response({ :ok, %HTTPoison.Response{ status_code: _code, body: body }}) do
         response = body |> Poison.decode! |> build_response
 

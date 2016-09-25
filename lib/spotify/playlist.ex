@@ -19,8 +19,6 @@ defmodule Spotify.Playlist do
 
   import Helpers
   use Responder
-  @behaviour Responder
-
   alias Spotify.Client
 
   defstruct ~w[ collaborative description external_urls followers
@@ -281,7 +279,7 @@ defmodule Spotify.Playlist do
       # => {:ok, %{"snapshot_id" => "foo"}}
   """
   def add_tracks(conn, user_id, playlist_id, params \\ []) do
-    url = add_tracks(user_id, playlist_id, params)
+    url = add_tracks_url(user_id, playlist_id, params)
     conn |> Client.put(url) |> handle_response
   end
 

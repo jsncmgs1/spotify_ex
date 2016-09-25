@@ -1,31 +1,32 @@
 defmodule Spotify.Client do
   @moduledoc false
+  alias Spotify.Credentials
 
-  def get(conn, url) do
-    HTTPoison.get(url, get_headers(conn))
+  def get(auth, url) do
+    HTTPoison.get(url, get_headers(auth))
   end
 
-  def put(conn, url, body \\ "") do
-    HTTPoison.put(url, body, put_headers(conn))
+  def put(auth, url, body \\ "") do
+    HTTPoison.put(url, body, put_headers(auth))
   end
 
-  def post(conn, url, body \\ "") do
-    HTTPoison.post(url, body, post_headers(conn))
+  def post(auth, url, body \\ "") do
+    HTTPoison.post(url, body, post_headers(auth))
   end
 
-  def delete(conn, url) do
-    HTTPoison.delete(url, delete_headers(conn))
+  def delete(auth, url) do
+    HTTPoison.delete(url, delete_headers(auth))
   end
 
-  def get_headers(conn) do
-    [{"Authorization", "Bearer #{conn.cookies["spotify_access_token"]}" }]
+  def get_headers(auth) do
+    [{"Authorization", "Bearer #{Credentials.new(auth).access_token}" }]
   end
 
-  def put_headers(conn) do
-    [ {"Authorization", "Bearer #{conn.cookies["spotify_access_token"]}" },
+  def put_headers(auth) do
+    [ {"Authorization", "Bearer #{Credentials.new(auth).access_token}" },
       {"Content-Type", "application/json"} ]
   end
 
-  def post_headers(conn), do: put_headers(conn)
-  def delete_headers(conn), do: get_headers(conn)
+  def post_headers(auth), do: put_headers(auth)
+  def delete_headers(auth), do: get_headers(auth)
 end

@@ -7,13 +7,13 @@ defmodule Paging do
 
   import Helpers
 
-  @def """
+  @doc """
   Paging Struct. The Spotify API returns collections in a Paging
   object, with the collection in the `items` key.
   """
   defstruct ~w[ href items limit next offset previous total cursor]a
 
-  @def """
+  @doc """
     Takes the response body from an API call that returns a collection.
     Param items should be structs from that collections types, for example
     getting a collection playlists, items should be [%Spotify.Playlist{}, ...]

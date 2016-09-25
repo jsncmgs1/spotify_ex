@@ -14,7 +14,6 @@ defmodule Spotify.Artist do
 
   import Helpers
   use Responder
-  @behaviour Responder
   alias Spotify.{Client, Artist, Track}
 
   defstruct ~w[
