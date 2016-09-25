@@ -43,11 +43,6 @@ defmodule Spotify.Cookies do
   def get_access_token(conn) do
     conn.cookies["spotify_access_token"]
   end
-  def get_access_cookie(conn) do
-    require Logger, [warn: 1]
-    Logger.warn("Deprecation Warning: Spotify.Cookies.get_access_cookie. Use get_access_token.")
-    get_access_token(conn)
-  end
 
   @doc """
   Gets the access token
@@ -55,10 +50,5 @@ defmodule Spotify.Cookies do
   def get_refresh_token(conn)
   def get_refresh_token(conn) do
     conn.cookies["spotify_refresh_token"]
-  end
-  def get_refresh_cookie(conn) do
-    require Logger, [warn: 1]
-    Logger.warn("Deprecation Warning: Spotify.Cookies.get_refresh_cookie. Use get_refresh_token.")
-    get_refresh_token(conn)
   end
 end
