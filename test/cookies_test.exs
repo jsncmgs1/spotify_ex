@@ -1,7 +1,7 @@
 defmodule SpotifyCookiesTest do
   use ExUnit.Case
   doctest Spotify.Cookies
-  alias Spotify.{Cookies, Credentials}
+  alias Spotify.Cookies
 
   test "#set_refresh_cookie" do
     conn =
