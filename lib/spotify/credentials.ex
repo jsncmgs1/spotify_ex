@@ -7,8 +7,9 @@ defmodule Spotify.Credentials do
   @doc """
   Returns a Spotify.Credentials struct from either a Plug.Conn or a Spotify.Credentials struct
   """
-  def new(auth = %Credentials{}), do: auth
-  def new(conn = %Conn{}) do
+  def new(conn_or_credentials)
+  def new(creds = %Credentials{}), do: creds
+  def new(conn = %Plug.Conn{}) do
     conn = Plug.Conn.fetch_cookies(conn)
     access_token = conn.cookies["spotify_access_token"]
     refresh_token = conn.cookies["spotify_refresh_token"]
