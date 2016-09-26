@@ -193,7 +193,7 @@ defmodule Spotify.Playlist do
   def get_playlist_tracks(conn, user_id, playlist_id, params \\ []) do
     alias Spotify.Playlist.Track, as: Track
 
-    url = get_playlist_tracks(user_id, playlist_id, params)
+    url = get_playlist_tracks_url(user_id, playlist_id, params)
     conn |> Client.get(url) |> Track.handle_response
   end
 
