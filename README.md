@@ -27,12 +27,12 @@
 This wrapper covers the [Spotify Web
 API](https://developer.spotify.com/web-api/endpoint-reference/).
 
-Follow that link, on the left you'll notice they have the API broken into
+Follow the abovementioned link. On the left you'll notice that the API is broken into
 sections, such as Artists, Albums, Playlists, etc. This wrapper does its best
-to keep endpoints in modules mapped to their corresponding section, however
-Spotify duplicates many of its endpoints. For example, there's an endpoint to
-get an artist's albums that's listed under both Artists and Albums. The endpoints
-are not duplicated in this wrapper, so if you don't see an endpoint, it's a
+to keep endpoints in modules mapped to their corresponding section. However,
+Spotify duplicates many of its endpoints. For example, there is an endpoint to
+obtain an artist's albums that is listed under both Artists and Albums. The endpoints
+are not duplicated in this wrapper, so if you don't see an endpoint, it can be found in a
 module that's also related to that endpoint i.e, if you don't see that endpoint
 in the `Artist` module, check `Albums`.
 
@@ -45,13 +45,13 @@ This README will go into some detail about the OAuth process. Consult the
 [docs](https://hexdocs.pm/spotify_ex/0.1.1/api-reference.html) for other parts
 of the API.
 
-I haven't made any function's private because I think programmer should have
+I haven't made any functions private because I think programmer should have
 access to all of the functions. Anything not documented should be considered
-API private and can change. Use at your own risk.
+private with respect to the API and can change. Use at your own risk.
 
-There are 2 functions for each endpount. Getting a playlist for example,
-`Spotify.Playlist.get_playlist`, and `Spotify.Playlist.get_playlist_url`.  The
-first will use the url function to make the request, and do give give you back
+There are 2 functions for each endpoint. For example, to get a playlist,
+`Spotify.Playlist.get_playlist`, and `Spotify.Playlist.get_playlist_url` are available.  The
+first will use the url function to make the request, and return
 a list of `%Spotify.Track` structs.  If you just want the raw response from
 Spotify and/or want to implement your own client and data manipulation, all of
 the url functions are public.
@@ -61,7 +61,7 @@ the url functions are public.
 
 ## OAuth
 
-The Spotify API follows the O Auth 2 spec, providing 3 potential authentication flows:
+The Spotify API follows the OAuth 2 spec, providing 3 potential authentication flows:
 
 - [Authorization Code flow](https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow)
 - [Client Credentials Flow](https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow)
@@ -116,8 +116,8 @@ end
 ```
 
 This will take you to the Spotify Authorization page.  After authorizing your
-app, you will be directed to now authenticate as a Spotify User. When
-successfull, you will be redirected to the callback uri you set in the config
+app, you will then be directed to authenticate as a Spotify User. When
+successful, you will be redirected to the callback uri you set in the config
 file.
 
 
@@ -135,10 +135,10 @@ scopes, add them to the list in your ```spotify.exs``` file,
 config :spotify_ex, scopes: ["playlist-read-private", "playlist-modify-private" "# more scopes"]
 ```
 
-O-auth requires identical reqirect URIs for to use for the authorization and
+OAuth requires identical redirect URIs to use for the authorization and
 authentication steps. When you attempt to authenticate with Spotify, if
-successful, Spotify needs to know where to send the user afterwards. The
-redirect URI tells Spotify where to send them.
+successful, Spotify needs to know where to send the user afterwards, which
+is what the redirect URI is used for.
 
 ```elixir
 config :spotify_ex, callback_url: "http://www.your-api.com/auth-endpoint"
@@ -180,7 +180,7 @@ end
 ```
 
 The authentication module will set refresh and access tokens in a cookie. The
-access token expires every hour, and you'll need to check your reponses for 401
+access token expires every hour, so you'll need to check your reponses for 401
 errors. Call `Spotify.Authentication.refresh`, if there is a refresh token
 present.  If not, you'll need to redirect back to authorization.
 
