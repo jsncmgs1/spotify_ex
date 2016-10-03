@@ -27,13 +27,13 @@
 This wrapper covers the [Spotify Web
 API](https://developer.spotify.com/web-api/endpoint-reference/).
 
-Follow that link, on the left you'll notice they have the API broken into
-sections, such as Artists, Albums, Playlists, etc. This wrapper does its best
+Follow that link. On the left you'll notice they have the API broken into
+sections such as Artists, Albums, Playlists, etc. This wrapper does its best
 to keep endpoints in modules mapped to their corresponding section, however
 Spotify duplicates many of its endpoints. For example, there's an endpoint to
 get an artist's albums that's listed under both Artists and Albums. The endpoints
 are not duplicated in this wrapper, so if you don't see an endpoint, it's a
-module that's also related to that endpoint i.e, if you don't see that endpoint
+module that's also related to that endpoint: i.e, if you don't see that endpoint
 in the `Artist` module, check `Albums`.
 
 These duplicate endpoints may get aliased in the future to have a 1-1 mapping
@@ -45,13 +45,13 @@ This README will go into some detail about the OAuth process. Consult the
 [docs](https://hexdocs.pm/spotify_ex/0.1.1/api-reference.html) for other parts
 of the API.
 
-I haven't made any function's private because I think programmer should have
+I haven't made any functions private because I think programmer should have
 access to all of the functions. Anything not documented should be considered
 API private and can change. Use at your own risk.
 
-There are 2 functions for each endpount. Getting a playlist for example,
+There are 2 functions for each endpoint. For example, getting a playlist:
 `Spotify.Playlist.get_playlist`, and `Spotify.Playlist.get_playlist_url`.  The
-first will use the url function to make the request, and do give give you back
+first will use the url function to make the request, and give you back
 a list of `%Spotify.Track` structs.  If you just want the raw response from
 Spotify and/or want to implement your own client and data manipulation, all of
 the url functions are public.
@@ -116,8 +116,8 @@ end
 ```
 
 This will take you to the Spotify Authorization page.  After authorizing your
-app, you will be directed to now authenticate as a Spotify User. When
-successfull, you will be redirected to the callback uri you set in the config
+app, you will be directed to authenticate as a Spotify User. When
+successfull, you will be redirected to the callback URI you set in the config
 file.
 
 
@@ -136,7 +136,7 @@ config :spotify_ex, scopes: ["playlist-read-private", "playlist-modify-private" 
 ```
 
 O-auth requires identical reqirect URIs for to use for the authorization and
-authentication steps. When you attempt to authenticate with Spotify, if
+authentication steps. When your attempt to authenticate with Spotify is
 successful, Spotify needs to know where to send the user afterwards. The
 redirect URI tells Spotify where to send them.
 
@@ -187,6 +187,6 @@ present.  If not, you'll need to redirect back to authorization.
 ## Contributing
 
 All contributions are more than welcome! I will not accept a PR without tests
-if it looks like something that should be tested, which is pretty much
-everything. Development is done on the `development` branch, and moved to
+if it looks like something that should be tested (which is pretty much
+everything.) Development is done on the `development` branch, and moved to
 `master` for release on hexpm.
