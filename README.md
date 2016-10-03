@@ -187,6 +187,6 @@ present.  If not, you'll need to redirect back to authorization.
 ## Contributing
 
 All contributions are more than welcome! I will not accept a PR without tests
-if it looks like something that should be tested, which is pretty much
-everything. Development is done on the `development` branch, and moved to
+if it looks like something that should be tested (which is pretty much
+everything.) Development is done on the `development` branch, and moved to
 `master` for release on hexpm.
