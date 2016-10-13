@@ -90,7 +90,6 @@ defmodule Spotify.Playlist do
   def follow_playlist(conn, owner_id, playlist_id, body \\ "") do
     url = follow_playlist_url(owner_id, playlist_id)
     conn |> Client.put(url, body) |> handle_response
-
   end
 
   @doc"""
@@ -265,6 +264,26 @@ defmodule Spotify.Playlist do
     get_playlist_url(user_id, playlist_id)
   end
 
+  @doc """
+  Add one or more tracks to a user’s playlist.
+  [Spotify Documentation](https://developer.spotify.com/web-api/add-tracks-to-playlist/)
+
+  **Method**: `POST`
+
+  **Optional Params**: `uris`, `position`
+
+  You can also pass the URI param in the request body. If you don't want to
+  pass params, use an empty list. See Spotify docs and add_tracks/5.
+
+      body = Poison.encode!(%{ uris: [ "spotify:track:755MBpLqJqCO87PkoyBBQC", "spotify:track:1hsWu8gT2We6OzjhYGAged" ]})
+
+      Spotify.Playlist.add_tracks("123", "456", body, [])
+      # => {:ok, %{"snapshot_id" => "foo"}}
+  """
+  def add_tracks(conn, user_id, playlist_id, body, params) do
+    url = add_tracks_url(user_id, playlist_id, params)
+    conn |> Client.post(url, body) |> handle_response
+  end
 
   @doc """
   Add one or more tracks to a user’s playlist.
@@ -274,11 +293,11 @@ defmodule Spotify.Playlist do
 
   **Optional Params**: `uris`, `position`
 
-  You can also pass the URI param in the request body. Use `add_tracks/2`. See Spotify docs.
+  You can also pass the URI param in the request body. See Spotify docs and add_tracks/4.
       Spotify.Playlist.add_tracks("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
       # => {:ok, %{"snapshot_id" => "foo"}}
   """
-  def add_tracks(conn, user_id, playlist_id, params \\ []) do
+  def add_tracks(conn, user_id, playlist_id, params) do
     url = add_tracks_url(user_id, playlist_id, params)
     conn |> Client.post(url) |> handle_response
   end
@@ -363,9 +382,14 @@ defmodule Spotify.Playlist do
       Spotify.Playlist.replace_tracks(conn, "123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:adkjaklsd94h")
       :ok
   """
-  def replace_tracks(conn, user_id, playlist_id, params \\ []) do
+  def replace_tracks(conn, user_id, playlist_id, params) when is_list(params) do
     url = replace_tracks_url(user_id, playlist_id, params)
     conn |> Client.put(url) |> handle_response
+  end
+
+  def replace_tracks(conn, user_id, playlist_id, body) when is_binary(body) do
+    url = replace_tracks_url(user_id, playlist_id)
+    conn |> Client.put(url, body) |> handle_response
   end
 
   @doc"""
