@@ -13,6 +13,18 @@ defmodule OathAuthorizationFlow do
     end
   end
 
+  describe "posting to Spotify" do
+    test "A body with an error raises Authentication error" do
+      with_mock AuthRequest, [post: fn(params) -> AuthenticationClientMock.post(%{"error_description" => "bad client id"}) end] do
+        conn = conn :post, "/authenticate", %{"code" => "valid"}
+        conn = Plug.Conn.fetch_cookies(conn)
+        assert_raise AuthenticationError, "The Spotify API responded with: Invalid client", fn ->
+          Authentication.authenticate(conn, conn.params)
+        end
+      end
+    end
+  end
+
   describe "authentication" do
     test "a successful attemp sets the cookies" do
       with_auth_mock do
@@ -39,8 +51,8 @@ defmodule OathAuthorizationFlow do
     test "with a refresh token present" do
       with_auth_mock do
         conn = conn(:post, "/authenticate")
-          |> Plug.Conn.fetch_cookies
-          |> Plug.Conn.put_resp_cookie("spotify_refresh_token", "refresh_token")
+        |> Plug.Conn.fetch_cookies
+        |> Plug.Conn.put_resp_cookie("spotify_refresh_token", "refresh_token")
 
         assert { :ok, new_conn } = Authentication.refresh(conn)
         assert new_conn.cookies["spotify_access_token"]  == "access_token"
@@ -53,5 +65,6 @@ defmodule OathAuthorizationFlow do
       assert :unauthorized == Authentication.refresh(conn)
     end
   end
+
 end
 

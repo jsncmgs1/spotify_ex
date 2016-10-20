@@ -1,8 +1,8 @@
 defmodule AuthenticationError do
   defexception [:message]
 
-  def exception(_) do
-    %AuthenticationError{message: "No code provided by Spotify. Authorize your app again"}
+  def exception(message) do
+    %AuthenticationError{message: message}
   end
 end
 

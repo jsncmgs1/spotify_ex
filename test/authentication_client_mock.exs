@@ -3,11 +3,22 @@ defmodule HTTPoison.Response do
 end
 
 defmodule AuthenticationClientMock do
-  def post(_params) do
-    { :ok, _successful_response }
+  def post(%{"error_description" => _}) do
+    { :ok, failed_response }
   end
 
-  defp _successful_response do
+  def post(_params) do
+    { :ok, successful_response }
+  end
+
+  defp failed_response do
+    %HTTPoison.Response{
+      body: "{\"error\":\"invalid_client\",\"error_description\":\"Invalid client\"}",
+      status_code: 400
+    }
+  end
+
+  defp successful_response do
     %HTTPoison.Response{
       body: "{\"access_token\":\"access_token\",\"token_type\":\"Bearer\",\"expires_in\":3600,\"refresh_token\":\"refresh_token\",\"scope\":\"playlist-read-private\"}",
       headers: [{"Server", "nginx"}, {"Date", "Thu, 21 Jul 2016 16:52:38 GMT"},
