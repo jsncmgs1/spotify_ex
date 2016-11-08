@@ -434,7 +434,7 @@ defmodule Spotify.Playlist do
   """
   def build_response(body) do
     case body do
-      %{"playlists" => playlists} -> %Paging{items: build_playlists(playlists["items"])}
+      %{"items" => items} -> %Paging{items: build_playlists(items)}
       _ -> to_struct(__MODULE__, body)
     end
   end

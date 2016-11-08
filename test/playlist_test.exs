@@ -29,9 +29,7 @@ defmodule PlaylistTest do
 
   def response_body_with_collection do
     %{
-      "playlists" => %{
-        "items" => [%{ "name" => "foo" }, %{ "name" => "bar" } ]
-      }
+      "items" => [%{ "name" => "foo" }, %{ "name" => "bar" } ]
     }
   end
 
