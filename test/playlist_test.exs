@@ -3,17 +3,18 @@ defmodule PlaylistTest do
   alias Spotify.Playlist
 
   describe "build_response/1" do
-    test "the API returns a collection" do
-      actual = Playlist.build_response(response_body_with_collection)
+    test "the API returns a playlist element" do
+      actual = Playlist.build_response(response_body_with_playlist_element)
       playlists = [%Playlist{name: "foo"}, %Playlist{name: "bar"}]
       expected = %Paging{items: playlists}
 
       assert actual == expected
     end
 
-    test "the API returns a single playlist" do
-      actual = Playlist.build_response(response_body_with_playlist)
-      expected = %Playlist{name: "foo"}
+    test "the API returns a items collections without a playlists root" do
+      actual = Playlist.build_response(response_body_without_playlist_element)
+      playlists = [%Playlist{name: "foo"}, %Playlist{name: "bar"}]
+      expected = %Paging{items: playlists}
 
       assert actual == expected
     end
@@ -27,11 +28,16 @@ defmodule PlaylistTest do
     assert actual == expected
   end
 
-  def response_body_with_collection do
+  def response_body_with_playlist_element do
     %{
-      "items" => [%{ "name" => "foo" }, %{ "name" => "bar" } ]
+      "playlists" => %{
+        "items" => [%{ "name" => "foo" }, %{ "name" => "bar" } ]
+      }
     }
   end
 
-  def response_body_with_playlist, do: %{ "name" => "foo" }
+  def response_body_without_playlist_element do
+    %{"items" => [%{ "name" => "foo" }, %{ "name" => "bar" } ]}
+  end
+
 end
