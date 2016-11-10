@@ -46,11 +46,10 @@ defmodule SearchTest do
                     "albums" => %{"items" => [ %{"name" => "album" }]}
                   }
 
-      expected = %Paging{items: [%Artist{name: "artist"},
-                                 %Track{name: "track"},
+      expected = %Paging{items: [%Album{name: "album"},
+                                 %Artist{name: "artist"},
                                  %Playlist{name: "playlist"},
-                                 %Album{name: "album"}
-      ]}
+                                 %Track{name: "track"}]}
       actual = Search.build_response(response)
 
       assert actual == expected
