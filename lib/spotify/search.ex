@@ -40,41 +40,29 @@ defmodule Spotify.Search do
   Implements the hook required by the `Responder` behaviour
   """
   def build_response(body) do
-    {items, _rest} = body
-                     |> Map.take(@keys)
-                     |> Map.to_list
-                     |> Enum.flat_map_reduce([], fn({key, data}, acc) ->
-                       {map_to_struct(key, data["items"]), acc}
-                     end)
-    Paging.response(body, items)
+    body
+    |> Map.take(@keys)
+    |> Map.to_list
+    |> Enum.flat_map_reduce([], &reducer/2)
+    |> build_paging(body)
   end
 
+  @doc false
+  def reducer({key, data}, acc), do: {map_to_struct(key, data["items"]), acc}
+
+  @doc false
+  def build_paging({items, _rest}, body), do: Paging.response(body, items)
+
+  @doc false
   def map_to_struct("artists", artists), do: Artist.build_artists(artists)
+
+  @doc false
   def map_to_struct("tracks", tracks), do: Track.build_tracks(tracks)
+
+  @doc false
   def map_to_struct("playlists", playlists), do: Playlist.build_playlists(playlists)
+
+  @doc false
   def map_to_struct("albums", albums), do: Enum.map(albums, &to_struct(Album, &1))
 
-  @doc false
-  def build_albums(body, albums) do
-    albums = Enum.map(albums, &to_struct(Album, &1))
-    Paging.response(body, albums)
-  end
-
-  @doc false
-  def build_artists(body, artists) do
-    artists = Artist.build_artists(artists)
-    Paging.response(body, artists)
-  end
-
-  @doc false
-  def build_playlists(body, playlists) do
-    playlists = Playlist.build_playlists(playlists)
-    Paging.response(body, playlists)
-  end
-
-  @doc false
-  def build_tracks(body, tracks) do
-    tracks = Track.build_tracks(tracks)
-    Paging.response(body, tracks)
-  end
 end
