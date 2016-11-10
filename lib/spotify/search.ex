@@ -41,28 +41,26 @@ defmodule Spotify.Search do
   """
   def build_response(body) do
     body
+    |> map_paging
+    |> append_items
+  end
+
+  defp map_paging(body), do: {Paging.response(body, []), body}
+
+  defp append_items({paging, body}) do
+    body
     |> Map.take(@keys)
     |> Map.to_list
     |> Enum.flat_map_reduce([], &reducer/2)
-    |> build_paging(body)
+    |> update_paging(paging)
   end
 
-  @doc false
-  def reducer({key, data}, acc), do: {map_to_struct(key, data["items"]), acc}
+  defp reducer({key, data}, acc), do: {map_to_struct(key, data["items"]), acc}
+  defp update_paging({items, _rest}, paging), do: paging |> Map.put(:items, items)
 
-  @doc false
-  def build_paging({items, _rest}, body), do: Paging.response(body, items)
-
-  @doc false
-  def map_to_struct("artists", artists), do: Artist.build_artists(artists)
-
-  @doc false
-  def map_to_struct("tracks", tracks), do: Track.build_tracks(tracks)
-
-  @doc false
-  def map_to_struct("playlists", playlists), do: Playlist.build_playlists(playlists)
-
-  @doc false
-  def map_to_struct("albums", albums), do: Enum.map(albums, &to_struct(Album, &1))
+  defp map_to_struct("artists", artists), do: Artist.build_artists(artists)
+  defp map_to_struct("tracks", tracks), do: Track.build_tracks(tracks)
+  defp map_to_struct("playlists", playlists), do: Playlist.build_playlists(playlists)
+  defp map_to_struct("albums", albums), do: Enum.map(albums, &to_struct(Album, &1))
 
 end
