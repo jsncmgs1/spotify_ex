@@ -24,6 +24,7 @@ defmodule Spotify.Mixfile do
                "Example Phoenix App" => "https://www.github.com/jsncmgs1/spotify_ex_test"}
     ]
   end
+
   defp description do
     """
     An Elixir wrapper for the Spotify Web API.

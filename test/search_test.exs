@@ -38,5 +38,21 @@ defmodule SearchTest do
 
       assert actual == expected
     end
+
+    test "responds with albums, artists, tracks and playists" do
+      response = %{ "artists" => %{"items" => [ %{"name" => "artist"} ] },
+                    "tracks" => %{"items" => [ %{"name" => "track"} ] },
+                    "playlists" => %{"items" => [ %{"name" => "playlist"} ] },
+                    "albums" => %{"items" => [ %{"name" => "album" }]}
+                  }
+
+      expected = %Paging{items: [%Album{name: "album"},
+                                 %Artist{name: "artist"},
+                                 %Playlist{name: "playlist"},
+                                 %Track{name: "track"}]}
+      actual = Search.build_response(response)
+
+      assert actual == expected
+    end
   end
 end
