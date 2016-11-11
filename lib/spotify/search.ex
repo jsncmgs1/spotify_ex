@@ -7,6 +7,8 @@ defmodule Spotify.Search do
   import Helpers
   alias Spotify.{Client, Album, Artist, Playlist, Track}
 
+  @keys ["albums", "artists", "playlists", "tracks"]
+
   @doc """
   Search for a playlist.
   [Spotify Documentation](https://developer.spotify.com/web-api/search-item/)
@@ -38,35 +40,27 @@ defmodule Spotify.Search do
   Implements the hook required by the `Responder` behaviour
   """
   def build_response(body) do
-    case body do
-      %{ "albums" => albums }       -> build_albums(body, albums["items"])
-      %{ "artists" => artists }     -> build_artists(body, artists["items"])
-      %{ "playlists" => playlists } -> build_playlists(body, playlists["items"])
-      %{ "tracks" => tracks }       -> build_tracks(body, tracks["items"])
-    end
+    body
+    |> map_paging
+    |> append_items
   end
 
-  @doc false
-  def build_albums(body, albums) do
-    albums = Enum.map(albums, &to_struct(Album, &1))
-    Paging.response(body, albums)
+  defp map_paging(body), do: {Paging.response(body, []), body}
+
+  defp append_items({paging, body}) do
+    body
+    |> Map.take(@keys)
+    |> Map.to_list
+    |> Enum.flat_map_reduce([], &reducer/2)
+    |> update_paging(paging)
   end
 
-  @doc false
-  def build_artists(body, artists) do
-    artists = Artist.build_artists(artists)
-    Paging.response(body, artists)
-  end
+  defp reducer({key, data}, acc), do: {map_to_struct(key, data["items"]), acc}
+  defp update_paging({items, _rest}, paging), do: paging |> Map.put(:items, items)
 
-  @doc false
-  def build_playlists(body, playlists) do
-    playlists = Playlist.build_playlists(playlists)
-    Paging.response(body, playlists)
-  end
+  defp map_to_struct("artists", artists), do: Artist.build_artists(artists)
+  defp map_to_struct("tracks", tracks), do: Track.build_tracks(tracks)
+  defp map_to_struct("playlists", playlists), do: Playlist.build_playlists(playlists)
+  defp map_to_struct("albums", albums), do: Enum.map(albums, &to_struct(Album, &1))
 
-  @doc false
-  def build_tracks(body, tracks) do
-    tracks = Track.build_tracks(tracks)
-    Paging.response(body, tracks)
-  end
 end
