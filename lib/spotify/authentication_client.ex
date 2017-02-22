@@ -24,7 +24,7 @@ defmodule AuthRequest do
   @url "https://accounts.spotify.com/api/token"
 
   def post(params) do
-    HTTPoison.post(@url, params, headers)
+    HTTPoison.post(@url, params, headers())
   end
 
   def headers do

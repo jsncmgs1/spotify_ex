@@ -29,7 +29,7 @@ defmodule Spotify.Profile do
       # => { :ok, %Spotify.Profile{..} }
   """
   def me(conn) do
-     conn |> Client.get(me_url) |> handle_response
+     conn |> Client.get(me_url()) |> handle_response
   end
 
   @doc """

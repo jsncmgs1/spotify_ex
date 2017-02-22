@@ -32,7 +32,6 @@ defmodule Spotify.Personalization do
       { :ok, artists: [%Spotify.Artist{..}...], paging: %Paging{next:...} }
   """
   def top_artists(conn, params \\ []) do
-
     url = top_artists_url(params)
     conn |> Client.get(url) |> handle_response
   end
@@ -44,7 +43,7 @@ defmodule Spotify.Personalization do
       "https://api.spotify.com/v1/me/top/artists?limit=5&time_range=medium_term"
   """
   def top_artists_url(params \\ []) do
-    url <> "artists" <> query_string(params)
+    url() <> "artists" <> query_string(params)
   end
 
   @doc """
@@ -71,7 +70,7 @@ defmodule Spotify.Personalization do
       "https://api.spotify.com/v1/me/top/tracks"
   """
   def top_tracks_url(params \\ []) do
-    url <> "tracks" <> query_string(params)
+    url() <> "tracks" <> query_string(params)
   end
 
   @doc """
