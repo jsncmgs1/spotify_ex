@@ -5,13 +5,13 @@ defmodule Spotify.Mixfile do
     [app: :spotify_ex,
      version: "2.0.4",
      elixir: "~> 1.3",
-     description: description,
-     package: package,
+     description: description(),
+     package: package(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      source_url: "https://github.com/jsncmgs1/spotify_ex",
      homepage_url: "https://github.com/jsncmgs1/spotify_ex",
-     deps: deps,
+     deps: deps(),
      docs: [extras: ["README.md"]]
    ]
   end

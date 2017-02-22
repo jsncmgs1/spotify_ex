@@ -17,17 +17,17 @@ defmodule ResponderTest do
 
   describe "handle_response" do
     test "with 200/201 status and an empty body" do
-      assert GenericMock.some_endpoint(success_empty_body) == :ok
+      assert GenericMock.some_endpoint(success_empty_body()) == :ok
     end
 
     test "with 200/201 status and a body" do
       expected = {:ok, %Spotify.Playlist{name: "foo"}}
-      assert GenericMock.some_endpoint(success_with_body) == expected
+      assert GenericMock.some_endpoint(success_with_body()) == expected
     end
 
     test "with 400 status and a body" do
       expected = { :error, %{"error" => "foo" } }
-      assert GenericMock.some_endpoint(error) == expected
+      assert GenericMock.some_endpoint(error()) == expected
     end
   end
 

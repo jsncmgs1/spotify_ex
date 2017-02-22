@@ -12,7 +12,7 @@ defmodule ArtistTest do
   describe "build_response/1" do
     test "it returns a collection of artists" do
       expected = [%Artist{name: "foo"}, %Artist{name: "bar"}]
-      actual = Spotify.Artist.build_response(artists_response)
+      actual = Spotify.Artist.build_response(artists_response())
 
       assert actual == expected
     end
@@ -35,7 +35,7 @@ defmodule ArtistTest do
 
     test "it returns tracks" do
       expected = [%Track{name: "foo"}, %Track{name: "bar"}]
-      actual = Spotify.Artist.build_response(tracks_response)
+      actual = Spotify.Artist.build_response(tracks_response())
 
       assert actual == expected
     end

@@ -4,11 +4,11 @@ end
 
 defmodule AuthenticationClientMock do
   def post(%{"error_description" => _}) do
-    { :ok, failed_response }
+    { :ok, failed_response() }
   end
 
   def post(_params) do
-    { :ok, successful_response }
+    { :ok, successful_response() }
   end
 
   defp failed_response do

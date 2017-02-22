@@ -11,7 +11,7 @@ defmodule Playlist.TrackTest do
   end
 
   test "build_response/1" do
-    actual = PT.build_response(response)
+    actual = PT.build_response(response())
 
     track = %Track{name: "foo"}
     expected = %Paging{items: [%PT{added_at: "2014-08-18T20:16:08Z", track: track}]}

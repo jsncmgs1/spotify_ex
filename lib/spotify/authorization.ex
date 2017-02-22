@@ -23,10 +23,10 @@ defmodule Spotify.Authorization do
        end
   """
   def url do
-    if scopes != "" do
-      scoped_auth
+    if scopes() != "" do
+      scoped_auth()
     else
-      scopeless_auth
+      scopeless_auth()
     end
   end
 
@@ -39,7 +39,7 @@ defmodule Spotify.Authorization do
 
   @doc false
   def scoped_auth do
-    "https://accounts.spotify.com/authorize?client_id=#{Spotify.client_id}&response_type=code&redirect_uri=#{Spotify.callback_url}&scope=#{scopes}"
+    "https://accounts.spotify.com/authorize?client_id=#{Spotify.client_id}&response_type=code&redirect_uri=#{Spotify.callback_url}&scope=#{scopes()}"
   end
 
   @doc false

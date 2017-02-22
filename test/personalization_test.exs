@@ -5,7 +5,7 @@ defmodule PersonalizationTest do
 
   describe "build_response/1" do
     test "User requests top artists" do
-      actual = Personalization.build_response(response_with_artists)
+      actual = Personalization.build_response(response_with_artists())
       artists = [%Artist{name: "foo", type: "artist"}, %Artist{name: "bar", type: "artist"}]
 
       expected = %Paging{items: artists}
@@ -14,7 +14,7 @@ defmodule PersonalizationTest do
     end
 
     test "User requests top tracks" do
-      actual = Personalization.build_response(response_with_tracks)
+      actual = Personalization.build_response(response_with_tracks())
       tracks = [%Track{name: "foo", type: "track"}, %Track{name: "bar", type: "track"}]
       expected = %Paging{items: tracks}
 

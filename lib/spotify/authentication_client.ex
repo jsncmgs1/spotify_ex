@@ -3,7 +3,7 @@ defmodule AuthenticationClient do
 
   def post(params) do
     case AuthRequest.post(params) do
-      {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
+      {:ok, %HTTPoison.Response{status_code: _code, body: body}} ->
         case Poison.decode(body) do
           {:ok, %{"error_description" => error}} ->
             raise(AuthenticationError, "The Spotify API responded with: #{error}")

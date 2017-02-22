@@ -4,7 +4,7 @@ defmodule PlaylistTest do
 
   describe "build_response/1" do
     test "the API returns a playlist element" do
-      actual = Playlist.build_response(response_body_with_playlist_element)
+      actual = Playlist.build_response(response_body_with_playlist_element())
       playlists = [%Playlist{name: "foo"}, %Playlist{name: "bar"}]
       expected = %Paging{items: playlists}
 
@@ -12,7 +12,7 @@ defmodule PlaylistTest do
     end
 
     test "the API returns a items collections without a playlists root" do
-      actual = Playlist.build_response(response_body_without_playlist_element)
+      actual = Playlist.build_response(response_body_without_playlist_element())
       playlists = [%Playlist{name: "foo"}, %Playlist{name: "bar"}]
       expected = %Paging{items: playlists}
 

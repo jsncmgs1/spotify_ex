@@ -9,6 +9,6 @@ defmodule Spotify do
     Application.get_env(:spotify_ex, :callback_url) |> URI.encode_www_form
   end
 
-  def encoded_credentials, do: :base64.encode("#{client_id}:#{secret_key}")
+  def encoded_credentials, do: :base64.encode("#{client_id()}:#{secret_key()}")
 
 end
