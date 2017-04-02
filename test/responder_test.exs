@@ -29,6 +29,28 @@ defmodule ResponderTest do
       expected = { :error, %{"error" => "foo" } }
       assert GenericMock.some_endpoint(error) == expected
     end
+
+    test "with 429 too many requests and a body" do
+      expected = {
+        :error,
+        %{"error" => %{"message" => "API rate limit exceeded",
+                       "status" => 429},
+          "meta" => %{"retry_after" => 99}}
+      }
+      assert GenericMock.some_endpoint(
+        too_many_requests_error(99)
+      ) == expected
+    end
+  end
+
+  defp too_many_requests_error(retry_after_value) do
+    {:error, %HTTPoison.Response{
+      body: Poison.encode!(
+        %{error: %{ message: "API rate limit exceeded", status: 429 }}
+      ),
+      status_code: 429,
+      headers: [ {"Retry-After", Integer.to_string(retry_after_value)} ]
+    }}
   end
 
   defp error do
@@ -43,4 +65,3 @@ defmodule ResponderTest do
     {:ok, %HTTPoison.Response{ body: Poison.encode!(%{name: "foo"}), status_code: 200 }}
   end
 end
-
