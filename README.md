@@ -7,17 +7,21 @@
 
 ## Installation
 
-  1. Add spotify_ex to your list of dependencies in `mix.exs`:
+1. Add spotify_ex to your list of dependencies in `mix.exs`:
 
-        def deps do
-           [{:spotify_ex, "~> 2.0.6"}]
-        end
+```elixir
+def deps do
+ [{:spotify_ex, "~> 2.0.6"}]
+end
+ ```
 
-  2. Ensure spotify_ex is started before your application:
+2. Ensure spotify_ex is started before your application:
 
-        def application do
-          [applications: [:spotify_ex]]
-        end
+```elixir
+def application do
+  [applications: [:spotify_ex]]
+end
+```
 
 
 [Documentation](https://hexdocs.pm/spotify_ex/1.0.1/api-reference.html)
@@ -74,7 +78,7 @@ authentication.
 In ```/config```, create ```config/secret.exs``` and ```config/spotify.exs``` files
 
 ```elixir
-\# /config/secret.exs
+# /config/secret.exs
 
 use Mix.Config
 
@@ -83,7 +87,7 @@ config :spotify_ex, client_id: "<YOUR CLIENT ID>"
 ```
 
 ```elixir
-\# /config/spotify.exs
+# /config/spotify.exs
 
 use Mix.Config
 
@@ -130,7 +134,7 @@ request.  You can read about them
 scopes, add them to the list in your ```spotify.exs``` file,
 
 ```elixir
-\#config/spotify.exs
+#config/spotify.exs
 
 config :spotify_ex, scopes: ["playlist-read-private", "playlist-modify-private" "# more scopes"]
 ```
