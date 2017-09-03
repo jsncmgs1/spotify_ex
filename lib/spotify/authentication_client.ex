@@ -1,19 +1,24 @@
 defmodule AuthenticationClient do
   @moduledoc false
 
+  alias HTTPoison.Response
+  alias HTTPoison.Error
+
   def post(params) do
-    case AuthRequest.post(params) do
-      {:ok, %HTTPoison.Response{status_code: _code, body: body}} ->
-        case Poison.decode(body) do
-          {:ok, %{"error_description" => error}} ->
-            raise(AuthenticationError, "The Spotify API responded with: #{error}")
-          {:ok, response} ->
-            {:ok, Spotify.Credentials.get_tokens_from_response(response)}
-          _unmatched ->
-            raise(AuthenticationError, "Error parsing response from Spotify")
-        end
-      {:error, %HTTPoison.Error{reason: reason}} ->
+    with {:ok, %Response{status_code: _code, body: body}} <- AuthRequest.post(params),
+         {:ok, response} <- Poison.decode(body) do
+
+      case response do
+        %{"error_description" => error} ->
+          raise(AuthenticationError, "The Spotify API responded with: #{error}")
+        success_response ->
+          {:ok, Spotify.Credentials.get_tokens_from_response(success_response)}
+      end
+    else
+      {:error, %Error{reason: reason}} ->
         { :error, reason }
+      _generic_error ->
+        raise(AuthenticationError, "Error parsing response from Spotify")
     end
   end
 end
