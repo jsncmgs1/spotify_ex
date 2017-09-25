@@ -135,7 +135,17 @@ defmodule Spotify.Playlist do
   ** Optional Params: `limit`, `offset`
 
       Spotify.Playlist.get_users_playlists(conn, "123", q: "foo", limit: 5)
-      # => {:ok, %{ items: [%Spotify.Playlist{..} ...]}}
+      # => {:ok, %{ 
+      #     cursor: nil, 
+      #     href: .., 
+      #     items: [%Spotify.Playlist{..} ...], 
+      #     limit: 20, 
+      #     next: nil, 
+      #     offset: 0, 
+      #     previous: nil,
+      #     total: 20
+      #   }
+      # }
   """
   def get_users_playlists(conn, user_id, params \\ []) do
     url = get_users_playlists_url(user_id, params)
