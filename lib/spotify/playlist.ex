@@ -434,15 +434,27 @@ defmodule Spotify.Playlist do
   """
   def build_response(body) do
     case body do
-      %{"playlists" => playlists} -> %Paging{items: build_playlists(playlists["items"])}
-      %{"items" => items} -> %Paging{items: build_playlists(items)}
+      (%{"items" => _items} = response) -> build_paged_response(response)
+      %{"playlists" => playlists} -> build_paged_response(playlists)
       _ -> to_struct(__MODULE__, body)
     end
+  end
+
+  @doc false
+  defp build_paged_response(response) do
+    %Paging{
+      href: response["href"],
+      items: build_playlists(response["items"]),
+      limit: response["limit"],
+      next: response["next"],
+      offset: response["offset"],
+      previous: response["previous"],
+      total: response["total"]
+    }
   end
 
   @doc false
   def build_playlists(playlists) do
     Enum.map(playlists, &to_struct(__MODULE__, &1))
   end
-
 end
