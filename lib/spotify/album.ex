@@ -25,7 +25,7 @@ defmodule Spotify.Album do
     album_type artists available_markets
     copyrights external_ids external_urls
     genres href id images name popularity
-    release_date release_date_precision tracks type]a
+    release_date release_date_precision tracks type label]a
 
   @doc """
   Get Spotify catalog information for a single album.
