@@ -5,16 +5,32 @@ defmodule PlaylistTest do
   describe "build_response/1" do
     test "the API returns a playlist element" do
       actual = Playlist.build_response(response_body_with_playlist_element())
-      playlists = [%Playlist{name: "foo"}, %Playlist{name: "bar"}]
-      expected = %Paging{items: playlists}
+      
+      expected = %Paging{
+        href: "https://api.spotify.com/v1/users/anuser/playlists?offset=0&limit=20",
+        items: [%Playlist{name: "foo"}, %Playlist{name: "bar"}],
+        limit: 20,
+        next: "https://api.spotify.com/v1/users/anuser/playlists?offset=20&limit=20",
+        offset: 0,
+        previous: nil,
+        total: 62
+      }
 
       assert actual == expected
     end
 
     test "the API returns a items collections without a playlists root" do
       actual = Playlist.build_response(response_body_without_playlist_element())
-      playlists = [%Playlist{name: "foo"}, %Playlist{name: "bar"}]
-      expected = %Paging{items: playlists}
+      
+      expected = %Paging{
+        href: "https://api.spotify.com/v1/users/anuser/playlists?offset=0&limit=20",
+        items: [%Playlist{name: "foo"}, %Playlist{name: "bar"}],
+        limit: 20,
+        next: "https://api.spotify.com/v1/users/anuser/playlists?offset=20&limit=20",
+        offset: 0,
+        previous: nil,
+        total: 62
+      }
 
       assert actual == expected
     end
@@ -31,13 +47,26 @@ defmodule PlaylistTest do
   def response_body_with_playlist_element do
     %{
       "playlists" => %{
-        "items" => [%{ "name" => "foo" }, %{ "name" => "bar" } ]
+        "href" => "https://api.spotify.com/v1/users/anuser/playlists?offset=0&limit=20",
+        "items" => [%{ "name" => "foo" }, %{ "name" => "bar" } ],
+        "limit" => 20,
+        "next" => "https://api.spotify.com/v1/users/anuser/playlists?offset=20&limit=20",
+        "offset" => 0,
+        "previous" => nil,
+        "total" => 62
       }
     }
   end
 
   def response_body_without_playlist_element do
-    %{"items" => [%{ "name" => "foo" }, %{ "name" => "bar" } ]}
+    %{
+      "href" => "https://api.spotify.com/v1/users/anuser/playlists?offset=0&limit=20",
+      "items" => [%{ "name" => "foo" }, %{ "name" => "bar" } ],
+      "limit" => 20,
+      "next" => "https://api.spotify.com/v1/users/anuser/playlists?offset=20&limit=20",
+      "offset" => 0,
+      "previous" => nil,
+      "total" => 62
+     }
   end
-
 end
