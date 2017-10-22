@@ -11,7 +11,7 @@
 
 ```elixir
 def deps do
- [{:spotify_ex, "~> 2.0.6"}]
+ [{:spotify_ex, "~> 2.0.7"}]
 end
  ```
 
