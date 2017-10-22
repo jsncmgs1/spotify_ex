@@ -41,7 +41,6 @@ defmodule Responder do
 
         { :ok, response }
       end
-
     end
   end
 end

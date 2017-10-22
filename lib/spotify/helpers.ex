@@ -10,13 +10,16 @@ defmodule Helpers do
   """
   def to_struct(kind, attrs) do
     struct = struct(kind)
-    Enum.reduce Map.to_list(struct), struct, fn {k, _}, acc ->
-      case Map.fetch(attrs, Atom.to_string(k)) do
-        {:ok, v} -> %{acc | k => v}
+    
+    struct
+    |> Map.to_list
+    |> Enum.reduce(struct, fn {key, _}, acc ->
+      result = Map.fetch(attrs, Atom.to_string(key))
+      case result do
+        {:ok, value} -> %{acc | key => value}
         :error -> acc
       end
-    end
+    end)
   end
-
 end
 
