@@ -154,8 +154,12 @@ defmodule Spotify.Artist do
     "https://api.spotify.com/v1/me/following?type=artist&" <> URI.encode_query(params)
   end
 
+  @doc """
+  Implements the hook expected by the Responder behaviour
+  """
   def build_response(body) do
     case body do
+      (%{"artists" => %{"items" => _items}} = response) -> build_paged_artists(response)
       %{ "artists" => artists }  -> build_artists(artists)
       %{ "tracks" => tracks }    -> Track.build_tracks(tracks)
       %{ "name" => _ }           -> to_struct(Artist, body)
@@ -163,8 +167,20 @@ defmodule Spotify.Artist do
     end
   end
 
+  @doc false
+  defp build_paged_artists(%{"artists" => response}) do
+    %Paging{
+      items: build_artists(response["items"]),
+      next: response["next"],
+      total: response["total"],
+      cursors: response["cursors"],
+      limit: response["limit"],
+      href: response["href"]
+    }
+  end  
+
+  @doc false
   def build_artists(artists) do
     Enum.map(artists, &to_struct(Artist, &1))
   end
-
 end

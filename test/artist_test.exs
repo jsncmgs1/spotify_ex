@@ -39,6 +39,88 @@ defmodule ArtistTest do
 
       assert actual == expected
     end
+
+    test "it returns a paged struct" do
+      expected = %Paging{
+        items: [
+          %Artist{
+            external_urls: %{ "spotify" => "https://open.spotify.com/artist/5dg3YtsiR8ux6amJv9m9AG" },
+            followers: %{ "href" => nil, "total" => 12336 },
+            genres: [
+              "europop",
+              "swedish alternative rock",
+              "swedish idol pop",
+              "swedish pop"
+            ],
+            href: "https://api.spotify.com/v1/artists/5dg3YtsiR8ux6amJv9m9AG",
+            id: "5dg3YtsiR8ux6amJv9m9AG",
+            images: [
+              %{
+                "height" => 640,
+                "url" => "https://i.scdn.co/image/d1e83fee8c4aa5396a9d263a679b6d8e280fa53a",
+                "width" => 640
+              }
+            ],
+            name: "Erik Grönwall",
+            popularity: 41,
+            type: "artist",
+            uri: "spotify:artist:5dg3YtsiR8ux6amJv9m9AG"
+          }
+        ],
+        next: nil,
+        total: 5,
+        cursors: %{ "after" => nil },
+        limit: 50,
+        href: "https://api.spotify.com/v1/me/following?type=artist&limit=50"
+      }
+
+      actual = Spotify.Artist.build_response(artist_response_with_pagination())
+      assert actual == expected
+    end
+  end
+
+  def artist_response_with_pagination do
+    %{
+      "artists" => %{
+        "items" => [
+          %{
+            "external_urls" => %{
+              "spotify" => "https://open.spotify.com/artist/5dg3YtsiR8ux6amJv9m9AG"
+            },
+            "followers" => %{
+              "href" => nil,
+              "total" => 12336
+            },
+            "genres" => [
+              "europop",
+              "swedish alternative rock",
+              "swedish idol pop",
+              "swedish pop"
+            ],
+            "href" => "https://api.spotify.com/v1/artists/5dg3YtsiR8ux6amJv9m9AG",
+            "id" => "5dg3YtsiR8ux6amJv9m9AG",
+            "images" => [
+              %{
+                "height" => 640,
+                "url" => "https://i.scdn.co/image/d1e83fee8c4aa5396a9d263a679b6d8e280fa53a",
+                "width" => 640
+              },
+            ],
+            "name" => "Erik Grönwall",
+            "popularity" => 41,
+            "type" => "artist",
+            "uri" => "spotify:artist:5dg3YtsiR8ux6amJv9m9AG"
+          }
+        ],
+        "next" => nil,
+        "total" => 5,
+        "cursors" => %{
+          "after" => nil
+        },
+        "limit" => 50,
+        "href" => "https://api.spotify.com/v1/me/following?type=artist&limit=50"
+      }
+    }
   end
 
   def artists_response do
