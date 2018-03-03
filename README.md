@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.org/jsncmgs1/spotify_ex.svg)](https://travis-ci.org/jsncmgs1/spotify_ex)
 [![Inline docs](http://inch-ci.org/github/jsncmgs1/spotify_ex.svg)](http://inch-ci.org/github/jsncmgs1/spotify_ex)
+[![Hex docs](https://hexdocs.pm/spotify_ex/api-reference.html)]
 
 # SpotifyEx
 **Elixir Wrapper for the Spotify Web API**
-
 
 ## Installation
 
@@ -22,9 +22,6 @@ def application do
   [applications: [:spotify_ex]]
 end
 ```
-
-
-[Documentation](https://hexdocs.pm/spotify_ex/1.0.1/api-reference.html)
 
 ## What does this wrapper cover?
 
@@ -46,7 +43,7 @@ with the docs.
 ## Usage
 
 This README will go into some detail about the OAuth process. Consult the
-[docs](https://hexdocs.pm/spotify_ex/0.1.1/api-reference.html) for other parts
+[docs](https://hexdocs.pm/spotify_ex/api-reference.html) for other parts
 of the API.
 
 I haven't made any functions private because I think programmer should have
