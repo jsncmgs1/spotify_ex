@@ -3,10 +3,10 @@ defmodule AuthRequestTest do
 
   test "headers/0" do
     headers = [
-      {"Authorization", "Basic #{Spotify.encoded_credentials}"},
+      {"Authorization", "Basic #{Spotify.encoded_credentials()}"},
       {"Content-Type", "application/x-www-form-urlencoded"}
     ]
 
-    assert(AuthRequest.headers == headers)
+    assert(AuthRequest.headers() == headers)
   end
 end

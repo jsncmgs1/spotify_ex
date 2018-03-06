@@ -3,7 +3,7 @@ defmodule RecommendationTest do
   alias Spotify.{Recommendation, Track, Seed}
 
   test "%Recommendation{}" do
-    actual = %Recommendation{} |> Map.from_struct |> Map.keys
+    actual = %Recommendation{} |> Map.from_struct() |> Map.keys()
     expected = ~w[seeds tracks]a
 
     assert actual == expected

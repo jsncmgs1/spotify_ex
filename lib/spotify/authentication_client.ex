@@ -7,16 +7,17 @@ defmodule AuthenticationClient do
   def post(params) do
     with {:ok, %Response{status_code: _code, body: body}} <- AuthRequest.post(params),
          {:ok, response} <- Poison.decode(body) do
-
       case response do
         %{"error_description" => error} ->
           raise(AuthenticationError, "The Spotify API responded with: #{error}")
+
         success_response ->
           {:ok, Spotify.Credentials.get_tokens_from_response(success_response)}
       end
     else
       {:error, %Error{reason: reason}} ->
-        { :error, reason }
+        {:error, reason}
+
       _generic_error ->
         raise(AuthenticationError, "Error parsing response from Spotify")
     end
@@ -34,9 +35,8 @@ defmodule AuthRequest do
 
   def headers do
     [
-      {"Authorization", "Basic #{Spotify.encoded_credentials}"},
+      {"Authorization", "Basic #{Spotify.encoded_credentials()}"},
       {"Content-Type", "application/x-www-form-urlencoded"}
     ]
   end
-
 end

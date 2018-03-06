@@ -23,7 +23,7 @@ defmodule Spotify.Authentication do
   If you pass Credentials, you will be responsible for persisting the auth tokens
   between requests.
   """
-  alias Spotify.{Credentials,Cookies}
+  alias Spotify.{Credentials, Cookies}
 
   @doc """
   Authenticates the user
@@ -45,31 +45,32 @@ defmodule Spotify.Authentication do
   def authenticate(conn_or_auth, map)
 
   def authenticate(conn = %Plug.Conn{}, params) do
-    {:ok, auth} = conn |> Credentials.new |> authenticate(params)
+    {:ok, auth} = conn |> Credentials.new() |> authenticate(params)
     {:ok, Cookies.set_cookies(conn, auth)}
   end
 
   def authenticate(auth, %{"code" => code}) do
-    auth |> body_params(code) |> AuthenticationClient.post
+    auth |> body_params(code) |> AuthenticationClient.post()
   end
 
   def authenticate(_, _) do
     raise AuthenticationError, "No code provided by Spotify. Authorize your app again"
   end
 
-
   @doc """
   Attempts to refresh your access token if the refresh token exists. Returns
   `:unauthorized` if there is no refresh token.
   """
   def refresh(conn_or_auth)
+
   def refresh(conn = %Plug.Conn{}) do
-    with {:ok, auth} <- conn |> Credentials.new |> refresh do
+    with {:ok, auth} <- conn |> Credentials.new() |> refresh do
       {:ok, Cookies.set_cookies(conn, auth)}
     end
   end
+
   def refresh(%Credentials{refresh_token: nil}), do: :unauthorized
-  def refresh(auth), do: auth |> body_params |> AuthenticationClient.post
+  def refresh(auth), do: auth |> body_params |> AuthenticationClient.post()
 
   @doc """
   Checks for refresh and access tokens
@@ -87,14 +88,14 @@ defmodule Spotify.Authentication do
       end
   """
   def tokens_present?(conn_or_auth)
-  def tokens_present?(%Credentials{access_token: nil}),  do: false
+  def tokens_present?(%Credentials{access_token: nil}), do: false
   def tokens_present?(%Credentials{refresh_token: nil}), do: false
-  def tokens_present?(%Credentials{}),                   do: true
-  def tokens_present?(conn), do: conn |> Credentials.new |> tokens_present?
+  def tokens_present?(%Credentials{}), do: true
+  def tokens_present?(conn), do: conn |> Credentials.new() |> tokens_present?
 
   @doc false
   def authenticated?(%Credentials{access_token: token}), do: token
-  def authenticated?(conn), do: conn |> Credentials.new |> authenticated?
+  def authenticated?(conn), do: conn |> Credentials.new() |> authenticated?
 
   @doc false
   def body_params(%Credentials{refresh_token: token}) do
@@ -103,7 +104,8 @@ defmodule Spotify.Authentication do
 
   @doc false
   def body_params(%Credentials{refresh_token: nil}, code) do
-    "grant_type=authorization_code&code=#{code}&redirect_uri=#{Spotify.callback_url}"
+    "grant_type=authorization_code&code=#{code}&redirect_uri=#{Spotify.callback_url()}"
   end
+
   def body_params(auth, _code), do: body_params(auth)
 end

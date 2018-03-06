@@ -84,15 +84,16 @@ defmodule Spotify.Personalization do
   Implements the hook expected by the Responder behaviour
   """
   def build_response(body) do
-    items = Enum.map(body["items"], fn(item) ->
-      case item["type"] do
-        "artist" -> build_artist_struct(item)
-        "track"  -> build_track_struct(item)
-      end
-    end)
+    items =
+      Enum.map(body["items"], fn item ->
+        case item["type"] do
+          "artist" -> build_artist_struct(item)
+          "track" -> build_track_struct(item)
+        end
+      end)
 
     paging = to_struct(Paging, body)
-     Map.put(paging, :items, items)
+    Map.put(paging, :items, items)
   end
 
   @doc false
@@ -104,5 +105,4 @@ defmodule Spotify.Personalization do
   def build_track_struct(track) do
     to_struct(Spotify.Track, track)
   end
-
 end

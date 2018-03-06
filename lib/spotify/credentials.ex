@@ -55,6 +55,7 @@ defmodule Spotify.Credentials do
   """
   def new(conn_or_credentials)
   def new(creds = %Credentials{}), do: creds
+
   def new(conn = %Plug.Conn{}) do
     conn = Plug.Conn.fetch_cookies(conn)
     access_token = conn.cookies["spotify_access_token"]
@@ -73,6 +74,7 @@ defmodule Spotify.Credentials do
   Returns a Spotify.Credentials struct from a parsed response body
   """
   def get_tokens_from_response(map)
+
   def get_tokens_from_response(response) do
     Credentials.new(response["access_token"], response["refresh_token"])
   end

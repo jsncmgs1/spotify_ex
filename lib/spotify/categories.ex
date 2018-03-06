@@ -59,10 +59,9 @@ defmodule Spotify.Category do
     "https://api.spotify.com/v1/browse/categories/#{id}" <> query_string(params)
   end
 
-
   def build_response(body) do
     case body do
-      %{ "categories" => categories } -> build_categories(body, categories["items"])
+      %{"categories" => categories} -> build_categories(body, categories["items"])
       category -> to_struct(Category, category)
     end
   end
@@ -71,5 +70,4 @@ defmodule Spotify.Category do
     categories = Enum.map(categories, &to_struct(Category, &1))
     Paging.response(body, categories)
   end
-
 end

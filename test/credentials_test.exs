@@ -11,10 +11,12 @@ defmodule Spotify.CredentialsTest do
 
   describe "new/1 returns a Spotify.Credentials struct" do
     test "when given a Plug.Conn" do
-      conn = Plug.Test.conn(:post, "/authenticate")
-              |> Plug.Conn.fetch_cookies
-              |> Plug.Conn.put_resp_cookie("spotify_access_token",  @atoken)
-              |> Plug.Conn.put_resp_cookie("spotify_refresh_token", @rtoken)
+      conn =
+        Plug.Test.conn(:post, "/authenticate")
+        |> Plug.Conn.fetch_cookies()
+        |> Plug.Conn.put_resp_cookie("spotify_access_token", @atoken)
+        |> Plug.Conn.put_resp_cookie("spotify_refresh_token", @rtoken)
+
       assert @creds == Spotify.Credentials.new(conn)
     end
 
