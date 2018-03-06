@@ -52,11 +52,11 @@ defmodule Spotify.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:httpoison, "~> 0.13.0"},
+      {:httpoison, "~> 1.0.0"},
       {:poison, "~> 3.1"},
-      {:plug, ">= 1.2.0"},
+      {:plug, ">= 1.4.5"},
       {:mock, "~> 0.1.1", only: :test},
-      {:ex_doc, "~> 0.2", only: :dev},
+      {:ex_doc, "~> 0.18.3", only: :dev},
       {:inch_ex, "~> 0.5.6", only: :docs}
     ]
   end
