@@ -22,17 +22,17 @@ defmodule Spotify.Search do
       Spotify.Search.query(conn, q: "foo", type: "playlist")
       # => {:ok, %{ items: [%Spotify.Playlist{..} ...]}}
   """
-  def query(conn, params)  do
+  def query(conn, params) do
     url = query_url(params)
     conn |> Client.get(url) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Search for a playlist, artist, album, or track.
       iex> Spotify.Search.query_url(q: "foo", type: "playlist")
       "https://api.spotify.com/v1/search?q=foo&type=playlist"
   """
-  def query_url(params)  do
+  def query_url(params) do
     "https://api.spotify.com/v1/search" <> query_string(params)
   end
 
@@ -50,7 +50,7 @@ defmodule Spotify.Search do
   defp append_items({paging, body}) do
     body
     |> Map.take(@keys)
-    |> Map.to_list
+    |> Map.to_list()
     |> Enum.flat_map_reduce([], &reducer/2)
     |> update_paging(paging)
   end
@@ -62,5 +62,4 @@ defmodule Spotify.Search do
   defp map_to_struct("tracks", tracks), do: Track.build_tracks(tracks)
   defp map_to_struct("playlists", playlists), do: Playlist.build_playlists(playlists)
   defp map_to_struct("albums", albums), do: Enum.map(albums, &to_struct(Album, &1))
-
 end

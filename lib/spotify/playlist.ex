@@ -1,5 +1,4 @@
 defmodule Spotify.Playlist do
-
   @moduledoc """
     Functions for retrieving information about a user’s playlists and for
     managing a user’s playlists.
@@ -24,7 +23,7 @@ defmodule Spotify.Playlist do
   defstruct ~w[ collaborative description external_urls followers
     href id images name owner public snapshot_id tracks type uri ]a
 
-  @doc"""
+  @doc """
   Get a list of featured playlists.
   [Spotify Documenation](https://developer.spotify.com/web-api/get-list-featured-playlists/)
 
@@ -40,17 +39,17 @@ defmodule Spotify.Playlist do
     conn |> Client.get(url) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Get a list of featured playlists.
 
       iex> Spotify.Playlist.featured_url(country: "US")
       "https://api.spotify.com/v1/browse/featured-playlists?country=US"
   """
-  def featured_url(params \\ [])  do
+  def featured_url(params \\ []) do
     "https://api.spotify.com/v1/browse/featured-playlists" <> query_string(params)
   end
 
-  @doc"""
+  @doc """
   Get a category's playlists.
   [Spotify Documentation](https://developer.spotify.com/web-api/get-categorys-playlists/)
 
@@ -67,7 +66,7 @@ defmodule Spotify.Playlist do
     conn |> Client.get(url) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Get a category's playlists.
 
       iex> Spotify.Playlist.by_category_url("123", [country: "US", limit: 5])
@@ -92,14 +91,14 @@ defmodule Spotify.Playlist do
     conn |> Client.put(url, body) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Add the current user as a follower of a playlist.
 
       iex> Spotify.Playlist.follow_playlist_url("123", "456")
       "https://api.spotify.com/v1/users/123/playlists/456/followers"
   """
   def follow_playlist_url(owner_id, playlist_id) do
-    get_playlist_url(owner_id, playlist_id) <>"/followers"
+    get_playlist_url(owner_id, playlist_id) <> "/followers"
   end
 
   @doc """
@@ -116,7 +115,7 @@ defmodule Spotify.Playlist do
     conn |> Client.delete(url) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Remove the current user as a follower of a playlist.
 
       iex> Spotify.Playlist.unfollow_playlist_url("123", "456")
@@ -152,7 +151,7 @@ defmodule Spotify.Playlist do
     conn |> Client.get(url) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Get a list of the playlists owned or followed by a Spotify user.
 
       iex> Spotify.Playlist.get_users_playlists_url("123", limit: 5)
@@ -161,7 +160,6 @@ defmodule Spotify.Playlist do
   def get_users_playlists_url(user_id, params \\ []) do
     "https://api.spotify.com/v1/users/#{user_id}/playlists" <> query_string(params)
   end
-
 
   @doc """
   Get a playlist owned by a Spotify user.
@@ -179,7 +177,7 @@ defmodule Spotify.Playlist do
     conn |> Client.get(url) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Get a playlist owned by a Spotify user.
 
       iex> Spotify.Playlist.get_playlist_url("123", "456", market: "foo")
@@ -203,10 +201,10 @@ defmodule Spotify.Playlist do
     alias Spotify.Playlist.Track, as: Track
 
     url = get_playlist_tracks_url(user_id, playlist_id, params)
-    conn |> Client.get(url) |> Track.handle_response
+    conn |> Client.get(url) |> Track.handle_response()
   end
 
-  @doc"""
+  @doc """
   Get full details of the tracks of a playlist owned by a Spotify user.
 
       iex> Spotify.Playlist.get_playlist_tracks_url("123", "456", limit: 5, offset: 5)
@@ -236,7 +234,8 @@ defmodule Spotify.Playlist do
     url = create_playlist_url(user_id)
     conn |> Client.post(url, body) |> handle_response
   end
-  @doc"""
+
+  @doc """
   Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
 
       iex> Spotify.Playlist.create_playlist_url("123")
@@ -245,7 +244,6 @@ defmodule Spotify.Playlist do
   def create_playlist_url(user_id) do
     "https://api.spotify.com/v1/users/#{user_id}/playlists"
   end
-
 
   @doc """
   Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
@@ -264,7 +262,7 @@ defmodule Spotify.Playlist do
     conn |> Client.put(url, body) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
 
       iex> Spotify.Playlist.change_playlist_url("123", "456")
@@ -312,7 +310,7 @@ defmodule Spotify.Playlist do
     conn |> Client.post(url) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Add one or more tracks to a user’s playlist.
 
       iex> Spotify.Playlist.add_tracks_url("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh")
@@ -321,7 +319,6 @@ defmodule Spotify.Playlist do
   def add_tracks_url(user_id, playlist_id, params \\ []) do
     playlist_tracks_url(user_id, playlist_id) <> query_string(params)
   end
-
 
   @doc """
   Remove one or more tracks from a user’s playlist.
@@ -339,7 +336,7 @@ defmodule Spotify.Playlist do
     conn |> Client.delete(url) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Remove one or more tracks from a user’s playlist.
 
       iex> Spotify.Playlist.remove_tracks_url("123", "456")
@@ -368,7 +365,7 @@ defmodule Spotify.Playlist do
     conn |> Client.put(url, body) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Reorder a track or a group of tracks in a playlist.
 
       iex> Spotify.Playlist.reorder_tracks_url("123", "456")
@@ -402,7 +399,7 @@ defmodule Spotify.Playlist do
     conn |> Client.put(url, body) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Replace all the tracks in a playlist, overwriting its existing tracks. This
 
       iex> Spotify.Playlist.replace_tracks_url("123", "456", uris: "spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:adkjaklsd94h")
@@ -428,15 +425,15 @@ defmodule Spotify.Playlist do
     conn |> Client.get(url) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Check to see if one or more Spotify users are following a specified playlist.
 
       iex> Spotify.Playlist.check_followers_url("123", "456", ids: "foo,bar")
       "https://api.spotify.com/v1/users/123/playlists/456/followers/contains?ids=foo%2Cbar"
   """
   def check_followers_url(owner_id, playlist_id, params) do
-    "https://api.spotify.com/v1/users/#{owner_id}/playlists/#{playlist_id}/followers/contains"
-    <> query_string(params)
+    "https://api.spotify.com/v1/users/#{owner_id}/playlists/#{playlist_id}/followers/contains" <>
+      query_string(params)
   end
 
   @doc """
@@ -444,7 +441,7 @@ defmodule Spotify.Playlist do
   """
   def build_response(body) do
     case body do
-      (%{"items" => _items} = response) -> build_paged_response(response)
+      %{"items" => _items} = response -> build_paged_response(response)
       %{"playlists" => playlists} -> build_paged_response(playlists)
       _ -> to_struct(__MODULE__, body)
     end

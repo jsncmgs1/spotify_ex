@@ -133,8 +133,8 @@ defmodule Spotify.Track do
     case body do
       %{"audio_features" => audio_features} -> build_audio_features(audio_features)
       %{"tracks" => tracks} -> build_tracks(tracks)
-      %{"album" => _ }  -> to_struct(Track, body)
-      %{"energy" => _ } -> to_struct(AudioFeatures, body)
+      %{"album" => _} -> to_struct(Track, body)
+      %{"energy" => _} -> to_struct(AudioFeatures, body)
     end
   end
 
@@ -147,5 +147,4 @@ defmodule Spotify.Track do
   def build_audio_features(audio_features) do
     Enum.map(audio_features, &to_struct(AudioFeatures, &1))
   end
-
 end

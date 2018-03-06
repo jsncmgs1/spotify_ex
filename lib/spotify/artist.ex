@@ -159,11 +159,11 @@ defmodule Spotify.Artist do
   """
   def build_response(body) do
     case body do
-      (%{"artists" => %{"items" => _items}} = response) -> build_paged_artists(response)
-      %{ "artists" => artists }  -> build_artists(artists)
-      %{ "tracks" => tracks }    -> Track.build_tracks(tracks)
-      %{ "name" => _ }           -> to_struct(Artist, body)
-      booleans_or_error          -> booleans_or_error
+      %{"artists" => %{"items" => _items}} = response -> build_paged_artists(response)
+      %{"artists" => artists} -> build_artists(artists)
+      %{"tracks" => tracks} -> Track.build_tracks(tracks)
+      %{"name" => _} -> to_struct(Artist, body)
+      booleans_or_error -> booleans_or_error
     end
   end
 
@@ -177,7 +177,7 @@ defmodule Spotify.Artist do
       limit: response["limit"],
       href: response["href"]
     }
-  end  
+  end
 
   @doc false
   def build_artists(artists) do

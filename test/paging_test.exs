@@ -3,7 +3,7 @@ defmodule PagingTest do
 
   test "%Paging{}" do
     expected = ~w[cursors href items limit next offset previous total]a
-    actual = %Paging{} |> Map.from_struct |> Map.keys
+    actual = %Paging{} |> Map.from_struct() |> Map.keys()
 
     assert actual == expected
   end
