@@ -24,7 +24,7 @@ defmodule PersonalizationTest do
 
   test "%Spotify.Personalization{}" do
     expected = ~w[href items limit next previous total]a
-    actual = %Personalization{} |> Map.from_struct |> Map.keys
+    actual = %Personalization{} |> Map.from_struct() |> Map.keys()
 
     assert actual == expected
   end
@@ -32,8 +32,8 @@ defmodule PersonalizationTest do
   def response_with_artists do
     %{
       "items" => [
-        %{ "name" => "foo", "type" => "artist" },
-        %{ "name" => "bar", "type" => "artist" }
+        %{"name" => "foo", "type" => "artist"},
+        %{"name" => "bar", "type" => "artist"}
       ]
     }
   end
@@ -41,10 +41,9 @@ defmodule PersonalizationTest do
   def response_with_tracks do
     %{
       "items" => [
-        %{ "name" => "foo", "type" => "track" },
-        %{ "name" => "bar", "type" => "track" }
+        %{"name" => "foo", "type" => "track"},
+        %{"name" => "bar", "type" => "track"}
       ]
     }
   end
-
 end

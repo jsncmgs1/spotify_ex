@@ -34,5 +34,6 @@ defmodule Spotify.Follow do
     "https://api.spotify.com/v1/me/following" <> query_string(params)
   end
 
-  def build_response(body), do: body # The only endpoint has an empty response
+  # The only endpoint has an empty response
+  def build_response(body), do: body
 end

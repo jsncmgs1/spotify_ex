@@ -29,7 +29,7 @@ defmodule Spotify.Profile do
       # => { :ok, %Spotify.Profile{..} }
   """
   def me(conn) do
-     conn |> Client.get(me_url()) |> handle_response
+    conn |> Client.get(me_url()) |> handle_response
   end
 
   @doc """
@@ -68,5 +68,4 @@ defmodule Spotify.Profile do
   def build_response(body) do
     to_struct(__MODULE__, body)
   end
-
 end

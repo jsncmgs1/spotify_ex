@@ -5,7 +5,7 @@ defmodule Playlist.TrackTest do
 
   test "%Spotify.Playlist.Track{}" do
     expected = ~w[added_at added_by is_local track]a
-    actual = %PT{} |> Map.from_struct |> Map.keys
+    actual = %PT{} |> Map.from_struct() |> Map.keys()
 
     assert actual == expected
   end
@@ -20,7 +20,8 @@ defmodule Playlist.TrackTest do
   end
 
   def response do
-    %{ "items" => [
+    %{
+      "items" => [
         %{
           "added_at" => "2014-08-18T20:16:08Z",
           "track" => %{"name" => "foo"}

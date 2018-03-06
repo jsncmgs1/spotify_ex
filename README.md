@@ -11,7 +11,7 @@
 
 ```elixir
 def deps do
- [{:spotify_ex, "~> 2.0.7"}]
+ [{:spotify_ex, "~> 2.0.8"}]
 end
  ```
 
@@ -22,6 +22,8 @@ def application do
   [applications: [:spotify_ex]]
 end
 ```
+
+[Documentation](https://hexdocs.pm/spotify_ex/api-reference.html)
 
 ## What does this wrapper cover?
 
@@ -190,4 +192,4 @@ present.  If not, you'll need to redirect back to authorization.
 All contributions are more than welcome! I will not accept a PR without tests
 if it looks like something that should be tested (which is pretty much
 everything.) Development is done on the `development` branch, and moved to
-`master` for release on hexpm.
+`master` for release on hexpm. Code must be formatted using `hex format`.

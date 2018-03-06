@@ -76,7 +76,7 @@ defmodule Spotify.Album do
       "https://api.spotify.com/v1/albums?ids=1%2C3"
   """
   def get_albums_url(params) do
-   "https://api.spotify.com/v1/albums" <> query_string(params)
+    "https://api.spotify.com/v1/albums" <> query_string(params)
   end
 
   @doc """
@@ -94,7 +94,7 @@ defmodule Spotify.Album do
     conn |> Client.get(url) |> handle_response
   end
 
-  @doc"""
+  @doc """
   Get Spotify catalog information about an album’s tracks.
 
       iex> Spotify.Album.get_album_tracks_url("4")
@@ -259,18 +259,18 @@ defmodule Spotify.Album do
   """
   def build_response(body) do
     case body do
-      %{ "albums" => albums } -> build_albums(albums)
-      %{ "items" => items }   -> infer_type_and_build(items)
-      %{ "album_type" => _ }  -> build_album(body)
+      %{"albums" => albums} -> build_albums(albums)
+      %{"items" => items} -> infer_type_and_build(items)
+      %{"album_type" => _} -> build_album(body)
     end
   end
 
   @doc false
   def infer_type_and_build(items) do
     case List.first(items) do
-      %{"track_number" => _ } -> build_tracks(items)
-      %{"album_type" => _ }   -> build_albums(items)
-      %{"album" => _ }        -> build_albums(items)
+      %{"track_number" => _} -> build_tracks(items)
+      %{"album_type" => _} -> build_albums(items)
+      %{"album" => _} -> build_albums(items)
     end
   end
 
@@ -283,7 +283,7 @@ defmodule Spotify.Album do
 
   @doc false
   def build_album(album) do
-    album  = to_struct(Album, album)
+    album = to_struct(Album, album)
     paging = to_struct(Paging, album.tracks)
     tracks = Enum.map(paging.items, &to_struct(Track, &1))
     paging = Map.put(paging, :items, tracks)

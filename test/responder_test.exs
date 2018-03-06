@@ -9,7 +9,6 @@ defmodule GenericMock do
   def build_response(body) do
     Helpers.to_struct(Spotify.Playlist, body)
   end
-
 end
 
 defmodule ResponderTest do
@@ -26,42 +25,41 @@ defmodule ResponderTest do
     end
 
     test "with 400 status and a body" do
-      expected = { :error, %{"error" => "foo" } }
+      expected = {:error, %{"error" => "foo"}}
       assert GenericMock.some_endpoint(error()) == expected
     end
 
     test "with 429 too many requests and a body" do
       expected = {
         :error,
-        %{"error" => %{"message" => "API rate limit exceeded",
-                       "status" => 429},
-          "meta" => %{"retry_after" => 99}}
+        %{
+          "error" => %{"message" => "API rate limit exceeded", "status" => 429},
+          "meta" => %{"retry_after" => 99}
+        }
       }
-      assert GenericMock.some_endpoint(
-        too_many_requests_error(99)
-      ) == expected
+
+      assert GenericMock.some_endpoint(too_many_requests_error(99)) == expected
     end
   end
 
   defp too_many_requests_error(retry_after_value) do
-    {:error, %HTTPoison.Response{
-      body: Poison.encode!(
-        %{error: %{ message: "API rate limit exceeded", status: 429 }}
-      ),
-      status_code: 429,
-      headers: [ {"Retry-After", Integer.to_string(retry_after_value)} ]
-    }}
+    {:error,
+     %HTTPoison.Response{
+       body: Poison.encode!(%{error: %{message: "API rate limit exceeded", status: 429}}),
+       status_code: 429,
+       headers: [{"Retry-After", Integer.to_string(retry_after_value)}]
+     }}
   end
 
   defp error do
-    {:error, %HTTPoison.Response{ body: Poison.encode!(%{error: "foo"}), status_code: 400 }}
+    {:error, %HTTPoison.Response{body: Poison.encode!(%{error: "foo"}), status_code: 400}}
   end
 
   defp success_empty_body do
-    {:ok, %HTTPoison.Response{ body: "", status_code: 200 }}
+    {:ok, %HTTPoison.Response{body: "", status_code: 200}}
   end
 
   defp success_with_body do
-    {:ok, %HTTPoison.Response{ body: Poison.encode!(%{name: "foo"}), status_code: 200 }}
+    {:ok, %HTTPoison.Response{body: Poison.encode!(%{name: "foo"}), status_code: 200}}
   end
 end

@@ -52,4 +52,3 @@ defmodule Spotify.Recommendation do
     %Recommendation{tracks: tracks, seeds: seeds}
   end
 end
-
