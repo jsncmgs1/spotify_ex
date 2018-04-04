@@ -1,5 +1,15 @@
 defmodule Spotify.Category do
-  @moduledoc false
+  @moduledoc """
+  Functions for retrieving information about categories on Spotify.
+
+  There are two functions for each endpoint; one that actually makes the
+  request, and one that provides the endpoint:
+
+      Spotify.Category.get_categories(conn, params) # makes the GET request
+      Spotify.Category.get_categories_url(params) # provides the url for the request
+
+  https://developer.spotify.com/web-api/browse-endpoints/
+  """
 
   use Responder
   import Helpers
