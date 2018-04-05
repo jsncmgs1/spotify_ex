@@ -31,21 +31,11 @@ defmodule Spotify.Library do
       :ok
   """
   def save_tracks(conn, params) do
-    url = save_tracks_url(params)
+    url = saved_tracks_url(params)
 
     conn
     |> Client.put(url)
     |> handle_response
-  end
-
-  @doc """
-  Get url to save one or more tracks to the current user’s library.
-
-      iex> Spotify.Library.save_tracks_url(ids: "1,4")
-      "https://api.spotify.com/v1/me/tracks?ids=1%2C4"
-  """
-  def save_tracks_url(params) do
-    "https://api.spotify.com/v1/me/tracks" <> query_string(params)
   end
 
   @doc """
@@ -65,21 +55,11 @@ defmodule Spotify.Library do
       {:ok, [%Spotify.Track{}]}
   """
   def get_saved_tracks(conn, params \\ []) do
-    url = get_saved_tracks_url(params)
+    url = saved_tracks_url(params)
 
     conn
     |> Client.get(url)
     |> handle_response
-  end
-
-  @doc """
-  Get url to get a list of the songs saved in the current user's library.
-
-      iex> Spotify.Library.get_saved_tracks_url(ids: "1,4")
-      "https://api.spotify.com/v1/me/tracks?ids=1%2C4"
-  """
-  def get_saved_tracks_url(params) do
-    "https://api.spotify.com/v1/me/tracks" <> query_string(params)
   end
 
   @doc """
@@ -95,7 +75,7 @@ defmodule Spotify.Library do
     :ok
   """
   def remove_saved_tracks(conn, params \\ []) do
-    url = remove_saved_tracks_url(params)
+    url = saved_tracks_url(params)
 
     conn
     |> Client.delete(url)
@@ -103,12 +83,12 @@ defmodule Spotify.Library do
   end
 
   @doc """
-  Get url to remove one or more tracks from the current user's library.
+  Get url for saved tracks in the current user’s library.
 
-      iex> Spotify.Library.remove_saved_tracks_url(ids: "1,4")
+      iex> Spotify.Library.save_tracks_url(ids: "1,4")
       "https://api.spotify.com/v1/me/tracks?ids=1%2C4"
   """
-  def remove_saved_tracks_url(params) do
+  def saved_tracks_url(params) do
     "https://api.spotify.com/v1/me/tracks" <> query_string(params)
   end
 
