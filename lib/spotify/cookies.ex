@@ -12,7 +12,6 @@ defmodule Spotify.Cookies do
   """
   def set_cookies(conn, credentials) do
     conn
-    |> Plug.Conn.put_status(200)
     |> set_refresh_cookie(credentials.refresh_token)
     |> set_access_cookie(credentials.access_token)
   end
