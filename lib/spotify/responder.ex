@@ -1,8 +1,12 @@
 defmodule Responder do
   @moduledoc """
-  Recieves http responses from the client and handles them accordingly.
+  Receives http responses from the client and handles them accordingly.
 
-  Spotify API modules (Playlist, Album, etc) `use Responder`. When a request is made they giv the endpoint URL to the Client, which makes the request, and pass the response to `handle_response`. Each API module must build appropriate responses, so they add Responder as a behaviour, and implement the `build_response/1` function.
+  Spotify API modules (Playlist, Album, etc) `use Responder`. When a request
+  is made they give the endpoint URL to the Client, which makes the request,
+  and pass the response to `handle_response`. Each API module must build
+  appropriate responses, so they add Responder as a behaviour, and implement
+  the `build_response/1` function.
   """
 
   @callback build_response(map) :: any

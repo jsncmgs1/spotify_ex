@@ -1,5 +1,15 @@
 defmodule Spotify.Track do
-  @moduledoc false
+  @moduledoc """
+  Functions for retrieving information about one or more tracks.
+
+  There are two functions for each endpoint; one that actually makes the
+  request, and one that provides the endpoint:
+
+      Spotify.Track.audio_features(conn, ids: "1, 3") # makes the GET request
+      Spotify.Track.audio_features_url(ids: "1, 3") # provides the url for the request
+
+  https://developer.spotify.com/web-api/track-endpoints/
+  """
 
   alias Spotify.{Track, Client}
   import Helpers
