@@ -1,4 +1,4 @@
-defmodule AuthRequestTest do
+defmodule Spotify.AuthRequestTest do
   use ExUnit.Case
 
   test "headers/0" do
@@ -7,6 +7,6 @@ defmodule AuthRequestTest do
       {"Content-Type", "application/x-www-form-urlencoded"}
     ]
 
-    assert(AuthRequest.headers() == headers)
+    assert(Spotify.AuthRequest.headers() == headers)
   end
 end

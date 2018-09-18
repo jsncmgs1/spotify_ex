@@ -1,6 +1,11 @@
-defmodule ArtistTest do
+defmodule Spotify.ArtistTest do
   use ExUnit.Case
-  alias Spotify.{Artist, Track}
+
+  alias Spotify.{
+    Artist,
+    Paging,
+    Track
+  }
 
   test "%Spotify.Artist{}" do
     expected = ~w[external_urls followers genres href id images name popularity type uri]a

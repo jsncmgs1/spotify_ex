@@ -2,12 +2,17 @@ defmodule OathAuthorizationFlow do
   use ExUnit.Case
   import Mock
   use Plug.Test
-  alias Spotify.{Authentication}
+
+  alias Spotify.{
+    Authentication,
+    AuthenticationError
+  }
+
   doctest Spotify.Authentication
 
   defmacro with_auth_mock(block) do
     quote do
-      with_mock AuthRequest, post: fn params -> AuthenticationClientMock.post(params) end do
+      with_mock Spotify.AuthRequest, post: fn params -> AuthenticationClientMock.post(params) end do
         unquote(block)
       end
     end
@@ -15,7 +20,7 @@ defmodule OathAuthorizationFlow do
 
   describe "posting to Spotify" do
     test "A body with an error raises Authentication error" do
-      with_mock AuthRequest,
+      with_mock Spotify.AuthRequest,
         post: fn _params ->
           AuthenticationClientMock.post(%{"error_description" => "bad client id"})
         end do

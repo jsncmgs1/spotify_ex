@@ -1,6 +1,14 @@
-defmodule SearchTest do
+defmodule Spotify.SearchTest do
   use ExUnit.Case
-  alias Spotify.{Search, Artist, Album, Playlist, Track}
+
+  alias Spotify.{
+    Album,
+    Artist,
+    Paging,
+    Playlist,
+    Search,
+    Track
+  }
 
   describe "build_response/1" do
     test "responds with artists" do

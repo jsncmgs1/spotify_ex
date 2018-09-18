@@ -1,4 +1,4 @@
-defmodule SpotifyAuthorizationTest do
+defmodule Spotify.AuthorizationTest do
   use ExUnit.Case
   doctest Spotify.Authorization
 

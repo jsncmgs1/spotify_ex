@@ -11,11 +11,21 @@ defmodule Spotify.Category do
   https://developer.spotify.com/web-api/browse-endpoints/
   """
 
-  use Responder
-  import Helpers
-  alias Spotify.{Category, Client}
+  use Spotify.Responder
+  import Spotify.Helpers
 
-  defstruct ~w[href icons id name]a
+  alias Spotify.{
+    Category,
+    Client,
+    Paging
+  }
+
+  defstruct ~w[
+    href
+    icons
+    id
+    name
+  ]a
 
   @doc """
   Get a list of categories used to tag items in Spotify

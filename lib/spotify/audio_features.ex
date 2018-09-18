@@ -1,4 +1,4 @@
-defmodule AudioFeatures do
+defmodule Spotify.AudioFeatures do
   defstruct ~w[
     acousticness
     analysis_url

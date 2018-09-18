@@ -1,4 +1,4 @@
-defmodule Helpers do
+defmodule Spotify.Helpers do
   @moduledoc false
 
   def query_string(nil), do: ""

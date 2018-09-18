@@ -1,17 +1,17 @@
 defmodule GenericMock do
-  @behaviour Responder
-  use Responder
+  @behaviour Spotify.Responder
+  use Spotify.Responder
 
   def some_endpoint(response) do
     handle_response(response)
   end
 
   def build_response(body) do
-    Helpers.to_struct(Spotify.Playlist, body)
+    Spotify.Helpers.to_struct(Spotify.Playlist, body)
   end
 end
 
-defmodule ResponderTest do
+defmodule Spotify.ResponderTest do
   use ExUnit.Case
 
   describe "handle_response" do

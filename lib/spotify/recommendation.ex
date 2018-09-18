@@ -7,10 +7,20 @@ defmodule Spotify.Recommendation do
 
   https://developer.spotify.com/web-api/get-recommendations/
   """
-  use Responder
-  import Helpers
-  alias Spotify.{Client, Seed, Recommendation, Track}
-  defstruct ~w[tracks seeds]a
+  use Spotify.Responder
+  import Spotify.Helpers
+
+  alias Spotify.{
+    Client,
+    Recommendation,
+    Seed,
+    Track
+  }
+
+  defstruct ~w[
+    tracks
+    seeds
+  ]a
 
   @doc """
   Create a playlist-style listening experience based on seed artists, tracks and genres.
@@ -43,7 +53,7 @@ defmodule Spotify.Recommendation do
   end
 
   @doc """
-  Implements the hook required by the `Responder` behavior.
+  Implements the hook required by the Responder behavior.
   """
   def build_response(body) do
     seeds = Enum.map(body["seeds"], &to_struct(Seed, &1))

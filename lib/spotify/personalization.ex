@@ -14,11 +14,22 @@ defmodule Spotify.Personalization do
   https://developer.spotify.com/web-api/web-api-personalization-endpoints/
   """
 
-  import Helpers
-  use Responder
-  alias Spotify.Client
+  import Spotify.Helpers
+  use Spotify.Responder
 
-  defstruct ~w[ items next previous total limit href ]a
+  alias Spotify.{
+    Client,
+    Paging
+  }
+
+  defstruct ~w[
+    items
+    next
+    previous
+    total
+    limit
+    href
+  ]a
 
   @doc """
   Get the current user’s top artists based on calculated affinity.

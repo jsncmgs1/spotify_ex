@@ -11,9 +11,13 @@ defmodule Spotify.Track do
   https://developer.spotify.com/web-api/track-endpoints/
   """
 
-  alias Spotify.{Track, Client}
-  import Helpers
-  use Responder
+  alias Spotify.{
+    Client,
+    Track
+  }
+
+  import Spotify.Helpers
+  use Spotify.Responder
 
   defstruct ~w[
     album
@@ -144,7 +148,7 @@ defmodule Spotify.Track do
       %{"audio_features" => audio_features} -> build_audio_features(audio_features)
       %{"tracks" => tracks} -> build_tracks(tracks)
       %{"album" => _} -> to_struct(Track, body)
-      %{"energy" => _} -> to_struct(AudioFeatures, body)
+      %{"energy" => _} -> to_struct(Spotify.AudioFeatures, body)
     end
   end
 
@@ -155,6 +159,6 @@ defmodule Spotify.Track do
 
   @doc false
   def build_audio_features(audio_features) do
-    Enum.map(audio_features, &to_struct(AudioFeatures, &1))
+    Enum.map(audio_features, &to_struct(Spotify.AudioFeatures, &1))
   end
 end

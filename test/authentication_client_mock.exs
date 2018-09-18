@@ -1,5 +1,5 @@
 defmodule HTTPoison.Response do
-  defstruct body: nil, headers: nil, status_code: nil
+  defstruct ~w[body headers status_code]a
 end
 
 defmodule AuthenticationClientMock do

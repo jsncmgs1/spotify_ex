@@ -1,4 +1,4 @@
-defmodule ProfileTest do
+defmodule Spotify.ProfileTest do
   use ExUnit.Case
 
   alias Spotify.Profile

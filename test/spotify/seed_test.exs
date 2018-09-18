@@ -1,4 +1,4 @@
-defmodule SeedTest do
+defmodule Spotify.SeedTest do
   use ExUnit.Case
 
   test "%Seed{}" do

@@ -1,8 +1,11 @@
-defmodule Library do
+defmodule Spotify.LibraryTest do
   use ExUnit.Case
 
-  alias Spotify.Library
-  alias Spotify.Track
+  alias Spotify.{
+    Library,
+    Paging,
+    Track
+  }
 
   describe "build_response/1 when body contains a list of tracks" do
     test "returns a collection of Spotify.Tracks" do

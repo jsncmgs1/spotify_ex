@@ -11,12 +11,24 @@ defmodule Spotify.Profile do
   https://developer.spotify.com/web-api/user-profile-endpoints/
   """
 
-  defstruct ~w[ birthdate country display_name email external_urls
-    followers href id images product type uri ]a
+  defstruct ~w[
+    birthdate
+    country
+    display_name
+    email
+    external_urls
+    followers
+    href
+    id
+    images
+    product
+    type
+    uri
+  ]a
 
   alias Spotify.Client
-  use Responder
-  import Helpers
+  use Spotify.Responder
+  import Spotify.Helpers
 
   @doc """
   Get detailed profile information about the current user (including the current user’s username).

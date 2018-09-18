@@ -1,6 +1,11 @@
-defmodule RecommendationTest do
+defmodule Spotify.RecommendationTest do
   use ExUnit.Case
-  alias Spotify.{Recommendation, Track, Seed}
+
+  alias Spotify.{
+    Recommendation,
+    Seed,
+    Track
+  }
 
   test "%Recommendation{}" do
     actual = %Recommendation{} |> Map.from_struct() |> Map.keys()

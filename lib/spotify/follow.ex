@@ -3,8 +3,8 @@ defmodule Spotify.Follow do
   Follow users or artists
   """
 
-  use Responder
-  import Helpers
+  use Spotify.Responder
+  import Spotify.Helpers
   alias Spotify.Client
 
   @doc """
