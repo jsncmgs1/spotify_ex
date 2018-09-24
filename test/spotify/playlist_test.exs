@@ -1,6 +1,10 @@
-defmodule PlaylistTest do
+defmodule Spotify.PlaylistTest do
   use ExUnit.Case
-  alias Spotify.Playlist
+
+  alias Spotify.{
+    Paging,
+    Playlist
+  }
 
   describe "build_response/1" do
     test "the API returns a playlist element" do

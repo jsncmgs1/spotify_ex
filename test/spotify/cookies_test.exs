@@ -1,4 +1,4 @@
-defmodule SpotifyCookiesTest do
+defmodule Spotify.CookiesTest do
   use ExUnit.Case
   doctest Spotify.Cookies
   alias Spotify.Cookies

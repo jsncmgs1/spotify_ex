@@ -3,11 +3,19 @@ defmodule Spotify.Search do
   Spotify search endpoints. Spotify allows querying for artists, albums, playlists, and tracks.
   """
 
-  use Responder
-  import Helpers
-  alias Spotify.{Client, Album, Artist, Playlist, Track}
+  use Spotify.Responder
+  import Spotify.Helpers
 
-  @keys ["albums", "artists", "playlists", "tracks"]
+  alias Spotify.{
+    Album,
+    Artist,
+    Client,
+    Paging,
+    Playlist,
+    Track
+  }
+
+  @keys ~w[albums artists playlists tracks]
 
   @doc """
   Search for a playlist.
@@ -37,7 +45,7 @@ defmodule Spotify.Search do
   end
 
   @doc """
-  Implements the hook required by the `Responder` behaviour
+  Implements the hook required by the Responder behaviour
   """
   def build_response(body) do
     body

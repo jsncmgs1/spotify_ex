@@ -17,15 +17,35 @@ defmodule Spotify.Album do
   https://developer.spotify.com/web-api/get-several-albums/
   """
 
-  use Responder
-  import Helpers
-  alias Spotify.{Client, Album, Track}
+  use Spotify.Responder
+  import Spotify.Helpers
+
+  alias Spotify.{
+    Album,
+    Client,
+    Paging,
+    Track
+  }
 
   defstruct ~w[
-    album_type artists available_markets
-    copyrights external_ids external_urls
-    genres href id images name popularity
-    release_date release_date_precision tracks type label]a
+    album_type
+    artists
+    available_markets
+    copyrights
+    external_ids
+    external_urls
+    genres
+    href
+    id
+    images
+    name
+    popularity
+    release_date
+    release_date_precision
+    tracks
+    type
+    label
+  ]a
 
   @doc """
   Get Spotify catalog information for a single album.
@@ -255,7 +275,7 @@ defmodule Spotify.Album do
   end
 
   @doc """
-  Implement the callback required by the `Responder` behavior
+  Implement the callback required by the Responder behavior
   """
   def build_response(body) do
     case body do

@@ -1,4 +1,4 @@
-defmodule TrackTest do
+defmodule Spotify.TrackTest do
   use ExUnit.Case
   alias Spotify.Track
 
@@ -33,7 +33,7 @@ defmodule TrackTest do
   describe "build_response/1 when tracks are requested" do
     test "API returns a single item" do
       response = %{"energy" => "foo"}
-      expected = %AudioFeatures{energy: "foo"}
+      expected = %Spotify.AudioFeatures{energy: "foo"}
       actual = Track.build_response(response)
 
       assert expected == actual
@@ -41,7 +41,7 @@ defmodule TrackTest do
 
     test "API returns a collection" do
       response = %{"audio_features" => [%{"energy" => "foo"}, %{"energy" => "bar"}]}
-      expected = [%AudioFeatures{energy: "foo"}, %AudioFeatures{energy: "bar"}]
+      expected = [%Spotify.AudioFeatures{energy: "foo"}, %Spotify.AudioFeatures{energy: "bar"}]
       actual = Track.build_response(response)
 
       assert expected == actual

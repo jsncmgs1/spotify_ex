@@ -12,9 +12,15 @@ defmodule Spotify.Artist do
     https://developer.spotify.com/web-api/artist-endpoints/
   """
 
-  import Helpers
-  use Responder
-  alias Spotify.{Client, Artist, Track}
+  import Spotify.Helpers
+  use Spotify.Responder
+
+  alias Spotify.{
+    Artist,
+    Client,
+    Paging,
+    Track
+  }
 
   defstruct ~w[
     external_urls

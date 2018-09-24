@@ -1,11 +1,3 @@
-defmodule AuthenticationError do
-  defexception [:message]
-
-  def exception(message) do
-    %AuthenticationError{message: message}
-  end
-end
-
 defmodule Spotify.Authentication do
   @moduledoc """
   Authenticates the Spotify user.
@@ -23,7 +15,11 @@ defmodule Spotify.Authentication do
   If you pass Credentials, you will be responsible for persisting the auth tokens
   between requests.
   """
-  alias Spotify.{Credentials, Cookies}
+  alias Spotify.{
+    AuthenticationError,
+    Credentials,
+    Cookies
+  }
 
   @doc """
   Authenticates the user
@@ -50,7 +46,7 @@ defmodule Spotify.Authentication do
   end
 
   def authenticate(auth, %{"code" => code}) do
-    auth |> body_params(code) |> AuthenticationClient.post()
+    auth |> body_params(code) |> Spotify.AuthenticationClient.post()
   end
 
   def authenticate(_, _) do
@@ -70,7 +66,7 @@ defmodule Spotify.Authentication do
   end
 
   def refresh(%Credentials{refresh_token: nil}), do: :unauthorized
-  def refresh(auth), do: auth |> body_params |> AuthenticationClient.post()
+  def refresh(auth), do: auth |> body_params |> Spotify.AuthenticationClient.post()
 
   @doc """
   Checks for refresh and access tokens

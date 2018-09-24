@@ -1,5 +1,7 @@
-defmodule PagingTest do
+defmodule Spotify.PagingTest do
   use ExUnit.Case
+
+  alias Spotify.Paging
 
   test "%Paging{}" do
     expected = ~w[cursors href items limit next offset previous total]a

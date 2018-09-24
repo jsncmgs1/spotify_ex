@@ -6,4 +6,4 @@ Path.wildcard("test/*mock*")
 Code.ensure_loaded(Plug.Conn)
 Code.ensure_loaded(HTTPoison.Response)
 
-config :spotify_ex, auth_client: Spotify.AuthenticationClientMock
+config :spotify_ex, auth_client: AuthenticationClientMock

@@ -48,7 +48,10 @@ defmodule Spotify.Credentials do
   """
   alias Spotify.Credentials
 
-  defstruct [:access_token, :refresh_token]
+  defstruct ~w[
+    access_token
+    refresh_token
+  ]a
 
   @doc """
   Returns a Spotify.Credentials struct from either a Plug.Conn or a Spotify.Credentials struct

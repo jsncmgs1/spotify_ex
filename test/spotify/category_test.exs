@@ -1,6 +1,6 @@
-defmodule CategoryTest do
+defmodule Spotify.CategoryTest do
   use ExUnit.Case
-  alias Spotify.{Category}
+  alias Spotify.Category
 
   test "%Category{}" do
     expected = ~w[href icons id name]a

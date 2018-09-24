@@ -2,8 +2,8 @@ defmodule Spotify.Playlist.Track do
   @moduledoc """
   Requesting track info from a specific playlist
   """
-  import Helpers
-  use Responder
+  import Spotify.Helpers
+  use Spotify.Responder
 
   defstruct ~w[
     added_at
@@ -24,6 +24,6 @@ defmodule Spotify.Playlist.Track do
         Map.put(track_info, :track, to_struct(Spotify.Track, track_info.track))
       end)
 
-    Paging.response(body, tracks)
+    Spotify.Paging.response(body, tracks)
   end
 end

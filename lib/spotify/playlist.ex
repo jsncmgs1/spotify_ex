@@ -16,12 +16,30 @@ defmodule Spotify.Playlist do
     https://developer.spotify.com/web-api/playlist-endpoints/
   """
 
-  import Helpers
-  use Responder
-  alias Spotify.Client
+  import Spotify.Helpers
+  use Spotify.Responder
 
-  defstruct ~w[ collaborative description external_urls followers
-    href id images name owner public snapshot_id tracks type uri ]a
+  alias Spotify.{
+    Client,
+    Paging
+  }
+
+  defstruct ~w[
+    collaborative
+    description
+    external_urls
+    followers
+    href
+    id
+    images
+    name
+    owner
+    public
+    snapshot_id
+    tracks
+    type
+    uri
+  ]a
 
   @doc """
   Get a list of featured playlists.

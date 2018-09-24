@@ -1,7 +1,12 @@
-defmodule PersonalizationTest do
+defmodule Spotify.PersonalizationTest do
   use ExUnit.Case
 
-  alias Spotify.{Personalization, Artist, Track}
+  alias Spotify.{
+    Artist,
+    Paging,
+    Personalization,
+    Track
+  }
 
   describe "build_response/1" do
     test "User requests top artists" do

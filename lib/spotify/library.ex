@@ -14,9 +14,14 @@ defmodule Spotify.Library do
   https://developer.spotify.com/web-api/library-endpoints/
   """
 
-  use Responder
-  import Helpers
-  alias Spotify.{Client, Track}
+  use Spotify.Responder
+  import Spotify.Helpers
+
+  alias Spotify.{
+    Client,
+    Paging,
+    Track
+  }
 
   @doc """
   Save one or more tracks to the current user’s library.
@@ -122,7 +127,7 @@ defmodule Spotify.Library do
   end
 
   @doc """
-  Implement the callback required by the `Responder` behavior
+  Implement the callback required by the Responder behavior
   """
   def build_response(body) do
     case body do

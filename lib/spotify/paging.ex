@@ -1,17 +1,26 @@
-defmodule Paging do
+defmodule Spotify.Paging do
   @moduledoc """
   Spotify wraps collections in a paging object in order to handle pagination.
   Requesting a collection will send the collection back in the `items` key,
   along with the paging links.
   """
 
-  import Helpers
+  import Spotify.Helpers
 
   @doc """
   Paging Struct. The Spotify API returns collections in a Paging
   object, with the collection in the `items` key.
   """
-  defstruct ~w[href items limit next offset previous total cursors]a
+  defstruct ~w[
+    href
+    items
+    limit
+    next
+    offset
+    previous
+    total
+    cursors
+  ]a
 
   @doc """
     Takes the response body from an API call that returns a collection.
