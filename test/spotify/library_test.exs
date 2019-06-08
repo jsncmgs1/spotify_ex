@@ -11,7 +11,16 @@ defmodule Spotify.LibraryTest do
     test "returns a collection of Spotify.Tracks" do
       response = tracks_response()
 
-      expected = %Paging{items: [%Track{name: "foo"}, %Track{name: "bar"}]}
+      expected = %Paging{
+        href: "https://api.spotify.com/v1/me/tracks?offset=0&limit=20",
+        items: [%Track{name: "foo"}, %Track{name: "bar"}],
+        limit: 20,
+        next: "https://api.spotify.com/v1/me/tracks?offset=20&limit=20",
+        offset: 0,
+        previous: nil,
+        total: 62
+      }
+
       actual = Library.build_response(response)
 
       assert actual == expected
@@ -27,12 +36,18 @@ defmodule Spotify.LibraryTest do
     end
   end
 
-  defp tracks_response do
+  def tracks_response do
     %{
+      "href" => "https://api.spotify.com/v1/me/tracks?offset=0&limit=20",
       "items" => [
         %{"track" => %{"name" => "foo"}},
         %{"track" => %{"name" => "bar"}}
-      ]
+      ],
+      "limit" => 20,
+      "next" => "https://api.spotify.com/v1/me/tracks?offset=20&limit=20",
+      "offset" => 0,
+      "previous" => nil,
+      "total" => 62
     }
   end
 end
