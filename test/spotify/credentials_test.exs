@@ -3,10 +3,16 @@ defmodule Spotify.CredentialsTest do
 
   @atoken "access_token"
   @rtoken "refresh_token"
-  @creds %Spotify.Credentials{access_token: @atoken, refresh_token: @rtoken}
+  @expiration "expiration_date"
+  @creds %Spotify.Credentials{access_token: @atoken, refresh_token: @rtoken, expires_in: @expiration}
+
+  test "new/3 returns a Spotify.Credentials struct when given tokens and expiration date" do
+    assert @creds == Spotify.Credentials.new(@atoken, @rtoken, @expiration)
+  end
 
   test "new/2 returns a Spotify.Credentials struct when given tokens" do
-    assert @creds == Spotify.Credentials.new(@atoken, @rtoken)
+    creds = %Spotify.Credentials{access_token: @atoken, refresh_token: @rtoken}
+    assert creds = Spotify.Credentials.new(@atoken, @rtoken)
   end
 
   describe "new/1 returns a Spotify.Credentials struct" do
@@ -26,7 +32,7 @@ defmodule Spotify.CredentialsTest do
   end
 
   test "get_tokens_from_response/1 returns a Spotify.Credentials struct" do
-    response = %{"access_token" => @atoken, "refresh_token" => @rtoken}
+    response = %{"access_token" => @atoken, "refresh_token" => @rtoken, @expiration => "expires_in"}
     assert @creds == Spotify.Credentials.get_tokens_from_response(response)
   end
 end

@@ -51,6 +51,7 @@ defmodule Spotify.Credentials do
   defstruct ~w[
     access_token
     refresh_token
+    expires_in
   ]a
 
   @doc """
@@ -73,12 +74,16 @@ defmodule Spotify.Credentials do
     %Credentials{access_token: access_token, refresh_token: refresh_token}
   end
 
+  def new(access_token, refresh_token, expires_in) do
+    %Credentials{access_token: access_token, refresh_token: refresh_token, expires_in: expires_in}
+  end
+
   @doc """
   Returns a Spotify.Credentials struct from a parsed response body
   """
   def get_tokens_from_response(map)
 
   def get_tokens_from_response(response) do
-    Credentials.new(response["access_token"], response["refresh_token"])
+    Credentials.new(response["access_token"], response["refresh_token"], response["expires_in"])
   end
 end
