@@ -22,8 +22,8 @@ defmodule Spotify.CookiesTest do
   test "#set_expires_in" do
     conn =
       %Plug.Conn{cookies: %{"spotify_expires_in" => "foo"}}
-      |> Cookies.set_expires_cookie("token123")
+      |> Cookies.set_expires_cookie(123)
 
-    assert(Cookies.get_expires_in(conn) == "token123")
+    assert(Cookies.get_expires_in(conn) == "123")
   end
 end

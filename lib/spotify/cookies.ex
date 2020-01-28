@@ -14,7 +14,7 @@ defmodule Spotify.Cookies do
     conn
     |> set_refresh_cookie(credentials.refresh_token)
     |> set_access_cookie(credentials.access_token)
-    |> set_refresh_cookie(credentials.expires_in)
+    |> set_expires_cookie(credentials.expires_in)
   end
 
   @doc """
@@ -45,7 +45,7 @@ defmodule Spotify.Cookies do
   def set_expires_cookie(conn, nil), do: conn
 
   def set_expires_cookie(conn, expires_in) do
-    Plug.Conn.put_resp_cookie(conn, "spotify_expires_in", expires_in)
+    Plug.Conn.put_resp_cookie(conn, "spotify_expires_in", Integer.to_string(expires_in))
   end
 
   @doc """

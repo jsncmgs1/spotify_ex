@@ -64,7 +64,12 @@ defmodule Spotify.Credentials do
     conn = Plug.Conn.fetch_cookies(conn)
     access_token = conn.cookies["spotify_access_token"]
     refresh_token = conn.cookies["spotify_refresh_token"]
-    Credentials.new(access_token, refresh_token)
+    expires_at = conn.cookies["spotify_expires_in"]
+    Credentials.new(access_token, refresh_token, expires_at)
+  end
+
+  def new(access_token, refresh_token, expires_in) do
+    %Credentials{access_token: access_token, refresh_token: refresh_token, expires_in: expires_in}
   end
 
   @doc """
@@ -72,10 +77,6 @@ defmodule Spotify.Credentials do
   """
   def new(access_token, refresh_token) do
     %Credentials{access_token: access_token, refresh_token: refresh_token}
-  end
-
-  def new(access_token, refresh_token, expires_in) do
-    %Credentials{access_token: access_token, refresh_token: refresh_token, expires_in: expires_in}
   end
 
   @doc """
