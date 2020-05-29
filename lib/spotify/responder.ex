@@ -24,7 +24,7 @@ defmodule Spotify.Responder do
           ) do
         {retry_after, ""} =
           headers
-          |> Enum.find(&(Kernel.elem(&1, 0) == "Retry-After"))
+          |> Enum.find(fn {key, value} -> String.downcase(key) == "retry-after" end)
           |> Kernel.elem(1)
           |> Integer.parse()
 

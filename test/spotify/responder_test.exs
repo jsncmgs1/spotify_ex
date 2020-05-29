@@ -29,25 +29,31 @@ defmodule Spotify.ResponderTest do
       assert GenericMock.some_endpoint(error()) == expected
     end
 
-    test "with 429 too many requests and a body" do
-      expected = {
-        :error,
-        %{
-          "error" => %{"message" => "API rate limit exceeded", "status" => 429},
-          "meta" => %{"retry_after" => 99}
-        }
-      }
+    test "with 429 too many requests, body and the header in downcase" do
+      assert GenericMock.some_endpoint(too_many_requests_error(99, "retry-after")) ==
+               too_many_requests_error_expect()
+    end
 
-      assert GenericMock.some_endpoint(too_many_requests_error(99)) == expected
+    test "with 429 too many requests, body and the header in uppercase" do
+      assert GenericMock.some_endpoint(too_many_requests_error(99, "Retry-After")) ==
+               too_many_requests_error_expect()
     end
   end
 
-  defp too_many_requests_error(retry_after_value) do
+  defp too_many_requests_error(retry_after_value, header_name) do
     {:error,
      %HTTPoison.Response{
        body: Poison.encode!(%{error: %{message: "API rate limit exceeded", status: 429}}),
        status_code: 429,
-       headers: [{"Retry-After", Integer.to_string(retry_after_value)}]
+       headers: [{header_name, Integer.to_string(retry_after_value)}]
+     }}
+  end
+
+  defp too_many_requests_error_expect() do
+    {:error,
+     %{
+       "error" => %{"message" => "API rate limit exceeded", "status" => 429},
+       "meta" => %{"retry_after" => 99}
      }}
   end
 
