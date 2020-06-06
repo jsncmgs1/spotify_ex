@@ -180,6 +180,42 @@ defmodule Spotify.Playlist do
   end
 
   @doc """
+  Get a list of the playlists owned or followed by the current Spotify user.
+  [Spotify Documentation](https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/)
+
+  **Method**: `GET`
+
+  ** Optional Params: `limit`, `offset`
+
+      Spotify.Playlist.get_users_playlists(conn, "123", q: "foo", limit: 5)
+      # => {:ok, %{
+      #     cursor: nil,
+      #     href: ..,
+      #     items: [%Spotify.Playlist{..} ...],
+      #     limit: 20,
+      #     next: nil,
+      #     offset: 0,
+      #     previous: nil,
+      #     total: 20
+      #   }
+      # }
+  """
+  def get_current_user_playlists(conn, params \\ []) do
+    url = get_current_user_playlists_url(params)
+    conn |> Client.get(url) |> handle_response
+  end
+
+  @doc """
+  Get a list of the playlists owned or followed by a Spotify user.
+
+      iex> Spotify.Playlist.get_current_user_playlists_url(limit: 5)
+      "https://api.spotify.com/v1/me/playlists?limit=5"
+  """
+  def get_current_user_playlists_url(params \\ []) do
+    "https://api.spotify.com/v1/me/playlists" <> query_string(params)
+  end
+
+  @doc """
   Get a playlist owned by a Spotify user.
   [Spotify Documentation](https://developer.spotify.com/web-api/get-playlist/)
 
