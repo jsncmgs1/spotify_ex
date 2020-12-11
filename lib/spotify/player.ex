@@ -15,7 +15,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def enqueue(conn, uri, params \\ [])
+  def enqueue(conn, uri, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.enqueue_url(device_id: "abc")
@@ -31,7 +32,8 @@ defmodule Spotify.Player do
 
   **Method**: `GET`
   """
-  def get_devices(conn)
+  def get_devices(conn) do
+  end
 
   @doc """
       iex> Spotify.Player.devices_url
@@ -49,7 +51,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `market`, `additional_types`
   """
-  def get_current_playback(conn, params \\ [])
+  def get_current_playback(conn, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.player_url(market: "US")
@@ -67,7 +70,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `limit`, `after`, `before`
   """
-  def get_recently_played(conn, params \\ [])
+  def get_recently_played(conn, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.recently_played_url(limit: 50)
@@ -85,7 +89,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `market`, `additional_types`
   """
-  def get_currently_playing(conn, params \\ [])
+  def get_currently_playing(conn, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.currently_playing_url(market: "US")
@@ -103,7 +108,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def pause(conn, params \\ [])
+  def pause(conn, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.pause_url(device_id: "abc")
@@ -121,7 +127,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def seek(conn, position_ms, params \\ [])
+  def seek(conn, position_ms, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.seek_url(device_id: "abc")
@@ -139,7 +146,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def set_repeat(conn, state, params \\ [])
+  def set_repeat(conn, state, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.repeat_url(device_id: "abc")
@@ -157,7 +165,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def set_volume(conn, volume_percent, params \\ [])
+  def set_volume(conn, volume_percent, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.volume_url(device_id: "abc")
@@ -175,7 +184,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def skip_to_next(conn, params \\ [])
+  def skip_to_next(conn, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.next_url(device_id: "abc")
@@ -193,7 +203,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def skip_to_previous(conn, params \\ [])
+  def skip_to_previous(conn, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.previous_url(device_id: "abc")
@@ -211,7 +222,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`, `context_uri`, `uris`, `offset`, `position_ms`
   """
-  def play(conn, params \\ [])
+  def play(conn, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.play_url(device_id: "abc")
@@ -229,7 +241,8 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def set_shuffle(conn, state, params \\ [])
+  def set_shuffle(conn, state, params \\ []) do
+  end
 
   @doc """
       iex> Spotify.Player.shuffle_url(device_id: "abc")
@@ -247,6 +260,7 @@ defmodule Spotify.Player do
 
   **Optional Params**: `play`
   """
-  def transfer_playback(conn, device_ids, params \\ [])
+  def transfer_playback(conn, device_ids, params \\ []) do
+  end
 end
 
