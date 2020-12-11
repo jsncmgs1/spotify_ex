@@ -13,6 +13,8 @@ defmodule Spotify.Player do
     Context,
     Device,
     Episode,
+    History,
+    Paging,
     Track
   }
 
@@ -97,6 +99,8 @@ defmodule Spotify.Player do
   **Optional Params**: `limit`, `after`, `before`
   """
   def get_recently_played(conn, params \\ []) do
+    url = recently_played_url(params)
+    conn |> Client.get(url) |> handle_response()
   end
 
   @doc """
@@ -293,6 +297,10 @@ defmodule Spotify.Player do
     Enum.map(devices, &to_struct(Device, &1))
   end
 
+  def build_response(body = %{"items" => _}) do
+    build_paged_histories(body)
+  end
+
   def build_response(body) do
     body =
       body
@@ -303,10 +311,32 @@ defmodule Spotify.Player do
     to_struct(__MODULE__, body)
   end
 
+  defp build_paged_histories(body) do
+    %Paging{
+      href: body["href"],
+      items: body["items"] |> build_histories(),
+      limit: body["limit"],
+      next: body["next"],
+      offset: body["offset"],
+      previous: body["previous"],
+      total: body["total"]
+    }
+  end
+
+  defp build_histories(histories) do
+    Enum.map(histories, fn history ->
+      %History{
+        track: to_struct(Track, history["track"]),
+        played_at: history["played_at"],
+        context: to_struct(Context, history["context"])
+      }
+    end)
+  end
+
   defp build_item(body = %{"item" => nil}), do: body
 
   defp build_item(body = %{"currently_playing_type" => "track"}) do
-    Map.update!(body, "item", &Track.build_response/1)
+    Map.update!(body, "item", &to_struct(Track, &1))
   end
 
   defp build_item(body = %{"currently_playing_type" => "episode"}) do

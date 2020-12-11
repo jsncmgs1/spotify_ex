@@ -5,6 +5,8 @@ defmodule Spotify.PlayerTest do
     Context,
     Device,
     Episode,
+    History,
+    Paging,
     Player,
     Track
   }
@@ -27,6 +29,12 @@ defmodule Spotify.PlayerTest do
 
     test "build context struct" do
       assert %Player{context: %Context{}} = Player.build_response(playback_track_response())
+    end
+  end
+
+  describe "build_response/1 with recently played response" do
+    test "build list of history structs" do
+      assert %Paging{items: [%History{}]} = Player.build_response(recently_played_response())
     end
   end
 
@@ -68,81 +76,7 @@ defmodule Spotify.PlayerTest do
         "volume_percent" => 35
       },
       "is_playing" => true,
-      "item" => %{
-        "album" => %{
-          "album_type" => "album",
-          "artists" => [
-            %{
-              "external_urls" => %{
-                "spotify" => "https://open.spotify.com/artist/ARTIST_ID"
-              },
-              "href" => "https://api.spotify.com/v1/artists/ARTIST_ID",
-              "id" => "ARTIST_ID",
-              "name" => "Artist Name",
-              "type" => "artist",
-              "uri" => "spotify:artist:ARTIST_ID"
-            }
-          ],
-          "available_markets" => ["US"],
-          "external_urls" => %{
-            "spotify" => "https://open.spotify.com/album/ALBUM_ID"
-          },
-          "href" => "https://api.spotify.com/v1/albums/ALBUM_ID",
-          "id" => "ALBUM_ID",
-          "images" => [
-            %{
-              "height" => 640,
-              "url" => "https://i.scdn.co/image/...",
-              "width" => 640
-            },
-            %{
-              "height" => 300,
-              "url" => "https://i.scdn.co/image/...",
-              "width" => 300
-            },
-            %{
-              "height" => 64,
-              "url" => "https://i.scdn.co/image/...",
-              "width" => 64
-            }
-          ],
-          "name" => "Artist Name",
-          "release_date" => "2015-04-07",
-          "release_date_precision" => "day",
-          "total_tracks" => 23,
-          "type" => "album",
-          "uri" => "spotify:album:ALBUM_ID"
-        },
-        "artists" => [
-          %{
-            "external_urls" => %{
-              "spotify" => "https://open.spotify.com/artist/ARTIST_ID"
-            },
-            "href" => "https://api.spotify.com/v1/artists/ARTIST_ID",
-            "id" => "ARTIST_ID",
-            "name" => "Artist Name",
-            "type" => "artist",
-            "uri" => "spotify:artist:ARTIST_ID"
-          }
-        ],
-        "available_markets" => ["US"],
-        "disc_number" => 1,
-        "duration_ms" => 196_013,
-        "explicit" => false,
-        "external_ids" => %{"isrc" => "ISRC"},
-        "external_urls" => %{
-          "spotify" => "https://open.spotify.com/track/TRACK_ID"
-        },
-        "href" => "https://api.spotify.com/v1/tracks/TRACK_ID",
-        "id" => "TRACK_ID",
-        "is_local" => false,
-        "name" => "Track Name",
-        "popularity" => 37,
-        "preview_url" => "https://p.scdn.co/mp3-preview/...",
-        "track_number" => 1,
-        "type" => "track",
-        "uri" => "spotify:track:TRACK_ID"
-      },
+      "item" => track(),
       "progress_ms" => 45646,
       "repeat_state" => "context",
       "shuffle_state" => false,
@@ -246,6 +180,107 @@ defmodule Spotify.PlayerTest do
       "repeat_state" => "context",
       "shuffle_state" => false,
       "timestamp" => 1_607_685_202_846
+    }
+  end
+
+  def recently_played_response do
+    %{
+      "cursors" => %{"after" => "1607703249293", "before" => "1607703043921"},
+      "href" => "https://api.spotify.com/v1/me/player/recently-played?limit=2",
+      "items" => [
+        %{
+          "context" => %{
+            "external_urls" => %{
+              "spotify" => "https://open.spotify.com/playlist/PLAYLIST_ID"
+            },
+            "href" => "https://api.spotify.com/v1/playlists/PLAYLIST_ID",
+            "type" => "playlist",
+            "uri" => "spotify:playlist:PLAYLIST_ID"
+          },
+          "played_at" => "2020-12-11T16:14:09.293Z",
+          "track" => track(),
+        }
+      ],
+      "limit" => 2,
+      "next" => "https://api.spotify.com/v1/me/player/recently-played?before=1607703043921&limit=2"
+    }
+  end
+
+  def track do
+    %{
+      "album" => %{
+        "album_type" => "album",
+        "artists" => [
+          %{
+            "external_urls" => %{
+              "spotify" => "https://open.spotify.com/artist/ARTIST_ID"
+            },
+            "href" => "https://api.spotify.com/v1/artists/ARTIST_ID",
+            "id" => "ARTIST_ID",
+            "name" => "Artist Name",
+            "type" => "artist",
+            "uri" => "spotify:artist:ARTIST_ID"
+          }
+        ],
+        "available_markets" => ["US"],
+        "external_urls" => %{
+          "spotify" => "https://open.spotify.com/album/ALBUM_ID"
+        },
+        "href" => "https://api.spotify.com/v1/albums/ALBUM_ID",
+        "id" => "ALBUM_ID",
+        "images" => [
+          %{
+            "height" => 640,
+            "url" => "https://i.scdn.co/image/...",
+            "width" => 640
+          },
+          %{
+            "height" => 300,
+            "url" => "https://i.scdn.co/image/...",
+            "width" => 300
+          },
+          %{
+            "height" => 64,
+            "url" => "https://i.scdn.co/image/...",
+            "width" => 64
+          }
+        ],
+        "name" => "Artist Name",
+        "release_date" => "2015-04-07",
+        "release_date_precision" => "day",
+        "total_tracks" => 23,
+        "type" => "album",
+        "uri" => "spotify:album:ALBUM_ID"
+      },
+      "artists" => [
+        %{
+          "external_urls" => %{
+            "spotify" => "https://open.spotify.com/artist/ARTIST_ID"
+          },
+          "href" => "https://api.spotify.com/v1/artists/ARTIST_ID",
+          "id" => "ARTIST_ID",
+          "name" => "Artist Name",
+          "type" => "artist",
+          "uri" => "spotify:artist:ARTIST_ID"
+        }
+      ],
+      "available_markets" => ["US"],
+      "disc_number" => 1,
+      "duration_ms" => 196_013,
+      "explicit" => false,
+      "external_ids" => %{"isrc" => "ISRC"},
+      "external_urls" => %{
+        "spotify" => "https://open.spotify.com/track/TRACK_ID"
+      },
+      "href" => "https://api.spotify.com/v1/tracks/TRACK_ID",
+      "id" => "TRACK_ID",
+      "is_local" => false,
+      "name" => "Track Name",
+      "popularity" => 37,
+      "preview_url" => "https://p.scdn.co/mp3-preview/...",
+      "track_number" => 1,
+      "type" => "track",
+      "uri" => "spotify:track:TRACK_ID"
     }
   end
 end
