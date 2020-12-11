@@ -9,7 +9,13 @@ defmodule Spotify.PlayerTest do
     Track
   }
 
-  describe "build_response/1" do
+  describe "build_response/1 with devices response" do
+    test "build list of device struct" do
+      assert [%Device{}] = Player.build_response(devices_response())
+    end
+  end
+
+  describe "build_response/1 with playback response" do
     test "build item struct depending on currently_playing_type" do
       assert %Player{item: %Track{}} = Player.build_response(playback_track_response())
       assert %Player{item: %Episode{}} = Player.build_response(playback_episode_response())
@@ -22,6 +28,22 @@ defmodule Spotify.PlayerTest do
     test "build context struct" do
       assert %Player{context: %Context{}} = Player.build_response(playback_track_response())
     end
+  end
+
+  defp devices_response do
+    %{
+      "devices" => [
+        %{
+          "id" => "DEVICE_ID",
+          "is_active" => true,
+          "is_private_session" => false,
+          "is_restricted" => false,
+          "name" => "Web Player (Chrome)",
+          "type" => "Computer",
+          "volume_percent" => 35
+        }
+      ]
+    }
   end
 
   defp playback_track_response do

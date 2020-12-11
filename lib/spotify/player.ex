@@ -55,6 +55,8 @@ defmodule Spotify.Player do
   **Method**: `GET`
   """
   def get_devices(conn) do
+    url = devices_url()
+    conn |> Client.get(url) |> handle_response()
   end
 
   @doc """
@@ -285,6 +287,10 @@ defmodule Spotify.Player do
   **Optional Params**: `play`
   """
   def transfer_playback(conn, device_ids, params \\ []) do
+  end
+
+  def build_response(%{"devices" => devices}) do
+    Enum.map(devices, &to_struct(Device, &1))
   end
 
   def build_response(body) do
