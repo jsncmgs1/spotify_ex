@@ -6,6 +6,26 @@ defmodule Spotify.Player do
   """
 
   use Spotify.Responder
+  import Spotify.Helpers
+
+  alias Spotify.{
+    Client,
+    Episode,
+    Track
+  }
+
+  defstruct ~w[
+    actions
+    context
+    currently_playing_type
+    device
+    is_playing
+    item
+    progress_ms
+    repeat_state
+    shuffle_state
+    timestamp
+  ]a
 
   @doc """
   Add an item to the user's playback queue.
@@ -52,6 +72,8 @@ defmodule Spotify.Player do
   **Optional Params**: `market`, `additional_types`
   """
   def get_current_playback(conn, params \\ []) do
+    url = player_url(params)
+    conn |> Client.get(url) |> handle_response()
   end
 
   @doc """
@@ -262,5 +284,18 @@ defmodule Spotify.Player do
   """
   def transfer_playback(conn, device_ids, params \\ []) do
   end
-end
 
+  def build_response(body) do
+    to_struct(__MODULE__, build_item(body))
+  end
+
+  defp build_item(body = %{"item" => nil}), do: body
+
+  defp build_item(body = %{"currently_playing_type" => "track"}) do
+    Map.update!(body, "item", &Track.build_response/1)
+  end
+
+  defp build_item(body = %{"currently_playing_type" => "episode"}) do
+    Map.update!(body, "item", &to_struct(Episode, &1))
+  end
+end
