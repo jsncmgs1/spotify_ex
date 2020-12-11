@@ -11,6 +11,7 @@ defmodule Spotify.Player do
   alias Spotify.{
     Client,
     Context,
+    CurrentlyPlaying,
     Device,
     Episode,
     History,
@@ -120,6 +121,8 @@ defmodule Spotify.Player do
   **Optional Params**: `market`, `additional_types`
   """
   def get_currently_playing(conn, params \\ []) do
+    url = currently_playing_url(params)
+    conn |> Client.get(url) |> handle_response()
   end
 
   @doc """
@@ -301,7 +304,7 @@ defmodule Spotify.Player do
     build_paged_histories(body)
   end
 
-  def build_response(body) do
+  def build_response(body = %{"device" => _}) do
     body =
       body
       |> build_item()
@@ -309,6 +312,15 @@ defmodule Spotify.Player do
       |> build_context()
 
     to_struct(__MODULE__, body)
+  end
+
+  def build_response(body) do
+    body =
+      body
+      |> build_item()
+      |> build_context()
+
+    to_struct(CurrentlyPlaying, body)
   end
 
   defp build_paged_histories(body) do
@@ -346,6 +358,8 @@ defmodule Spotify.Player do
   defp build_device(body = %{"device" => _}) do
     Map.update!(body, "device", &to_struct(Device, &1))
   end
+
+  defp build_device(body), do: body
 
   defp build_context(body = %{"context" => nil}), do: body
 

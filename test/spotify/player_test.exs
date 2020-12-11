@@ -3,6 +3,7 @@ defmodule Spotify.PlayerTest do
 
   alias Spotify.{
     Context,
+    CurrentlyPlaying,
     Device,
     Episode,
     History,
@@ -35,6 +36,12 @@ defmodule Spotify.PlayerTest do
   describe "build_response/1 with recently played response" do
     test "build list of history structs" do
       assert %Paging{items: [%History{}]} = Player.build_response(recently_played_response())
+    end
+  end
+
+  describe "build_response/1 with currently playing response" do
+    test "build currently playing struct" do
+      assert %CurrentlyPlaying{} = Player.build_response(currently_playing_response())
     end
   end
 
@@ -183,7 +190,7 @@ defmodule Spotify.PlayerTest do
     }
   end
 
-  def recently_played_response do
+  defp recently_played_response do
     %{
       "cursors" => %{"after" => "1607703249293", "before" => "1607703043921"},
       "href" => "https://api.spotify.com/v1/me/player/recently-played?limit=2",
@@ -206,7 +213,26 @@ defmodule Spotify.PlayerTest do
     }
   end
 
-  def track do
+  defp currently_playing_response do
+    %{
+      "actions" => %{"disallows" => %{"pausing" => true}},
+      "context" => %{
+        "external_urls" => %{
+          "spotify" => "https://open.spotify.com/playlist/PLAYLIST_ID"
+        },
+        "href" => "https://api.spotify.com/v1/playlists/PLAYLIST_ID",
+        "type" => "playlist",
+        "uri" => "spotify:playlist:PLAYLIST_ID"
+      },
+      "currently_playing_type" => "track",
+      "is_playing" => false,
+      "item" => track(),
+      "progress_ms" => 167217,
+      "timestamp" => 1607704916381
+    }
+  end
+
+  defp track do
     %{
       "album" => %{
         "album_type" => "album",
