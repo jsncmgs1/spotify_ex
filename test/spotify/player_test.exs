@@ -1,11 +1,26 @@
 defmodule Spotify.PlayerTest do
   use ExUnit.Case
-  alias Spotify.{Episode, Player, Track}
+
+  alias Spotify.{
+    Context,
+    Device,
+    Episode,
+    Player,
+    Track
+  }
 
   describe "build_response/1" do
     test "build item struct depending on currently_playing_type" do
       assert %Player{item: %Track{}} = Player.build_response(playback_track_response())
       assert %Player{item: %Episode{}} = Player.build_response(playback_episode_response())
+    end
+
+    test "build device struct" do
+      assert %Player{device: %Device{}} = Player.build_response(playback_track_response())
+    end
+
+    test "build context struct" do
+      assert %Player{context: %Context{}} = Player.build_response(playback_track_response())
     end
   end
 

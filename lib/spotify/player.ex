@@ -10,6 +10,8 @@ defmodule Spotify.Player do
 
   alias Spotify.{
     Client,
+    Context,
+    Device,
     Episode,
     Track
   }
@@ -286,7 +288,13 @@ defmodule Spotify.Player do
   end
 
   def build_response(body) do
-    to_struct(__MODULE__, build_item(body))
+    body =
+      body
+      |> build_item()
+      |> build_device()
+      |> build_context()
+
+    to_struct(__MODULE__, body)
   end
 
   defp build_item(body = %{"item" => nil}), do: body
@@ -297,5 +305,15 @@ defmodule Spotify.Player do
 
   defp build_item(body = %{"currently_playing_type" => "episode"}) do
     Map.update!(body, "item", &to_struct(Episode, &1))
+  end
+
+  defp build_device(body = %{"device" => _}) do
+    Map.update!(body, "device", &to_struct(Device, &1))
+  end
+
+  defp build_context(body = %{"context" => nil}), do: body
+
+  defp build_context(body = %{"context" => _}) do
+    Map.update!(body, "context", &to_struct(Context, &1))
   end
 end
