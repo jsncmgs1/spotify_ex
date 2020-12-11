@@ -17,8 +17,12 @@ defmodule Spotify.Player do
   """
   def enqueue(conn, uri, params \\ [])
 
-  def queue_url do
-    "https://api.spotify.com/v1/me/player/queue"
+  @doc """
+      iex> Spotify.Player.enqueue_url(device_id: "abc")
+      "https://api.spotify.com/v1/me/player/queue?device_id=abc"
+  """
+  def enqueue_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/queue" <> query_string(params)
   end
 
   @doc """
@@ -29,6 +33,10 @@ defmodule Spotify.Player do
   """
   def get_devices(conn)
 
+  @doc """
+      iex> Spotify.Player.devices_url
+      "https://api.spotify.com/v1/me/player/devices"
+  """
   def devices_url do
     "https://api.spotify.com/v1/me/player/devices"
   end
@@ -43,8 +51,12 @@ defmodule Spotify.Player do
   """
   def get_current_playback(conn, params \\ [])
 
-  def player_url do
-    "https://api.spotify.com/v1/me/player"
+  @doc """
+      iex> Spotify.Player.player_url(market: "US")
+      "https://api.spotify.com/v1/me/player?market=US"
+  """
+  def player_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player" <> query_string(params)
   end
 
   @doc """
@@ -57,8 +69,12 @@ defmodule Spotify.Player do
   """
   def get_recently_played(conn, params \\ [])
 
-  def recently_played_url do
-    "https://api.spotify.com/v1/me/player/recently-played"
+  @doc """
+      iex> Spotify.Player.recently_played_url(limit: 50)
+      "https://api.spotify.com/v1/me/player/recently-played?limit=50"
+  """
+  def recently_played_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/recently-played" <> query_string(params)
   end
 
   @doc """
@@ -71,8 +87,12 @@ defmodule Spotify.Player do
   """
   def get_currently_playing(conn, params \\ [])
 
-  def currently_playing_url do
-    "https://api.spotify.com/v1/me/player/currently-playing"
+  @doc """
+      iex> Spotify.Player.currently_playing_url(market: "US")
+      "https://api.spotify.com/v1/me/player/currently-playing?market=US"
+  """
+  def currently_playing_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/currently-playing" <> query_string(params)
   end
 
   @doc """
@@ -85,8 +105,12 @@ defmodule Spotify.Player do
   """
   def pause(conn, params \\ [])
 
-  def pause_url do
-    "https://api.spotify.com/v1/me/player/pause"
+  @doc """
+      iex> Spotify.Player.pause_url(device_id: "abc")
+      "https://api.spotify.com/v1/me/player/pause?device_id=abc"
+  """
+  def pause_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/pause" <> query_string(params)
   end
 
   @doc """
@@ -99,8 +123,12 @@ defmodule Spotify.Player do
   """
   def seek(conn, position_ms, params \\ [])
 
-  def seek_url do
-    "https://api.spotify.com/v1/me/player/seek"
+  @doc """
+      iex> Spotify.Player.seek_url(device_id: "abc")
+      "https://api.spotify.com/v1/me/player/seek?device_id=abc"
+  """
+  def seek_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/seek" <> query_string(params)
   end
 
   @doc """
@@ -113,8 +141,12 @@ defmodule Spotify.Player do
   """
   def set_repeat(conn, state, params \\ [])
 
-  def repeat_url do
-    "https://api.spotify.com/v1/me/player/repeat"
+  @doc """
+      iex> Spotify.Player.repeat_url(device_id: "abc")
+      "https://api.spotify.com/v1/me/player/repeat?device_id=abc"
+  """
+  def repeat_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/repeat" <> query_string(params)
   end
 
   @doc """
@@ -127,8 +159,12 @@ defmodule Spotify.Player do
   """
   def set_volume(conn, volume_percent, params \\ [])
 
-  def volume_url do
-    "https://api.spotify.com/v1/me/player/volume"
+  @doc """
+      iex> Spotify.Player.volume_url(device_id: "abc")
+      "https://api.spotify.com/v1/me/player/volume?device_id=abc"
+  """
+  def volume_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/volume" <> query_string(params)
   end
 
   @doc """
@@ -141,8 +177,12 @@ defmodule Spotify.Player do
   """
   def skip_to_next(conn, params \\ [])
 
-  def next_url do
-    "https://api.spotify.com/v1/me/player/next"
+  @doc """
+      iex> Spotify.Player.next_url(device_id: "abc")
+      "https://api.spotify.com/v1/me/player/next?device_id=abc"
+  """
+  def next_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/next" <> query_string(params)
   end
 
   @doc """
@@ -155,8 +195,12 @@ defmodule Spotify.Player do
   """
   def skip_to_previous(conn, params \\ [])
 
-  def previous_url do
-    "https://api.spotify.com/v1/me/player/previous"
+  @doc """
+      iex> Spotify.Player.previous_url(device_id: "abc")
+      "https://api.spotify.com/v1/me/player/previous?device_id=abc"
+  """
+  def previous_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/previous" <> query_string(params)
   end
 
   @doc """
@@ -169,8 +213,12 @@ defmodule Spotify.Player do
   """
   def play(conn, params \\ [])
 
-  def play_url do
-    "https://api.spotify.com/v1/me/player/play"
+  @doc """
+      iex> Spotify.Player.play_url(device_id: "abc")
+      "https://api.spotify.com/v1/me/player/play?device_id=abc"
+  """
+  def play_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/play" <> query_string(params)
   end
 
   @doc """
@@ -183,8 +231,12 @@ defmodule Spotify.Player do
   """
   def set_shuffle(conn, state, params \\ [])
 
-  def shuffle_url do
-    "https://api.spotify.com/v1/me/player/shuffle"
+  @doc """
+      iex> Spotify.Player.shuffle_url(device_id: "abc")
+      "https://api.spotify.com/v1/me/player/shuffle?device_id=abc"
+  """
+  def shuffle_url(params \\ []) do
+    "https://api.spotify.com/v1/me/player/shuffle" <> query_string(params)
   end
 
   @doc """
