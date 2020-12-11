@@ -41,6 +41,8 @@ defmodule Spotify.Player do
   **Optional Params**: `device_id`
   """
   def enqueue(conn, uri, params \\ []) do
+    url = params |> Keyword.put(:uri, uri) |> enqueue_url()
+    conn |> Client.post(url) |> handle_response()
   end
 
   @doc """
@@ -142,6 +144,8 @@ defmodule Spotify.Player do
   **Optional Params**: `device_id`
   """
   def pause(conn, params \\ []) do
+    url = pause_url(params)
+    conn |> Client.put(url) |> handle_response()
   end
 
   @doc """
@@ -161,6 +165,8 @@ defmodule Spotify.Player do
   **Optional Params**: `device_id`
   """
   def seek(conn, position_ms, params \\ []) do
+    url = params |> Keyword.put(:position_ms, position_ms) |> seek_url()
+    conn |> Client.put(url) |> handle_response()
   end
 
   @doc """
@@ -179,7 +185,9 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def set_repeat(conn, state, params \\ []) do
+  def set_repeat(conn, state, params \\ []) when state in [:track, :context, :off] do
+    url = params |> Keyword.put(:state, state) |> repeat_url()
+    conn |> Client.put(url) |> handle_response()
   end
 
   @doc """
@@ -198,7 +206,9 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def set_volume(conn, volume_percent, params \\ []) do
+  def set_volume(conn, volume_percent, params \\ []) when volume_percent in 0..100 do
+    url = params |> Keyword.put(:volume_percent, volume_percent) |> volume_url()
+    conn |> Client.put(url) |> handle_response()
   end
 
   @doc """
@@ -218,6 +228,8 @@ defmodule Spotify.Player do
   **Optional Params**: `device_id`
   """
   def skip_to_next(conn, params \\ []) do
+    url = next_url(params)
+    conn |> Client.post(url) |> handle_response()
   end
 
   @doc """
@@ -237,6 +249,8 @@ defmodule Spotify.Player do
   **Optional Params**: `device_id`
   """
   def skip_to_previous(conn, params \\ []) do
+    url = previous_url(params)
+    conn |> Client.post(url) |> handle_response()
   end
 
   @doc """
@@ -256,6 +270,12 @@ defmodule Spotify.Player do
   **Optional Params**: `device_id`, `context_uri`, `uris`, `offset`, `position_ms`
   """
   def play(conn, params \\ []) do
+    {query_params, body_params} = Keyword.split(params, [:device_id])
+
+    url = play_url(query_params)
+    body = body_params |> Enum.into(%{}) |> Poison.encode!()
+
+    conn |> Client.put(url, body) |> handle_response()
   end
 
   @doc """
@@ -274,7 +294,9 @@ defmodule Spotify.Player do
 
   **Optional Params**: `device_id`
   """
-  def set_shuffle(conn, state, params \\ []) do
+  def set_shuffle(conn, state, params \\ []) when state |> is_boolean() do
+    url = params |> Keyword.put(:state, state) |> shuffle_url()
+    conn |> Client.put(url) |> handle_response()
   end
 
   @doc """
@@ -294,6 +316,10 @@ defmodule Spotify.Player do
   **Optional Params**: `play`
   """
   def transfer_playback(conn, device_ids, params \\ []) do
+    url = player_url()
+    body = params |> Keyword.put(:device_ids, device_ids) |> Enum.into(%{}) |> Poison.encode!()
+
+    conn |> Client.put(url, body) |> handle_response()
   end
 
   def build_response(%{"devices" => devices}) do
