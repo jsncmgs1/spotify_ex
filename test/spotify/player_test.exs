@@ -8,6 +8,7 @@ defmodule Spotify.PlayerTest do
     Episode,
     History,
     Paging,
+    Playback,
     Player,
     Track
   }
@@ -20,16 +21,16 @@ defmodule Spotify.PlayerTest do
 
   describe "build_response/1 with playback response" do
     test "build item struct depending on currently_playing_type" do
-      assert %Player{item: %Track{}} = Player.build_response(playback_track_response())
-      assert %Player{item: %Episode{}} = Player.build_response(playback_episode_response())
+      assert %Playback{item: %Track{}} = Player.build_response(playback_track_response())
+      assert %Playback{item: %Episode{}} = Player.build_response(playback_episode_response())
     end
 
     test "build device struct" do
-      assert %Player{device: %Device{}} = Player.build_response(playback_track_response())
+      assert %Playback{device: %Device{}} = Player.build_response(playback_track_response())
     end
 
     test "build context struct" do
-      assert %Player{context: %Context{}} = Player.build_response(playback_track_response())
+      assert %Playback{context: %Context{}} = Player.build_response(playback_track_response())
     end
   end
 

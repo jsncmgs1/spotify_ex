@@ -16,21 +16,9 @@ defmodule Spotify.Player do
     Episode,
     History,
     Paging,
+    Playback,
     Track
   }
-
-  defstruct ~w[
-    actions
-    context
-    currently_playing_type
-    device
-    is_playing
-    item
-    progress_ms
-    repeat_state
-    shuffle_state
-    timestamp
-  ]a
 
   @doc """
   Add an item to the user's playback queue.
@@ -337,7 +325,7 @@ defmodule Spotify.Player do
       |> build_device()
       |> build_context()
 
-    to_struct(__MODULE__, body)
+    to_struct(Playback, body)
   end
 
   def build_response(body) do
