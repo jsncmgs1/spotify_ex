@@ -206,11 +206,12 @@ defmodule Spotify.PlayerTest do
             "uri" => "spotify:playlist:PLAYLIST_ID"
           },
           "played_at" => "2020-12-11T16:14:09.293Z",
-          "track" => track(),
+          "track" => track()
         }
       ],
       "limit" => 2,
-      "next" => "https://api.spotify.com/v1/me/player/recently-played?before=1607703043921&limit=2"
+      "next" =>
+        "https://api.spotify.com/v1/me/player/recently-played?before=1607703043921&limit=2"
     }
   end
 
@@ -228,8 +229,8 @@ defmodule Spotify.PlayerTest do
       "currently_playing_type" => "track",
       "is_playing" => false,
       "item" => track(),
-      "progress_ms" => 167217,
-      "timestamp" => 1607704916381
+      "progress_ms" => 167_217,
+      "timestamp" => 1_607_704_916_381
     }
   end
 
