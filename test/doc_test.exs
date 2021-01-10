@@ -6,6 +6,7 @@ defmodule DocTest do
   doctest Spotify.Category
   doctest Spotify.Follow
   doctest Spotify.Personalization
+  doctest Spotify.Player
   doctest Spotify.Playlist
   doctest Spotify.Profile
   doctest Spotify.Recommendation
