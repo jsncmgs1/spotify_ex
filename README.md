@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jsncmgs1/spotify_ex.svg)](https://travis-ci.org/jsncmgs1/spotify_ex)
+![Elixir CI](https://github.com/jsncmgs1/spotify_ex/workflows/Elixir%20CI/badge.svg)
 [![Inline docs](http://inch-ci.org/github/jsncmgs1/spotify_ex.svg)](http://inch-ci.org/github/jsncmgs1/spotify_ex)
 [![Hex docs](https://hexdocs.pm/spotify_ex/api-reference.html)]
 

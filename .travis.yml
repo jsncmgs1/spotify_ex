@@ -1,7 +1,0 @@
-language: elixir
-elixir:
-  - 1.6
-script: mix test
-after_script:
-  - MIX_ENV=docs mix deps.get
-  - MIX_ENV=docs mix inch.report
