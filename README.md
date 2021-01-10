@@ -1,9 +1,10 @@
 ![Elixir CI](https://github.com/jsncmgs1/spotify_ex/workflows/Elixir%20CI/badge.svg)
-[![Inline docs](http://inch-ci.org/github/jsncmgs1/spotify_ex.svg)](http://inch-ci.org/github/jsncmgs1/spotify_ex)
-[![Hex docs](https://hexdocs.pm/spotify_ex/api-reference.html)]
+[![Inline docs](http://inch-ci.org/github/jsncmgs1/spotify_ex.svg?branch=master)](http://inch-ci.org/github/jsncmgs1/spotify_ex)
 
 # SpotifyEx
 **Elixir Wrapper for the Spotify Web API**
+
+## [Documentation](https://hexdocs.pm/spotify_ex/api-reference.html)
 
 ## Installation
 
@@ -23,7 +24,6 @@ def application do
 end
 ```
 
-[Documentation](https://hexdocs.pm/spotify_ex/api-reference.html)
 
 ## What does this wrapper cover?
 
