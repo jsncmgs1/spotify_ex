@@ -41,6 +41,10 @@ defmodule Spotify.Responder do
 
         {:ok, response}
       end
+
+      def handle_response({:error, %HTTPoison.Error{reason: reason}}) do
+        {:error, reason}
+      end
     end
   end
 end
