@@ -38,6 +38,11 @@ defmodule Spotify.ResponderTest do
       assert GenericMock.some_endpoint(too_many_requests_error(99, "Retry-After")) ==
                too_many_requests_error_expect()
     end
+
+    test "with arbitrary HTTPoison error" do
+      assert GenericMock.some_endpoint({:error, %HTTPoison.Error{reason: :timeout}}) ==
+               {:error, :timeout}
+    end
   end
 
   defp too_many_requests_error(retry_after_value, header_name) do
