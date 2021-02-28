@@ -131,14 +131,28 @@ defmodule Spotify.Library do
   """
   def build_response(body) do
     case body do
-      %{"items" => tracks} -> build_tracks(tracks)
+      %{"items" => _tracks} = response -> build_paged_response(response)
       booleans_or_error -> booleans_or_error
     end
   end
 
+  @doc false
+  defp build_paged_response(response) do
+    %Paging{
+      href: response["href"],
+      items: build_tracks(response["items"]),
+      limit: response["limit"],
+      next: response["next"],
+      offset: response["offset"],
+      previous: response["previous"],
+      total: response["total"]
+    }
+  end
+
+  @doc false
   def build_tracks(tracks) do
-    tracks = Enum.map(tracks, fn %{"track" => items} -> items end)
-    tracks = Track.build_tracks(tracks)
-    %Paging{items: tracks}
+    tracks
+    |> Enum.map(fn %{"track" => items} -> items end)
+    |> Track.build_tracks()
   end
 end
