@@ -37,6 +37,13 @@ defmodule Spotify.AlbumTest do
 
       assert actual == expected
     end
+
+    test "when a collection of new releases is requested" do
+      actual = Album.build_response(new_releases())
+      expected = %Paging{href: "link", items: [%Album{name: "foo"}]}
+
+      assert actual == expected
+    end
   end
 
   def tracks_response do
@@ -64,6 +71,15 @@ defmodule Spotify.AlbumTest do
       "tracks" => %{
         # tracks is a paging object, the actual tracks are in
         # the items key
+        "items" => [%{"name" => "foo"}]
+      }
+    }
+  end
+
+  def new_releases do
+    %{
+      "albums" => %{
+        "href" => "link",
         "items" => [%{"name" => "foo"}]
       }
     }

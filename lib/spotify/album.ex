@@ -311,5 +311,11 @@ defmodule Spotify.Album do
   end
 
   @doc false
-  def build_albums(albums), do: Enum.map(albums, &build_album/1)
+  def build_albums(albums) when is_list(albums), do: Enum.map(albums, &build_album/1)
+
+  def build_albums(albums) when is_map(albums) do
+    paging = to_struct(Paging, albums)
+    new_releases = Enum.map(paging.items, &to_struct(Album, &1))
+    Map.put(paging, :items, new_releases)
+  end
 end
