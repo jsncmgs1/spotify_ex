@@ -49,11 +49,11 @@ with the docs.
 [SpotifyExTest](http://www.github.com/jsncmgs1/spotify_ex_test)**
 
 ## OAuth
-[Oauth README](https://github.com/jsncmgs1/spotift_ex/docs/oauth.md)
+[Oauth README](https://github.com/jsncmgs1/spotify_ex/blob/master/docs/oauth.md)
 
 ### Scopes
 
-[Scopes README](https://github.com/jsncmgs1/spotift_ex/docs/scopes.md)
+[Scopes README](https://github.com/jsncmgs1/spotify_ex/blob/master/docs/scopes.md)
 
 ## Contributing
 
