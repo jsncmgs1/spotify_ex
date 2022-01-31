@@ -33,9 +33,10 @@ Follow the abovementioned link. On the left you'll notice that the API is broken
 sections, such as Artists, Albums, Playlists, etc. This wrapper does its best
 to keep endpoints in modules mapped to their corresponding section. However,
 Spotify duplicates many of its endpoints. For example, there is an endpoint to
-obtain an artist's albums that is listed under both Artists and Albums. The endpoints
-are not duplicated in this wrapper, so if you don't see an endpoint, it can be found in a
-module that's also related to that endpoint i.e, if you don't see that endpoint
+obtain an artist's albums that is listed under both Artists and Albums. 
+
+Endpoints are not duplicated here, however. If you don't see an endpoint, it can be found in a
+module that's also related to that endpoint. In other words, if you don't see an endpoint for "get artists albums"
 in the `Artist` module, check `Albums`.
 
 These duplicate endpoints may get aliased in the future to have a 1-1 mapping
