@@ -53,27 +53,11 @@ defmodule Spotify.Track do
     conn |> Client.get(url) |> handle_response
   end
 
-  @doc """
-  Get audio features for a track
-  [Spotify Documentation](https://developer.spotify.com/web-api/get-audio-features/)
-
-  **Method**: `GET`
-
-      Spotify.Track.audio_features(conn, "1")
-      # => {:ok ,%Spotify.AudioFeatures{}}
-
-  """
   def audio_features(conn, id) do
     url = audio_features_url(id)
     conn |> Client.get(url) |> handle_response
   end
 
-  @doc """
-  Get audio features for several tracks
-
-      iex> Spotify.Track.audio_features_url(ids: "1,3")
-      "https://api.spotify.com/v1/audio-features?ids=1%2C3"
-  """
   def audio_features_url(params) when is_list(params) do
     "https://api.spotify.com/v1/audio-features" <> query_string(params)
   end
