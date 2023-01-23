@@ -24,8 +24,6 @@ def application do
 end
 ```
 
-## What does this wrapper cover?
-
 This wrapper covers the [Spotify Web
 API](https://developer.spotify.com/web-api/endpoint-reference/).
 
