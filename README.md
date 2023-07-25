@@ -4,6 +4,8 @@
 # SpotifyEx
 **Elixir Wrapper for the Spotify Web API**
 
+This is no longer under development, though I'm happy to merge bug fixes and reasonable feature additions. Please ask before adding new features so you don't waste your time.
+
 ## [Documentation](https://hexdocs.pm/spotify_ex/api-reference.html)
 
 ## Installation
