@@ -19,9 +19,27 @@ defmodule Spotify.ResponderTest do
       assert GenericMock.some_endpoint(success_empty_body()) == :ok
     end
 
-    test "with 200/201 status and a body" do
+    test "with 200/201 status and JSON content-type with body" do
       expected = {:ok, %Spotify.Playlist{name: "foo"}}
-      assert GenericMock.some_endpoint(success_with_body()) == expected
+      assert GenericMock.some_endpoint(success_with_json_body()) == expected
+    end
+
+    test "with 200/201 status and JSON content-type with charset parameter" do
+      expected = {:ok, %Spotify.Playlist{name: "foo"}}
+      assert GenericMock.some_endpoint(success_with_json_body_and_charset()) == expected
+    end
+
+    test "with 200/201 status and non-JSON content-type" do
+      assert GenericMock.some_endpoint(success_with_text_body()) == :ok
+    end
+
+    test "with 200/201 status and no content-type header" do
+      assert GenericMock.some_endpoint(success_with_no_content_type()) == :ok
+    end
+
+    test "with 200/201 status and case-insensitive content-type header" do
+      expected = {:ok, %Spotify.Playlist{name: "foo"}}
+      assert GenericMock.some_endpoint(success_with_uppercase_content_type()) == expected
     end
 
     test "with 400 status and a body" do
@@ -67,10 +85,46 @@ defmodule Spotify.ResponderTest do
   end
 
   defp success_empty_body do
-    {:ok, %HTTPoison.Response{body: "", status_code: 200}}
+    {:ok, %HTTPoison.Response{body: "", status_code: 200, headers: []}}
   end
 
-  defp success_with_body do
-    {:ok, %HTTPoison.Response{body: Poison.encode!(%{name: "foo"}), status_code: 200}}
+  defp success_with_json_body do
+    {:ok, %HTTPoison.Response{
+      body: Poison.encode!(%{name: "foo"}),
+      status_code: 200,
+      headers: [{"Content-Type", "application/json"}]
+    }}
+  end
+
+  defp success_with_json_body_and_charset do
+    {:ok, %HTTPoison.Response{
+      body: Poison.encode!(%{name: "foo"}),
+      status_code: 200,
+      headers: [{"Content-Type", "application/json; charset=utf-8"}]
+    }}
+  end
+
+  defp success_with_text_body do
+    {:ok, %HTTPoison.Response{
+      body: "Plain text response",
+      status_code: 200,
+      headers: [{"Content-Type", "text/plain"}]
+    }}
+  end
+
+  defp success_with_no_content_type do
+    {:ok, %HTTPoison.Response{
+      body: "Some response without content type",
+      status_code: 200,
+      headers: []
+    }}
+  end
+
+  defp success_with_uppercase_content_type do
+    {:ok, %HTTPoison.Response{
+      body: Poison.encode!(%{name: "foo"}),
+      status_code: 200,
+      headers: [{"CONTENT-TYPE", "application/json"}]
+    }}
   end
 end
