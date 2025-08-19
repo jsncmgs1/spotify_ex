@@ -14,8 +14,7 @@ defmodule Spotify.Responder do
   defmacro __using__(_) do
     quote do
       def handle_response({:ok, %HTTPoison.Response{status_code: code, body: ""}})
-          when code in 200..299,
-          do: :ok
+          when code in 200..299, do: :ok
 
       # special handling for 'too many requests' status
       # in order to know when to retry
@@ -36,14 +35,29 @@ defmodule Spotify.Responder do
         {message, Poison.decode!(body)}
       end
 
-      def handle_response({:ok, %HTTPoison.Response{status_code: _code, body: body}}) do
-        response = body |> Poison.decode!() |> build_response
-
-        {:ok, response}
+      def handle_response({:ok, %HTTPoison.Response{status_code: _code, body: body, headers: headers}}) do
+        case get_content_type(headers) do
+          "application/json" ->
+            response = body |> Poison.decode!() |> build_response
+            {:ok, response}
+          _ ->
+            :ok
+        end
       end
 
       def handle_response({:error, %HTTPoison.Error{reason: reason}}) do
         {:error, reason}
+      end
+
+      defp get_content_type(headers) do
+        headers
+        |> Enum.find(fn {key, _value} -> String.downcase(key) == "content-type" end)
+        |> case do
+          {_key, content_type} ->
+            content_type |> String.split(";") |> List.first() |> String.trim()
+          nil ->
+            "text/plain"
+        end
       end
     end
   end
